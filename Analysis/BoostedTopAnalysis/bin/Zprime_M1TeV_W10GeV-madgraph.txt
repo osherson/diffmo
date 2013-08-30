@@ -1,0 +1,5 @@
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/Zprime_M1TeV_W10GeV-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_5_1_whL.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/Zprime_M1TeV_W10GeV-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_4_1_oZC.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/Zprime_M1TeV_W10GeV-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_3_1_mig.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/Zprime_M1TeV_W10GeV-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_2_1_ngI.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/Zprime_M1TeV_W10GeV-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_1_1_phr.root

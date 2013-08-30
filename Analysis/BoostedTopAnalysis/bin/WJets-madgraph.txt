@@ -1,0 +1,5 @@
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/WJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_5_1_Spz.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/WJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_4_1_nSg.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/WJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_3_1_Ukd.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/WJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_2_1_9hv.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/WJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_1_1_zkE.root
