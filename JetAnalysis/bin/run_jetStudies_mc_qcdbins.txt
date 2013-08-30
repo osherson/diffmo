@@ -1,0 +1,1281 @@
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt0to15.txt
+Output file = QCDDiJet_Pt0to15_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt0to15/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 2, event 791718
+Calo jet selection
+     0 :            Calo Cuts        189
+     1 :        Calo Kin Cuts        139
+     2 :       Calo Delta Phi         78
+     3 :              Calo HT         78
+     4 :        Calo Dijet HT         78
+     5 :          Calo Jet ID         74
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts        189
+     7 :          PF Kin Cuts         53
+     8 :         PF Delta Phi         41
+     9 :                PF HT         41
+    10 :          PF Dijet HT         41
+    11 :            PF Jet ID         40
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt1000to1400.txt
+Output file = QCDDiJet_Pt1000to1400_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1000to1400/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 10022332
+Entry 10000, Processing run 1, event 124176
+Entry 20000, Processing run 1, event 10004849
+Calo jet selection
+     0 :            Calo Cuts      23941
+     1 :        Calo Kin Cuts      23941
+     2 :       Calo Delta Phi      23848
+     3 :              Calo HT      23848
+     4 :        Calo Dijet HT      23848
+     5 :          Calo Jet ID      23846
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      23941
+     7 :          PF Kin Cuts      23941
+     8 :         PF Delta Phi      23850
+     9 :                PF HT      23850
+    10 :          PF Dijet HT      23850
+    11 :            PF Jet ID      23842
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt120to170.txt
+Output file = QCDDiJet_Pt120to170_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt120to170/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 16081
+Entry 10000, Processing run 1, event 2216
+Entry 20000, Processing run 1, event 60112
+Entry 30000, Processing run 1, event 1252
+Entry 40000, Processing run 1, event 35765
+Entry 50000, Processing run 1, event 34665
+Calo jet selection
+     0 :            Calo Cuts      58869
+     1 :        Calo Kin Cuts      58177
+     2 :       Calo Delta Phi      56001
+     3 :              Calo HT      56001
+     4 :        Calo Dijet HT      56001
+     5 :          Calo Jet ID      55981
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      58869
+     7 :          PF Kin Cuts      58431
+     8 :         PF Delta Phi      56676
+     9 :                PF HT      56676
+    10 :          PF Dijet HT      56676
+    11 :            PF Jet ID      56656
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt1400to1800.txt
+Output file = QCDDiJet_Pt1400to1800_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1400to1800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 20392
+Entry 10000, Processing run 1, event 10391
+Entry 20000, Processing run 1, event 11403
+Calo jet selection
+     0 :            Calo Cuts      20562
+     1 :        Calo Kin Cuts      20562
+     2 :       Calo Delta Phi      20510
+     3 :              Calo HT      20510
+     4 :        Calo Dijet HT      20510
+     5 :          Calo Jet ID      20509
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      20562
+     7 :          PF Kin Cuts      20562
+     8 :         PF Delta Phi      20506
+     9 :                PF HT      20506
+    10 :          PF Dijet HT      20506
+    11 :            PF Jet ID      20501
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt15to20.txt
+Output file = QCDDiJet_Pt15to20_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt15to20/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 2, event 477467
+Entry 10000, Processing run 2, event 812140
+Entry 20000, Processing run 2, event 1903315
+Entry 30000, Processing run 2, event 3533446
+Calo jet selection
+     0 :            Calo Cuts      37179
+     1 :        Calo Kin Cuts      23491
+     2 :       Calo Delta Phi      17876
+     3 :              Calo HT      17876
+     4 :        Calo Dijet HT      17875
+     5 :          Calo Jet ID      17593
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      37179
+     7 :          PF Kin Cuts      12038
+     8 :         PF Delta Phi       9926
+     9 :                PF HT       9926
+    10 :          PF Dijet HT       9926
+    11 :            PF Jet ID       9916
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt170to230.txt
+Output file = QCDDiJet_Pt170to230_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt170to230/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 41325
+Entry 10000, Processing run 1, event 36672
+Entry 20000, Processing run 1, event 105124
+Entry 30000, Processing run 1, event 10759
+Entry 40000, Processing run 1, event 32311
+Entry 50000, Processing run 1, event 102302
+Calo jet selection
+     0 :            Calo Cuts      51658
+     1 :        Calo Kin Cuts      51552
+     2 :       Calo Delta Phi      50380
+     3 :              Calo HT      50380
+     4 :        Calo Dijet HT      50380
+     5 :          Calo Jet ID      50374
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      51658
+     7 :          PF Kin Cuts      51613
+     8 :         PF Delta Phi      50611
+     9 :                PF HT      50611
+    10 :          PF Dijet HT      50611
+    11 :            PF Jet ID      50599
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt1800to2200.txt
+Output file = QCDDiJet_Pt1800to2200_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt1800to2200/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 2697
+Entry 10000, Processing run 1, event 43198
+Entry 20000, Processing run 1, event 35977
+Entry 30000, Processing run 1, event 25510
+Calo jet selection
+     0 :            Calo Cuts      33940
+     1 :        Calo Kin Cuts      33940
+     2 :       Calo Delta Phi      33867
+     3 :              Calo HT      33867
+     4 :        Calo Dijet HT      33867
+     5 :          Calo Jet ID      33865
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      33940
+     7 :          PF Kin Cuts      33940
+     8 :         PF Delta Phi      33871
+     9 :                PF HT      33871
+    10 :          PF Dijet HT      33871
+    11 :            PF Jet ID      33857
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt20to30.txt
+Output file = QCDDiJet_Pt20to30_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 2, event 519745
+Entry 10000, Processing run 2, event 892573
+Entry 20000, Processing run 2, event 380043
+Entry 30000, Processing run 2, event 444929
+Entry 40000, Processing run 2, event 269304
+Entry 50000, Processing run 2, event 1052072
+Entry 60000, Processing run 2, event 790060
+Entry 70000, Processing run 2, event 775497
+Entry 80000, Processing run 2, event 715423
+Entry 90000, Processing run 2, event 961776
+Entry 100000, Processing run 2, event 946670
+Entry 110000, Processing run 2, event 452003
+Entry 120000, Processing run 2, event 529128
+Entry 130000, Processing run 2, event 332720
+Entry 140000, Processing run 2, event 926545
+Entry 150000, Processing run 1, event 37670
+Calo jet selection
+     0 :            Calo Cuts     153163
+     1 :        Calo Kin Cuts      91414
+     2 :       Calo Delta Phi      78691
+     3 :              Calo HT      78691
+     4 :        Calo Dijet HT      78691
+     5 :          Calo Jet ID      78152
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts     153163
+     7 :          PF Kin Cuts      72763
+     8 :         PF Delta Phi      65601
+     9 :                PF HT      65601
+    10 :          PF Dijet HT      65600
+    11 :            PF Jet ID      65536
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt2200to2600.txt
+Output file = QCDDiJet_Pt2200to2600_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2200to2600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 17355
+Entry 10000, Processing run 1, event 19995
+Entry 20000, Processing run 1, event 18747
+Calo jet selection
+     0 :            Calo Cuts      22552
+     1 :        Calo Kin Cuts      22552
+     2 :       Calo Delta Phi      22516
+     3 :              Calo HT      22516
+     4 :        Calo Dijet HT      22516
+     5 :          Calo Jet ID      22512
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      22552
+     7 :          PF Kin Cuts      22552
+     8 :         PF Delta Phi      22519
+     9 :                PF HT      22519
+    10 :          PF Dijet HT      22519
+    11 :            PF Jet ID      22506
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt230to300.txt
+Output file = QCDDiJet_Pt230to300_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt230to300/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 19389
+Entry 10000, Processing run 1, event 16224
+Entry 20000, Processing run 1, event 41197
+Entry 30000, Processing run 1, event 33610
+Entry 40000, Processing run 1, event 4312
+Entry 50000, Processing run 1, event 8786
+Calo jet selection
+     0 :            Calo Cuts      52872
+     1 :        Calo Kin Cuts      52867
+     2 :       Calo Delta Phi      52010
+     3 :              Calo HT      52010
+     4 :        Calo Dijet HT      52010
+     5 :          Calo Jet ID      52003
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      52872
+     7 :          PF Kin Cuts      52869
+     8 :         PF Delta Phi      52095
+     9 :                PF HT      52095
+    10 :          PF Dijet HT      52095
+    11 :            PF Jet ID      52087
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt2600to3000.txt
+Output file = QCDDiJet_Pt2600to3000_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt2600to3000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 6895
+Entry 10000, Processing run 1, event 1803
+Entry 20000, Processing run 1, event 707
+Calo jet selection
+     0 :            Calo Cuts      20618
+     1 :        Calo Kin Cuts      20618
+     2 :       Calo Delta Phi      20591
+     3 :              Calo HT      20591
+     4 :        Calo Dijet HT      20591
+     5 :          Calo Jet ID      20589
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      20618
+     7 :          PF Kin Cuts      20618
+     8 :         PF Delta Phi      20593
+     9 :                PF HT      20593
+    10 :          PF Dijet HT      20593
+    11 :            PF Jet ID      20588
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt3000to3500.txt
+Output file = QCDDiJet_Pt3000to3500_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt3000to3500/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 11901
+Entry 10000, Processing run 1, event 106339
+Entry 20000, Processing run 1, event 9078
+Calo jet selection
+     0 :            Calo Cuts      23431
+     1 :        Calo Kin Cuts      23431
+     2 :       Calo Delta Phi      23406
+     3 :              Calo HT      23406
+     4 :        Calo Dijet HT      23406
+     5 :          Calo Jet ID      23404
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      23431
+     7 :          PF Kin Cuts      23431
+     8 :         PF Delta Phi      23413
+     9 :                PF HT      23413
+    10 :          PF Dijet HT      23413
+    11 :            PF Jet ID      23401
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt300to380.txt
+Output file = QCDDiJet_Pt300to380_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt300to380/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 24482
+Entry 10000, Processing run 1, event 48679
+Entry 20000, Processing run 1, event 5931
+Entry 30000, Processing run 1, event 35428
+Entry 40000, Processing run 1, event 16349
+Entry 50000, Processing run 1, event 566
+Entry 60000, Processing run 1, event 50884
+Calo jet selection
+     0 :            Calo Cuts      64236
+     1 :        Calo Kin Cuts      64236
+     2 :       Calo Delta Phi      63448
+     3 :              Calo HT      63448
+     4 :        Calo Dijet HT      63448
+     5 :          Calo Jet ID      63434
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      64236
+     7 :          PF Kin Cuts      64236
+     8 :         PF Delta Phi      63481
+     9 :                PF HT      63481
+    10 :          PF Dijet HT      63481
+    11 :            PF Jet ID      63460
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt30to50.txt
+Output file = QCDDiJet_Pt30to50_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt30to50/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 2, event 318730
+Entry 10000, Processing run 1, event 59772
+Entry 20000, Processing run 2, event 1149423
+Entry 30000, Processing run 2, event 907961
+Entry 40000, Processing run 2, event 922359
+Entry 50000, Processing run 2, event 558430
+Entry 60000, Processing run 2, event 838700
+Entry 70000, Processing run 2, event 331168
+Entry 80000, Processing run 2, event 2425348
+Entry 90000, Processing run 2, event 635207
+Entry 100000, Processing run 2, event 874994
+Entry 110000, Processing run 2, event 919290
+Entry 120000, Processing run 1, event 89534
+Entry 130000, Processing run 1, event 66830
+Entry 140000, Processing run 2, event 765973
+Entry 150000, Processing run 1, event 94745
+Entry 160000, Processing run 2, event 417878
+Entry 170000, Processing run 2, event 2386272
+Entry 180000, Processing run 2, event 829714
+Entry 190000, Processing run 2, event 2272297
+Entry 200000, Processing run 2, event 840034
+Entry 210000, Processing run 2, event 419498
+Entry 220000, Processing run 2, event 2785827
+Entry 230000, Processing run 2, event 2760220
+Entry 240000, Processing run 1, event 83196
+Entry 250000, Processing run 2, event 371899
+Entry 260000, Processing run 1, event 129897
+Entry 270000, Processing run 2, event 2117712
+Entry 280000, Processing run 2, event 1030763
+Entry 290000, Processing run 2, event 303946
+Entry 300000, Processing run 2, event 822370
+Entry 310000, Processing run 2, event 977930
+Entry 320000, Processing run 2, event 406674
+Entry 330000, Processing run 2, event 2681472
+Entry 340000, Processing run 2, event 225634
+Entry 350000, Processing run 2, event 1029859
+Entry 360000, Processing run 2, event 357537
+Entry 370000, Processing run 2, event 2949358
+Entry 380000, Processing run 2, event 288666
+Entry 390000, Processing run 2, event 878881
+Entry 400000, Processing run 2, event 786768
+Entry 410000, Processing run 2, event 1185893
+Entry 420000, Processing run 2, event 568067
+Entry 430000, Processing run 2, event 2526481
+Entry 440000, Processing run 2, event 469296
+Entry 450000, Processing run 2, event 2897681
+Entry 460000, Processing run 2, event 2931869
+Entry 470000, Processing run 2, event 297936
+Entry 480000, Processing run 2, event 419801
+Entry 490000, Processing run 2, event 423193
+Entry 500000, Processing run 1, event 31228
+Entry 510000, Processing run 2, event 2891096
+Entry 520000, Processing run 2, event 953415
+Entry 530000, Processing run 2, event 2876829
+Entry 540000, Processing run 2, event 2465413
+Entry 550000, Processing run 2, event 932536
+Entry 560000, Processing run 2, event 627327
+Entry 570000, Processing run 1, event 24169
+Entry 580000, Processing run 2, event 2535877
+Entry 590000, Processing run 1, event 108254
+Entry 600000, Processing run 2, event 871263
+Entry 610000, Processing run 2, event 1069993
+Entry 620000, Processing run 2, event 1024377
+Entry 630000, Processing run 2, event 2379899
+Entry 640000, Processing run 2, event 978655
+Entry 650000, Processing run 2, event 502292
+Entry 660000, Processing run 2, event 2741908
+Entry 670000, Processing run 2, event 1117357
+Entry 680000, Processing run 2, event 555535
+Entry 690000, Processing run 2, event 644059
+Entry 700000, Processing run 2, event 679186
+Entry 710000, Processing run 2, event 701998
+Entry 720000, Processing run 2, event 934920
+Entry 730000, Processing run 2, event 2855714
+Entry 740000, Processing run 2, event 363408
+Entry 750000, Processing run 2, event 2432047
+Entry 760000, Processing run 2, event 2797776
+Calo jet selection
+     0 :            Calo Cuts     765217
+     1 :        Calo Kin Cuts     524219
+     2 :       Calo Delta Phi     478827
+     3 :              Calo HT     478827
+     4 :        Calo Dijet HT     478799
+     5 :          Calo Jet ID     477649
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts     765217
+     7 :          PF Kin Cuts     532906
+     8 :         PF Delta Phi     500006
+     9 :                PF HT     500006
+    10 :          PF Dijet HT     499981
+    11 :            PF Jet ID     499546
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt380to470.txt
+Output file = QCDDiJet_Pt380to470_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt380to470/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 2659
+Entry 10000, Processing run 1, event 51027
+Entry 20000, Processing run 1, event 15751
+Entry 30000, Processing run 1, event 50447
+Entry 40000, Processing run 1, event 52071
+Entry 50000, Processing run 1, event 35619
+Calo jet selection
+     0 :            Calo Cuts      52176
+     1 :        Calo Kin Cuts      52176
+     2 :       Calo Delta Phi      51644
+     3 :              Calo HT      51644
+     4 :        Calo Dijet HT      51644
+     5 :          Calo Jet ID      51642
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      52176
+     7 :          PF Kin Cuts      52176
+     8 :         PF Delta Phi      51665
+     9 :                PF HT      51665
+    10 :          PF Dijet HT      51665
+    11 :            PF Jet ID      51653
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt470to600.txt
+Output file = QCDDiJet_Pt470to600_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt470to600/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 101459
+Entry 10000, Processing run 1, event 19997
+Entry 20000, Processing run 1, event 14486
+Calo jet selection
+     0 :            Calo Cuts      20365
+     1 :        Calo Kin Cuts      20365
+     2 :       Calo Delta Phi      20165
+     3 :              Calo HT      20165
+     4 :        Calo Dijet HT      20165
+     5 :          Calo Jet ID      20164
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      20365
+     7 :          PF Kin Cuts      20365
+     8 :         PF Delta Phi      20173
+     9 :                PF HT      20173
+    10 :          PF Dijet HT      20173
+    11 :            PF Jet ID      20170
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt50to80.txt
+Output file = QCDDiJet_Pt50to80_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt50to80/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 17371
+Entry 10000, Processing run 1, event 97423
+Entry 20000, Processing run 1, event 90519
+Entry 30000, Processing run 1, event 21935
+Entry 40000, Processing run 1, event 58733
+Entry 50000, Processing run 1, event 65000
+Entry 60000, Processing run 1, event 94382
+Entry 70000, Processing run 1, event 28133
+Entry 80000, Processing run 1, event 8311
+Entry 90000, Processing run 1, event 50198
+Entry 100000, Processing run 1, event 207610
+Calo jet selection
+     0 :            Calo Cuts     108208
+     1 :        Calo Kin Cuts      93965
+     2 :       Calo Delta Phi      87169
+     3 :              Calo HT      87169
+     4 :        Calo Dijet HT      87157
+     5 :          Calo Jet ID      87082
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts     108208
+     7 :          PF Kin Cuts      95609
+     8 :         PF Delta Phi      89984
+     9 :                PF HT      89984
+    10 :          PF Dijet HT      89981
+    11 :            PF Jet ID      89936
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt600to800.txt
+Output file = QCDDiJet_Pt600to800_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt600to800/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 29688
+Entry 10000, Processing run 1, event 34845
+Entry 20000, Processing run 1, event 34562
+Calo jet selection
+     0 :            Calo Cuts      22438
+     1 :        Calo Kin Cuts      22438
+     2 :       Calo Delta Phi      22298
+     3 :              Calo HT      22298
+     4 :        Calo Dijet HT      22298
+     5 :          Calo Jet ID      22294
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      22438
+     7 :          PF Kin Cuts      22438
+     8 :         PF Delta Phi      22302
+     9 :                PF HT      22302
+    10 :          PF Dijet HT      22302
+    11 :            PF Jet ID      22295
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt800to1000.txt
+Output file = QCDDiJet_Pt800to1000_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt800to1000/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 1, event 10020136
+Entry 10000, Processing run 1, event 10016998
+Entry 20000, Processing run 1, event 10028436
+Calo jet selection
+     0 :            Calo Cuts      25992
+     1 :        Calo Kin Cuts      25992
+     2 :       Calo Delta Phi      25881
+     3 :              Calo HT      25881
+     4 :        Calo Dijet HT      25881
+     5 :          Calo Jet ID      25876
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts      25992
+     7 :          PF Kin Cuts      25992
+     8 :         PF Delta Phi      25888
+     9 :                PF HT      25888
+    10 :          PF Dijet HT      25888
+    11 :            PF Jet ID      25878
+Hello from jetStudies!
+Getting parameters
+Input files from QCDDiJet_Pt80to120.txt
+Output file = QCDDiJet_Pt80to120_jetstudies.root
+cms.vstring('dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_11_1.root', 
+    'dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt80to120/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root')
+setting up TFileService
+Setting up chain event
+Booking histograms
+Making functors
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+Instantiated JetIDSelectionFunctor
+Instantiated PFJetIDSelectionFunctor
+Instantiated DijetSelector
+About to begin looping
+Entry 0, Processing run 2, event 339984
+Entry 10000, Processing run 2, event 1181158
+Entry 20000, Processing run 2, event 447322
+Entry 30000, Processing run 1, event 36835
+Entry 40000, Processing run 2, event 1388631
+Entry 50000, Processing run 2, event 400936
+Entry 60000, Processing run 2, event 291525
+Entry 70000, Processing run 2, event 571910
+Entry 80000, Processing run 2, event 441239
+Entry 90000, Processing run 2, event 294858
+Entry 100000, Processing run 2, event 299110
+Entry 110000, Processing run 2, event 314900
+Entry 120000, Processing run 2, event 375048
+Entry 130000, Processing run 2, event 121854
+Entry 140000, Processing run 2, event 558754
+Entry 150000, Processing run 2, event 308896
+Entry 160000, Processing run 2, event 254461
+Entry 170000, Processing run 2, event 547673
+Entry 180000, Processing run 2, event 558150
+Entry 190000, Processing run 2, event 583461
+Entry 200000, Processing run 1, event 14155
+Entry 210000, Processing run 2, event 609501
+Entry 220000, Processing run 2, event 467981
+Entry 230000, Processing run 2, event 1290216
+Entry 240000, Processing run 2, event 223049
+Entry 250000, Processing run 2, event 176127
+Entry 260000, Processing run 2, event 412749
+Entry 270000, Processing run 2, event 536888
+Entry 280000, Processing run 2, event 1279657
+Entry 290000, Processing run 2, event 551831
+Entry 300000, Processing run 2, event 1379378
+Entry 310000, Processing run 2, event 375670
+Entry 320000, Processing run 2, event 239241
+Entry 330000, Processing run 2, event 262882
+Entry 340000, Processing run 1, event 41070
+Entry 350000, Processing run 2, event 1530548
+Entry 360000, Processing run 2, event 1327115
+Entry 370000, Processing run 2, event 620460
+Entry 380000, Processing run 2, event 312385
+Entry 390000, Processing run 2, event 257260
+Entry 400000, Processing run 2, event 1368712
+Entry 410000, Processing run 2, event 306400
+Entry 420000, Processing run 1, event 414
+Entry 430000, Processing run 2, event 163515
+Entry 440000, Processing run 2, event 371711
+Entry 450000, Processing run 2, event 1025547
+Entry 460000, Processing run 2, event 284094
+Entry 470000, Processing run 2, event 616360
+Entry 480000, Processing run 2, event 558005
+Entry 490000, Processing run 2, event 632642
+Entry 500000, Processing run 2, event 556490
+Entry 510000, Processing run 2, event 602308
+Entry 520000, Processing run 2, event 478807
+Entry 530000, Processing run 2, event 493904
+Entry 540000, Processing run 2, event 1049568
+Entry 550000, Processing run 2, event 1124949
+Entry 560000, Processing run 1, event 9873
+Entry 570000, Processing run 2, event 369041
+Entry 580000, Processing run 2, event 1008565
+Entry 590000, Processing run 2, event 284901
+Entry 600000, Processing run 2, event 392403
+Calo jet selection
+     0 :            Calo Cuts     605918
+     1 :        Calo Kin Cuts     579571
+     2 :       Calo Delta Phi     546310
+     3 :              Calo HT     546310
+     4 :        Calo Dijet HT     546284
+     5 :          Calo Jet ID     546047
+     6 :              PF Cuts        off
+     7 :          PF Kin Cuts        off
+     8 :         PF Delta Phi        off
+     9 :                PF HT        off
+    10 :          PF Dijet HT        off
+    11 :            PF Jet ID        off
+PF jet selection
+     0 :            Calo Cuts        off
+     1 :        Calo Kin Cuts        off
+     2 :       Calo Delta Phi        off
+     3 :              Calo HT        off
+     4 :        Calo Dijet HT        off
+     5 :          Calo Jet ID        off
+     6 :              PF Cuts     605918
+     7 :          PF Kin Cuts     584745
+     8 :         PF Delta Phi     557121
+     9 :                PF HT     557121
+    10 :          PF Dijet HT     557099
+    11 :            PF Jet ID     556867
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt0to15.txt QCDDiJet_Pt0to15_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt1000to1400.txt QCDDiJet_Pt1000to1400_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt120to170.txt QCDDiJet_Pt120to170_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt1400to1800.txt QCDDiJet_Pt1400to1800_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt15to20.txt QCDDiJet_Pt15to20_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt170to230.txt QCDDiJet_Pt170to230_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt1800to2200.txt QCDDiJet_Pt1800to2200_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt20to30.txt QCDDiJet_Pt20to30_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt2200to2600.txt QCDDiJet_Pt2200to2600_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt230to300.txt QCDDiJet_Pt230to300_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt2600to3000.txt QCDDiJet_Pt2600to3000_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt3000to3500.txt QCDDiJet_Pt3000to3500_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt300to380.txt QCDDiJet_Pt300to380_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt30to50.txt QCDDiJet_Pt30to50_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt380to470.txt QCDDiJet_Pt380to470_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt470to600.txt QCDDiJet_Pt470to600_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt50to80.txt QCDDiJet_Pt50to80_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt600to800.txt QCDDiJet_Pt600to800_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt800to1000.txt QCDDiJet_Pt800to1000_jetstudies.root
+executing : jetStudies jetStudies_mc_qcdbins_cfg.py QCDDiJet_Pt80to120.txt QCDDiJet_Pt80to120_jetstudies.root

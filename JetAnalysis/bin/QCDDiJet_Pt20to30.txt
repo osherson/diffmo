@@ -1,0 +1,10 @@
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_9_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_8_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_7_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_6_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_5_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_4_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_3_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_2_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_1_1.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/QCDDiJet_Pt20to30/pruning_361_v1/c2fe9e78dcd21fe0467116f762ed7b05/pruning_361_10_1.root

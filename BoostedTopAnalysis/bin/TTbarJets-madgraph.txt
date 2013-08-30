@@ -1,0 +1,6 @@
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_6_1_KsJ.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_5_1_MVV.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_4_1_ejK.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_3_1_ilb.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_2_1_SGc.root
+dcap:///pnfs/cms/WAX/11/store/user/srappocc/TTbarJets-madgraph/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_1_1_g9S.root
