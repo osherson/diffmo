@@ -47,7 +47,7 @@ class MistagMakerType1 :
         print '4'
         print '5'
 
-        print 'So long!'
+        print 'So long!!'
 
     def __book__( self ) :
         """(Internal) Books histograms"""
