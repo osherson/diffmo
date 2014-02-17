@@ -45,10 +45,7 @@ class TTPairAnalyzer:
 
 	self.allTopTagPartonHandle = Handle("std::vector<int>" )
 	self.allTopTagPartonLabel = ( label, "topTagPartonFlavour" )
-       
-	self.allgenTopP4Handle = Handle("vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > >" )
-	self.allgenTopP4Label = (label, "genTopP4")
- 
+        
         self.allwTagBdiscHandle       = Handle( "std::vector<double>" )
         self.allwTagBdiscLabel  = ( label,   "wTagBDisc" )
         
@@ -63,9 +60,6 @@ class TTPairAnalyzer:
         self.allNsub2Label = (label, "tau2")
         self.allNsub3Label = (label, "tau3")
         self.allNsub4Label = (label, "tau4")
-
-	self.allNPVHandle = Handle("unsigned int")
-	self.allNPVLabel = (label, "npv")
 
 
         self.allTopTagSubjetBDiscHandle = Handle("std::vector<double>")
@@ -240,13 +234,7 @@ class TTPairAnalyzer:
 	self.NNoutput = array('f', [-99.])
 	self.NNoutputExp = array('f', [-99.])
 	self.cutflow = array('f', [-1])
-	self.jetPtForMistag = array('f', [-1.])      
-	self.genTopPt1 = array('f', [-1.])
-	self.genTopPt2 = array('f', [-1.])
- 
-
-	self.treeVars.Branch('genTopPt1', self.genTopPt1, 'genTopPt1/F')
-	self.treeVars.Branch('genTopPt2', self.genTopPt2, 'genTopPt2/F')
+       
 	self.treeVars.Branch('NNoutput', self.NNoutput, 'NNoutput/F') 
 	self.treeVars.Branch('NNoutputExp', self.NNoutputExp, 'NNoutputExp/F') 
         self.treeVars.Branch('jet1SubjetMaxBDisc', self.jet1SubjetMaxBDisc, 'jet1SubjetMaxBDisc/F')
@@ -270,9 +258,8 @@ class TTPairAnalyzer:
         self.treeVars.Branch('jet3Phi', self.jet3Phi, 'jet3Phi/F')
         self.treeVars.Branch('jet3Mass', self.jet3Mass, 'jet3Mass/F')
         self.treeVars.Branch('jet3BDisc', self.jet3BDisc, 'jet3BDisc/F')
-	self.treeVars.Branch('jetPtForMistag', self.jetPtForMistag, 'jetPtForMistag/F')
         self.treeVars.Branch('DRWb', self.DRWb, 'DRWb/F')
-	self.treeVars.Branch('npv', self.npv, 'npv/i')
+	self.treeVars.Branch('npv', self.npv, 'npv/I')
         self.treeVars.Branch('index', self.index, 'index/F')
         self.treeVars.Branch('type11', self.type11, 'type11/I')
 	self.treeVars.Branch('type12', self.type12, 'type12/I')
@@ -379,20 +366,13 @@ class TTPairAnalyzer:
         event.getByLabel (self.allTopTagSubjetBDiscLabel, self.allTopTagSubjetBDiscHandle)
         event.getByLabel (self.allTopTagSubjetJetIDLabel, self.allTopTagSubjetJetIDHandle)
 	event.getByLabel (self.allTopTagPartonLabel, self.allTopTagPartonHandle)
-	#event.getByLabel (self.allgenTopP4Label, self.allgenTopP4Handle)
-	
 
         topSubjets = self.allTopTagSubjetsHandle.product()
 	topPartonFlavors = self.allTopTagPartonHandle.product()
-	#genTops = self.allgenTopP4Handle.product()
-	
- 
-	ca8Jets = self.allca8Handle.product()
+        ca8Jets = self.allca8Handle.product()
         tau1Vals = self.allNsub1Handle.product()
         tau2Vals = self.allNsub2Handle.product()
-        if (len(tau2Vals) == 0) :
-		tau2Vals.push_back(0)
-	tau3Vals = self.allNsub3Handle.product()
+        tau3Vals = self.allNsub3Handle.product()
         tau4Vals = self.allNsub4Handle.product()
 
         topBDisc = self.allTopTagBDiscHandle.product()
@@ -407,10 +387,7 @@ class TTPairAnalyzer:
         topJetNSubjets= self.allTopTagNSubjetsHandle.product()
         event.getByLabel (self.allTopTagTopMassLabel, self.allTopTagTopMassHandle)
         topJetMass= self.allTopTagTopMassHandle.product()
-       
-	event.getByLabel (self.allNPVLabel, self.allNPVHandle)
-	NPVs = self.allNPVHandle.product()
-	self.npv[0] = NPVs[0] 
+        
         
         event.getByLabel( self.metLabel, self.h_met )
         mets = self.h_met.product()
@@ -434,9 +411,8 @@ class TTPairAnalyzer:
         self.jet1Mass[0] = topJetMass[0]
         self.jet1Eta[0] = topJets[0].eta()
         self.jet1Phi[0] = topJets[0].phi()
-	self.jet1Parton[0] = topPartonFlavors[0] 
-	self.genTopPt1[0] = 0#genTops[0].pt()
-	
+   	self.jet1Parton[0] = topPartonFlavors[0] 
+	        
     
         self.cutflow[0] = 1 #Events with >= 1 top candidate
         
@@ -454,9 +430,8 @@ class TTPairAnalyzer:
             tagJet0Subjets.append(topSubjets[i])
             tagJet0BDiscs.append(topSubjetsBDisc[i])
             i += 1
-	tau32_jet1 = 99.
-	if (tau2Vals[0] > 0):
-	        tau32_jet1 = tau3Vals[0] / tau2Vals[0]
+
+        tau32_jet1 = tau3Vals[0] / tau2Vals[0]
         maxSubjBDisc_jet1 = max(tagJet0BDiscs)
         
         groomed_jet1 = ROOT.TLorentzVector(0.0,0.0,0.0,0.0)
@@ -488,44 +463,40 @@ class TTPairAnalyzer:
 			
 			self.cutflow[0] = 3
 			self.jet2Pt[0] = topJets[1].pt()
-			self.jet2Mass[0] = topJetMass[1]
-			self.jet2Eta[0] = topJets[1].eta()
-			self.jet2Phi[0] = topJets[1].phi()
-			self.jet2Parton[0] = topPartonFlavors[1]
-			self.genTopPt2[0] = 0#genTops[1].pt()			
-
-     
-			tagJet1Subjets = []
-			tagJet1BDiscs = []
+        		self.jet2Mass[0] = topJetMass[1]
+        		self.jet2Eta[0] = topJets[1].eta()
+        		self.jet2Phi[0] = topJets[1].phi()
+   			self.jet2Parton[0] = topPartonFlavors[1]
+			     
+       			tagJet1Subjets = []
+        		tagJet1BDiscs = []
         
-			i = 0
-			while i < (topJetNSubjets[1]):
-				tagJet1Subjets.append(topSubjets[i+int(topJetNSubjets[0])])
-				tagJet1BDiscs.append(topSubjetsBDisc[i+int(topJetNSubjets[0])])
-				i += 1
-			
-			tau32_jet2 = 99.
-			if (tau2Vals[1] > 0):
-				tau32_jet2 = tau3Vals[1] / tau2Vals[1]
-			maxSubjBDisc_jet2 = max(tagJet1BDiscs)
+       			i = 0
+        		while i < (topJetNSubjets[1]):
+            			tagJet1Subjets.append(topSubjets[i+int(topJetNSubjets[0])])
+            			tagJet1BDiscs.append(topSubjetsBDisc[i+int(topJetNSubjets[0])])
+            			i += 1
 
-			groomed_jet2 = ROOT.TLorentzVector(0.0,0.0,0.0,0.0)
-			for subjet in tagJet1Subjets:
-				groomed_jet2 += ROOT.TLorentzVector(subjet.px(), subjet.py(), subjet.pz(), subjet.energy())
+        		tau32_jet2 = tau3Vals[1] / tau2Vals[1]
+        		maxSubjBDisc_jet2 = max(tagJet1BDiscs)
+
+        		groomed_jet2 = ROOT.TLorentzVector(0.0,0.0,0.0,0.0)
+        		for subjet in tagJet1Subjets:
+                		groomed_jet2 += ROOT.TLorentzVector(subjet.px(), subjet.py(), subjet.pz(), subjet.energy())
 
 
 
-			self.jet2SubjetMaxBDisc[0] = maxSubjBDisc_jet2
-			self.jet2BDisc[0] = topBDisc[1]
-			self.jet2MassGroomed[0] = groomed_jet2.M()
-			self.jet2tau32[0] = tau32_jet2
-			self.jet2Nsubj[0] = topJetNSubjets[1]
-			self.jet2minMass[0] = topJetMinMass[1]
-			self.treeVars.Fill() 
+ 		        self.jet2SubjetMaxBDisc[0] = maxSubjBDisc_jet2
+        		self.jet2BDisc[0] = topBDisc[1]
+        		self.jet2MassGroomed[0] = groomed_jet2.M()
+        		self.jet2tau32[0] = tau32_jet2
+        		self.jet2Nsubj[0] = topJetNSubjets[1]
+        		self.jet2minMass[0] = topJetMinMass[1]
+        		self.treeVars.Fill() 
         
         
         
-			if ( self.jet2Mass[0] > tagParams[0] and self.jet2Mass[0] < tagParams[1] and self.jet2Nsubj[0] >= tagParams[2] and self.jet2minMass[0] > tagParams[3]):
+       			if ( self.jet2Mass[0] > tagParams[0] and self.jet2Mass[0] < tagParams[1] and self.jet2Nsubj[0] >= tagParams[2] and self.jet2minMass[0] > tagParams[3]):
 
 				self.cutflow[0] = 4
 				self.type11[0] = 1	
@@ -597,9 +568,9 @@ class TTPairAnalyzer:
 
 				self.cutflow[0] = 7
 				self.jet2Pt[0] = theWjetCand.pt()
-				self.jet2Mass[0] = theWjetCand.M()
-				self.jet2Eta[0] = theWjetCand.eta()
-				self.jet2Phi[0] = theWjetCand.phi()
+                	        self.jet2Mass[0] = theWjetCand.M()
+                	        self.jet2Eta[0] = theWjetCand.eta()
+                	        self.jet2Phi[0] = theWjetCand.phi()
 				self.jet2WMu[0] = wMu[theWjetCandIndex]
 				self.jet2BDisc[0] = wBDisc[theWjetCandIndex]
 	
@@ -685,8 +656,8 @@ class TTPairAnalyzer:
 	jet2BDiscs = []
 	i = 0
         while i < (topJetNSubjets[0]):
-		jet1BDiscs.append(topSubjetsBDisc[i])
-		i += 1
+        	jet1BDiscs.append(topSubjetsBDisc[i])
+        	i += 1
 
 
 	#Type 1+2 calculation
@@ -700,12 +671,12 @@ class TTPairAnalyzer:
                         theWjetCand = wJets[1]
                         theWjetCandIndex = 1	
 		
-		i = 0
+	 	i = 0
 		minDRjet3 = 999.
                 for jet in wJets:
-			deltaR_W_jet3 = sqrt( (theWjetCand.eta() - jet.eta())**2 + (theWjetCand.phi() - jet.phi())**2 )
+                	deltaR_W_jet3 = sqrt( (theWjetCand.eta() - jet.eta())**2 + (theWjetCand.phi() - jet.phi())**2 )
                         if (deltaR_W_jet3 < minDRjet3 and deltaR_W_jet3 > 0.8) :
-				minDRjet3 = deltaR_W_jet3
+                        	minDRjet3 = deltaR_W_jet3
                                 jet3 = i
                         i = i+1	
 
@@ -763,12 +734,6 @@ class TTPairAnalyzer:
 
 	x = ROOT.gRandom.Uniform()
 
-
-	#print "event", event.object().id().event(), "    x ", x, "  topTag0 ", topTag0, " topTag1 ", topTag1 
-
-
-
-
 	#deltaPhi12 = abs(topJets[0].phi() - topJets[1].phi())
 	#if deltaPhi12 < 2.0:
 #		return
@@ -777,12 +742,12 @@ class TTPairAnalyzer:
 	jet2BDiscs = []
 	i = 0
         while i < (topJetNSubjets[0]):
-		jet1BDiscs.append(topSubjetsBDisc[i])
-		i += 1
+        	jet1BDiscs.append(topSubjetsBDisc[i])
+        	i += 1
 	i = 0
         while i < (topJetNSubjets[1]):
-		jet2BDiscs.append(topSubjetsBDisc[i+int(topJetNSubjets[0])])
-		i += 1
+        	jet2BDiscs.append(topSubjetsBDisc[i+int(topJetNSubjets[0])])
+        	i += 1
 
 	bTag0 = max(jet1BDiscs) > 0.679
 	bTag1 = max(jet2BDiscs) > 0.679
@@ -790,16 +755,8 @@ class TTPairAnalyzer:
 	bTagLoose0 = max(jet1BDiscs) > 0.244
 	bTagLoose1 = max(jet2BDiscs) > 0.244
 
-
-	
-	if (tau2Vals[0] > 0) :
-		tau32_jet1 = tau3Vals[0] / tau2Vals[0]
-	else :
-		tau32_jet1 = 2.0
-	if (tau2Vals[0] > 0) :
-		tau32_jet2 = tau3Vals[1] / tau2Vals[1]
-	else : 
-		tau32_jet2 = 2.0		
+	tau32_jet1 = tau3Vals[0] / tau2Vals[0]
+	tau32_jet2 = tau3Vals[1] / tau2Vals[1]		
 
 	
 	topTag0WP1 = topTag0 and tau32_jet1 < 0.7 and bTagLoose0
@@ -821,25 +778,22 @@ class TTPairAnalyzer:
 	if x < 0.5:
 		if topTag0:
 			myrand_QCDdist_jet1 = self.modMassHist.GetRandom()
-			jet1P4_modmassQCDdist = copy.copy(topJets[1])
-			jet1P4_modmassQCDdist.SetM( myrand_QCDdist_jet1 )
-			ttMassJet0modmassQCDdist = (topJets[0]+jet1P4_modmassQCDdist).mass()
-			self.mttMassPred[0] = ttMassJet0modmassQCDdist
+        		jet1P4_modmassQCDdist = copy.copy(topJets[1])
+        		jet1P4_modmassQCDdist.SetM( myrand_QCDdist_jet1 )
+         		ttMassJet0modmassQCDdist = (topJets[0]+jet1P4_modmassQCDdist).mass()
+	 		self.mttMassPred[0] = ttMassJet0modmassQCDdist
 			self.mistagWt[0] = self.mistag.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
 			self.mistagWt1B[0] = self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[1].pt()) )
 			self.mistagWt2B[0] = self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[1].pt()) )
 			self.index[0] = 1
 			self.jet1Pt[0] = topJets[0].pt()
 			self.jet2Pt[0] = topJets[1].pt()
-			self.jetPtForMistag[0] = topJets[1].pt()
 			self.jet1Parton[0] = topPartonFlavors[0]
 			self.jet2Parton[0] = topPartonFlavors[1]
 			self.jet1Eta[0] = topJets[0].eta()
 			self.jet2Eta[0] = topJets[1].eta()
 			self.jet1Mass[0] = topJets[0].M()
 			self.jet2Mass[0] = myrand_QCDdist_jet1
-			self.jet1tau32[0] = tau32_jet1
-			self.jet2tau32[0] = tau32_jet2
 			self.deltaPhi[0] = topJets[0].phi() - topJets[1].phi()
 			self.deltaY[0] = topJets[0].Rapidity() - topJets[1].Rapidity()
 			self.jet1SubjetMaxBDisc[0] = max(jet1BDiscs)
@@ -855,6 +809,35 @@ class TTPairAnalyzer:
 			if (self.NNoutputExp[0] > 1.0):
 				self.NNoutputExp[0] = 0.999
 			self.treeVars.Fill()
+			if topTag0WP1:
+				self.mistagWt[0] = self.mistagWP1.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+				self.index[0] = 1.1
+				self.treeVars.Fill()
+			if topTag0WP2:
+				self.mistagWt[0] = self.mistagWP2.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+				self.index[0] = 1.2
+				self.treeVars.Fill()
+			if topTag0WP3:
+				self.mistagWt[0] = self.mistagWP3.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+				self.index[0] = 1.3
+				self.treeVars.Fill()
+			if topTag0WP4:
+				self.mistagWt[0] = self.mistagWP4.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+				self.index[0] = 1.4
+				self.treeVars.Fill()
+			if topTag0WP5:
+				self.mistagWt[0] = self.mistagWP5.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+				self.index[0] = 1.5
+				self.treeVars.Fill()
+			if topTag1 and topTag0:
+				self.index[0] = 2
+				self.jet2Mass[0] = topJets[1].M()
+				self.treeVars.Fill()
+			if bTag0 and bTag1:
+				self.index[0] = 3
+				self.treeVars.Fill()
+			
+
 
 
 
@@ -871,15 +854,12 @@ class TTPairAnalyzer:
                         self.index[0] = 1
 			self.jet1Pt[0] = topJets[0].pt()
 			self.jet2Pt[0] = topJets[1].pt()
-			self.jetPtForMistag[0] = topJets[0].pt()
 			self.jet1Eta[0] = topJets[0].eta()
 			self.jet2Eta[0] = topJets[1].eta()
 			self.jet1Parton[0] = topPartonFlavors[0]
 			self.jet2Parton[0] = topPartonFlavors[1]
 			self.jet2Mass[0] = topJets[1].M()
 			self.jet1Mass[0] = myrand_QCDdist_jet0
-			self.jet1tau32[0] = tau32_jet1
-			self.jet2tau32[0] = tau32_jet2
 			self.deltaPhi[0] = topJets[0].phi() - topJets[1].phi()
 			self.deltaY[0] = topJets[0].Rapidity() - topJets[1].Rapidity()
 			self.jet1SubjetMaxBDisc[0] = max(jet1BDiscs)
@@ -896,5 +876,33 @@ class TTPairAnalyzer:
 				self.NNoutputExp[0] = 0.999
                         self.treeVars.Fill()
                         
+			if topTag1WP1:
+				self.mistagWt[0] = self.mistagWP1.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+				self.index[0] = 1.1
+				self.treeVars.Fill()
+			if topTag1WP2:
+				self.mistagWt[0] = self.mistagWP2.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+				self.index[0] = 1.2
+				self.treeVars.Fill()
+			if topTag1WP3:
+				self.mistagWt[0] = self.mistagWP3.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+				self.index[0] = 1.3
+				self.treeVars.Fill()
+			if topTag1WP4:
+				self.mistagWt[0] = self.mistagWP4.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+				self.index[0] = 1.4
+				self.treeVars.Fill()
+			if topTag1WP5:
+				self.mistagWt[0] = self.mistagWP5.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+				self.index[0] = 1.5
+				self.treeVars.Fill()	
+			if topTag0 and topTag1:
+				self.index[0] = 2
+				self.jet1Mass[0] = topJets[0].M()
+				self.treeVars.Fill()
+			if bTag0 and bTag1:
+				self.index[0] = 3
+				self.treeVars.Fill()
+
 			
  

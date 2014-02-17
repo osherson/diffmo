@@ -52,7 +52,7 @@ class TriggerAndEventSelectionObject :
 	trigNames = self.trigNamesHandle.product()
 #	trigNames = cms.InputTag("hltPathsReference")
 	
-	print "trigNames Size", len(trigNames)
+	#print "trigNames Size", len(trigNames)
 
 
 

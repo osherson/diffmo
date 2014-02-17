@@ -15,7 +15,7 @@ class MistagMaker :
         """Initialization"""
         self.outfileStr = outfile
         self.useGenWeight = useGenWeight
-        self.triggerFile = ROOT.TFile("HT750_TYPE12.root")
+        self.triggerFile = ROOT.TFile("TRIGGER_EFF_TYPE12.root")
         self.triggerHist = self.triggerFile.Get("TRIGGER_EFF").Clone()
         self.triggerWeight = triggerWeight
 	print self.triggerWeight
@@ -50,17 +50,7 @@ class MistagMaker :
         self.weightsHandle           = Handle( "double" )
         self.weightsLabel            = ( label, "weight" )
 	
-	self.allTopTagCHEHandle = Handle("std::vector<double>" )
-	self.allTopTagCHELabel = (label, "topTagCHE")
-	self.allTopTagNEHandle = Handle("std::vector<double>")
-	self.allTopTagNELabel = (label, "topTagNE")
-	self.allTopTagNumPFHandle = Handle("std::vector<int>")
-	self.allTopTagNumPFLabel = (label, "topTagNumPF")
 
-	self.allTopTagNumCHHandle = Handle("std::vector<int>")
-	self.allTopTagNumCHLabel = (label, "topTagNumCH")
-	self.allTopTagNumNEHandle = Handle("std::vector<int>")
-	self.allTopTagNumNELabel = (label, "topTagNumNE")
  
 	self.triggerEventHandle = Handle( "std::vector<pat::TriggerObjectStandAlone>")
 	self.triggerEventLabel = ("patTrigger", "")
@@ -108,6 +98,8 @@ class MistagMaker :
         self.jet1PtTag                   = ROOT.TH1D("jet1PtTag",                 "Top Tag Pt",                 400,  0,  2000 )
         self.jet1PtProbe_mu                 = ROOT.TH1D("jet1PtProbe_mu",               "Top Tag Probe",              400,  0,  2000 )
         self.jet1PtTag_mu                   = ROOT.TH1D("jet1PtTag_mu",                 "Top Tag Pt",                 400,  0,  2000 )
+        self.jet1PtBProbe_mu                 = ROOT.TH1D("jet1PtBProbe_mu",               "Top Tag Probe",              400,  0,  2000 )
+        self.jet1PtBTag_mu                   = ROOT.TH1D("jet1PtBTag_mu",                 "Top Tag Pt",                 400,  0,  2000 )
 	self.jet1EtaProbe_mu = ROOT.TH1D("jet1EtaProbe_mu", "Top Probe Eta", 100, -3, 3);
 	self.jet1EtaTag_mu =  ROOT.TH1D("jet1EtaTag_mu", "Top Tag Eta", 100, -3, 3);
 
@@ -248,16 +240,6 @@ class MistagMaker :
         wJetMu = self.hemis1MuHandle.product()
         event.getByLabel (self.hemis1Jet3Label, self.hemis1Jet3Handle )
         jet3 = (self.hemis1Jet3Handle.product())[0]
-	event.getByLabel (self.allTopTagCHELabel, self.allTopTagCHEHandle)
-	event.getByLabel (self.allTopTagNELabel, self.allTopTagNEHandle)
-	event.getByLabel (self.allTopTagNumPFLabel, self.allTopTagNumPFHandle)
-	event.getByLabel (self.allTopTagNumCHLabel, self.allTopTagNumCHHandle)
-	event.getByLabel (self.allTopTagNumNELabel, self.allTopTagNumNEHandle)
-	topJetsCHE = self.allTopTagCHEHandle.product()
-	topJetsNE = self.allTopTagNEHandle.product()
-	topJetsNumPF = self.allTopTagNumPFHandle.product()
-	topJetsNumCH = self.allTopTagNumCHHandle.product()
-	topJetsNumNE = self.allTopTagNumNEHandle.product()
 
 
 
@@ -282,17 +264,14 @@ class MistagMaker :
 
 	deltaY = (wJets[0]+wJets[jet3]).Rapidity() - topJets[0].Rapidity()
 
-	NE0 = topJetsNE[0]
-	if NE0 == 0:
-		NE0 = 0.0001
 
-	cleanup = not (abs(topJets[0].eta()) < 1.5 and abs(topJets[0].eta()) > 1.0 and (topJetsCHE[0] / NE0) > 2.0)
+#	cleanup = not (abs(topJets[0].eta()) < 1.5 and abs(topJets[0].eta()) > 1.0 and (topJetsCHE[0] / NE0) > 2.0)
 
-	passKinCuts = (nTopCand == 1) and (wJets[0].pt() > 200)  and (wJetMu[0] < 0.4) and (wJets[jet3].pt() > 30 ) and abs(deltaY) < 1.0 and cleanup
+	passKinCuts = (nTopCand == 1) and (wJets[0].pt() > 200)  and (wJetMu[0] < 0.4) and (wJets[jet3].pt() > 30 )# and abs(deltaY) < 1.0 and cleanup
 
-        passKinCuts2 = (nTopCand == 1) and (wJets[0].pt() > 200)  and (wJets[jet3].pt() > 30 ) and wJetMu[0]  > 0.4 and abs(deltaY) < 1.0 and cleanup
+        passKinCuts2 = (nTopCand == 1) and (wJets[0].pt() > 200)  and (wJets[jet3].pt() > 30 ) and wJetMu[0]  > 0.4# and abs(deltaY) < 1.0 and cleanup
 
-        hasBTag1    = wJetBDisc[jet3] > 3.3
+        hasBTag1    = wJetBDisc[jet3] > 0.679
         hasType2Top = wJets[0].mass() > 60 and wJets[0].mass() < 130 and pairMass > 140 and pairMass < 250
 	hasTopTag   = topJetMass[0] > 140 and topJetMass[0] < 250 and topJetMinMass[0] > 50 and topJetNSubjets[0] > 2
         SBAndSR     = wJets[0].mass() > 40 and wJets[0].mass() < 150 and pairMass > 100 and pairMass < 300
@@ -378,6 +357,14 @@ class MistagMaker :
 		  self.tagged[0] = 1
 		  self.jet1PtTag_mu.Fill( topJets[0].pt(), weight )
 		  self.jet1EtaTag_mu.Fill( topJets[0].eta(), weight)
+
+		if hasBTag1:
+			self.jet1PtBProbe_mu.Fill( topJets[0].pt(), weight )
+			if hasTopTag:
+				self.jet1PtBTag_mu.Fill( topJets[0].pt(), weight)
+					 
+
+
 
 		self.jetVars.Fill()
 
