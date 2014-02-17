@@ -137,20 +137,20 @@ void MistagPlotter(TString outfileName) {
 			if (x < 0.5){
 			
 				if (jet1MinMass < 30.0 && jet1tau32 > 0.7) {
-					//if (jet2BTag < 0.244) {			
+		//		if (jet2BTag < 0.244) {			
 					topProbePt[i]->Fill(jet2Pt);
 					if (jet2TopTag && jet2BTag > bTagConds[cond] && jet2tau32 < nSubTagConds[cond] && jet1BTag > bProbeConds[cond] && jet1tau32 < nSubProbeConds[cond]) topTagPt[i]->Fill(jet2Pt);
 				}
-				//}
+		//		}
 					
 			}
 			else {
 			
 				if (jet2MinMass < 30.0 && jet2tau32 > 0.7) {
-					//if (jet1BTag < 0.244){	
+		//		if (jet1BTag < 0.244){	
 					topProbePt[i]->Fill(jet1Pt);
 					if (jet1TopTag && jet1BTag > bTagConds[cond] && jet1tau32 < nSubTagConds[cond]  && jet2BTag > bProbeConds[cond] && jet2tau32 < nSubProbeConds[cond]) topTagPt[i]->Fill(jet1Pt);
-				//}
+		//		}
 			}
 			}
 			

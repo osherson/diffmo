@@ -19,12 +19,12 @@ void MistagPlotter(TString outfileName) {
 
 
 
-	TString filenames[8] = { "Nov18_QCD_300_mistag.root",
-				"Nov18_QCD_470_mistag.root",
-				"Nov18_QCD_600_mistag.root",
-				"Nov18_QCD_800_mistag.root",
-				"Nov18_QCD_1000_mistag.root", 
-				"Nov18_QCD_1400_mistag.root",
+	TString filenames[8] = {"QCDSamples/Nov18_QCD_300_mistag.root",
+				"QCDSamples/Nov18_QCD_470_mistag.root",
+				"QCDSamples/Nov18_QCD_600_mistag.root",
+				"QCDSamples/Nov18_QCD_800_mistag.root",
+				"QCDSamples/Nov18_QCD_1000_mistag.root", 
+				"QCDSamples/Nov18_QCD_1400_mistag.root",
 				"Oct7_mistag_ttjets7.root", 
 				"Oct7_mistag_ttjets10.root" };
 	
@@ -68,7 +68,7 @@ void MistagPlotter(TString outfileName) {
 							   0.7,
 							   0.7,
 							   0.7,
-							   0.7 };
+							   99. };
 							   
 	float nSubProbeConds[10] = { 99.,
 								 99.,
@@ -79,7 +79,7 @@ void MistagPlotter(TString outfileName) {
 								 0.7,
 								 99.,
 								 0.7,
-								 99. };
+								 0.7 };
 	
 	string condLabels[10] = { "Inclusive",
 								  "1btagT",
@@ -95,8 +95,10 @@ void MistagPlotter(TString outfileName) {
 	TFile *outFile = new TFile(outfileName, "RECREATE");
 	outFile->cd();
 	
-	for  (int cond = 9; cond < nConds; cond++){
+	for  (int cond = 0; cond < nConds; cond++){
 	
+		if (cond == 1) cond = 9;
+
 		TH1D *topTagPt[8];
 		topTagPt[0] = new TH1D("qcd1_tagPt", "qcd1_tagPt", 400, 0, 2000);
 		topTagPt[1] = new TH1D("qcd2_tagPt", "qcd2_tagPt", 400, 0, 2000);
@@ -154,20 +156,20 @@ void MistagPlotter(TString outfileName) {
 			if (x < 0.5){
 			
 				if (jet1MinMass < 30.0 && jet1tau32 > 0.7) {
-			//		if (jet2BTag < 0.244){
+		//			if (jet2BTag < 0.244 ){
 					topProbePt[i]->Fill(jet2Pt);
 					if (jet2TopTag && jet2BTag > bTagConds[cond] && jet2tau32 < nSubTagConds[cond] && jet1BTag > bProbeConds[cond] && jet1tau32 < nSubProbeConds[cond]) topTagPt[i]->Fill(jet2Pt);
-			//	}
+		//		}
 				}
 					
 			}
 			else {
 			
 				if (jet2MinMass < 30.0 && jet2tau32 > 0.7) {
-			//		if (jet1BTag < 0.244){
+		//			if (jet1BTag < 0.244){
 					topProbePt[i]->Fill(jet1Pt);
 					if (jet1TopTag && jet1BTag > bTagConds[cond] && jet1tau32 < nSubTagConds[cond]  && jet2BTag > bProbeConds[cond] && jet2tau32 < nSubProbeConds[cond]) topTagPt[i]->Fill(jet1Pt);
-			//	}
+		//		}
 				}
 			}
 			

@@ -1,4 +1,4 @@
-void plotQCD(string var, int nBins, float min, float max, string label, int tags, int nsub){
+void plotShape(string var, string title, int nBins, float min, float max, string label, int tags, int nsub){
 
 gROOT->SetBatch(0);
 
@@ -13,7 +13,13 @@ TFile *file6 = new TFile("Dec3_QCD_1400_Inclusive_all.root");
 //TFile *data = new TFile("trees/data_all_mistag.root");
 
 
+TChain *ttbar10 = new TChain("treeVars");
+TChain *ttbar7 = new TChain("treeVars");
 
+TChain *signal = new TChain("treeVars");
+TChain *signal1 = new TChain("treeVars");
+TChain *signal15 = new TChain("treeVars");
+TChain *signal3 = new TChain("treeVars");
 
 
 TTree *tree1 = (TTree *) file1->Get("treeVars");
@@ -22,6 +28,12 @@ TTree *tree3 = (TTree *) file3->Get("treeVars");
 TTree *tree4 = (TTree *) file4->Get("treeVars");
 TTree *tree5 = (TTree *) file5->Get("treeVars");
 TTree *tree6 = (TTree *) file6->Get("treeVars");
+ttbar10->Add("Jan13_ttjets10_ptw.root");
+ttbar7->Add("Jan13_ttjets7_ptw.root");
+signal->Add("Aug19_Zp20_sec0_ttpair__TriggernoWeight.root");
+signal1->Add("Aug19_Zp10_sec0_ttpair__TriggernoWeight.root");
+signal15->Add("Aug19_Zp15_sec0_ttpair__TriggernoWeight.root");
+signal3->Add("Aug19_Zp30_sec0_ttpair__TriggernoWeight.root");
 
 //TTree *treeD = data->Get("treeVars");
 
@@ -62,6 +74,12 @@ TH1F *qcd4predH = new TH1F("qcd4predH", "qcd4predH", nBins, min, max);
 TH1F *qcd5predH = new TH1F("qcd5predH", "qcd5predH", nBins, min, max);
 TH1F *qcd6predH = new TH1F("qcd6predH", "qcd6predH", nBins, min, max);
 
+TH1F *ttbar10H = new TH1F("ttbar10H", "ttbar10H", nBins,min,max);
+TH1F *ttbar7H = new TH1F("ttbar7H", "ttbar7H", nBins,min,max);
+TH1F *signalH = new TH1F("signalH", "signalH", nBins,min,max);
+TH1F *signal1H = new TH1F("signal1H", "signal1H", nBins,min,max);
+TH1F *signal15H = new TH1F("signal15H", "signal15H", nBins,min,max);
+TH1F *signal3H = new TH1F("signal3H", "signal3H", nBins,min,max);
 
 cout << "VARIABLE: " << var << endl;
 
@@ -72,6 +90,12 @@ tree4->Draw(Form("%s>>qcd4H", var.c_str()), sel.c_str(), "goff");
 tree5->Draw(Form("%s>>qcd5H", var.c_str()), sel.c_str(), "goff");
 tree6->Draw(Form("%s>>qcd6H", var.c_str()), sel.c_str(), "goff");
 
+ttbar10->Draw(Form("%s>>ttbar10H", var.c_str()), ttbarsel.c_str());
+ttbar7->Draw(Form("%s>>ttbar7H", var.c_str()), ttbarsel.c_str());
+signal->Draw(Form("%s>>signalH", var.c_str()), sel.c_str());
+signal1->Draw(Form("%s>>signal1H", var.c_str()), sel.c_str());
+signal15->Draw(Form("%s>>signal15H", var.c_str()), sel.c_str());
+signal3->Draw(Form("%s>>signal3H", var.c_str()), sel.c_str());
 
 tree1->Draw(Form("%s>>qcd1predH", qcdvar.c_str()), qcdsel.c_str(), "goff");
 tree2->Draw(Form("%s>>qcd2predH", qcdvar.c_str()), qcdsel.c_str(), "goff");
@@ -113,26 +137,32 @@ qcd3predH->Scale(    k*27.0*lumi / 3992760. );
 qcd4predH->Scale( k*3.57*lumi / 3978569. );
 qcd5predH->Scale( k*0.738*lumi / 1964086. );
 qcd6predH->Scale( k*0.0335*lumi / 2000062. );
+ttbar7H->Scale(245. * lumi * 0.074 / 3082812.);
+ttbar10H->Scale(245. * lumi * 0.014 / 1249111.);
+signalH->Scale(1. * lumi / 90778. );
+signal1H->Scale(1. * lumi / 101697. );
+signal15H->Scale(1. * lumi / 20757. );
+signal3H->Scale(1. * lumi / 91209. );
 
-TH1F *totalH = qcd3H->Clone("totalH");
-TH1F *totalPredH = qcd3predH->Clone("totalPredH");
+TH1F *totalH = qcd1H->Clone("totalH");
+TH1F *totalPredH = qcd1predH->Clone("totalPredH");
 
-//totalH->Add(qcd2H);
-//totalH->Add(qcd3H);
-//totalH->Add(qcd4H);
-//totalH->Add(qcd5H);
-//totalH->Add(qcd6H);
-//totalPredH->Add(qcd2predH);
-//totalPredH->Add(qcd3predH);
-//totalPredH->Add(qcd4predH);
-//totalPredH->Add(qcd5predH);
-//totalPredH->Add(qcd6predH);
+totalH->Add(qcd2H);
+totalH->Add(qcd3H);
+totalH->Add(qcd4H);
+totalH->Add(qcd5H);
+totalH->Add(qcd6H);
+totalPredH->Add(qcd2predH);
+totalPredH->Add(qcd3predH);
+totalPredH->Add(qcd4predH);
+totalPredH->Add(qcd5predH);
+totalPredH->Add(qcd6predH);
 
 
-TCanvas *c1 = new TCanvas("c1", "c1",0,0,600,500);
+TCanvas *c1 = new TCanvas("c1", "c1",0,0,600,400);
   c1->Range(0,0,1,1);
 c1->Draw();
-
+/*
 TPad *c1_1 = new TPad("c1_1", "newpad",0.01,0.01,0.99,0.32);
   c1_1->Draw();
 TPad *c1_2 = new TPad("c1_2", "newpad",0.01,0.33,0.99,0.99);
@@ -152,15 +182,16 @@ c1->cd();
 
 
 c1->SetLogy(1);
+*/
+TH1F *ttbarH = (TH1F *) ttbar7H->Clone("ttbarH");
+ttbarH->Add(ttbar10H);
 
 
-
-totalH->SetLineColor(kRed);
+totalH->SetLineColor(kBlue);
 totalH->SetLineWidth(2);
-totalH->Draw("E");
-totalPredH->SetLineColor(kRed);
-totalPredH->SetMarkerSize(0);
-totalPredH->Draw("E hist same");
+//totalH->DrawNormalized("hist");
+
+//totalPredH->Draw("hist same");
 
 qcd1predH->SetLineColor(kBlue);
 qcd2predH->SetLineColor(kRed);
@@ -176,19 +207,42 @@ qcd6predH->SetLineColor(kCyan);
 //qcd5predH->Draw("hist same");
 //qcd6predH->Draw("hist same");
 totalH->SetMarkerSize(0);
+totalH->SetLineWidth(3);
 totalH->SetLineColor(kBlack);
-totalH->Draw("E same");
 
-TLegend *leg = new TLegend(0.5,0.7,0.89,0.89);
+totalH->GetXaxis()->SetTitle(title.c_str());
+totalH->GetYaxis()->SetTitle("Fraction of Events");
+totalH->GetYaxis()->SetTitleOffset(1.25);
+totalH->DrawNormalized("hist");
+ttbarH->SetLineColor(kRed - 1);
+ttbarH->SetLineWidth(3);
+ttbarH->DrawNormalized("hist same");
+signal1H->SetLineColor(kGreen + 1);
+signal1H->SetLineWidth(2);
+signal1H->DrawNormalized("hist same");
+signalH->SetLineColor(kViolet);
+signalH->SetLineWidth(2);
+signalH->DrawNormalized("hist same");
+signal3H->SetLineColor(kCyan + 2);
+signal3H->SetLineWidth(2);
+signal3H->DrawNormalized("hist same");
+
+
+TLegend *leg = new TLegend(0.1,0.9,0.9,0.99);
+leg->SetNColumns(3);
 leg->AddEntry(totalH, btag_string, "");
-leg->AddEntry(totalH, "QCD Selected", "lp");
-leg->AddEntry(totalPredH, "QCD Predicted", "l");
+leg->AddEntry(totalH, "QCD", "l");
+leg->AddEntry(ttbarH, "t#bar{t}", "l");
+leg->AddEntry(signal1H, "Narrow Z' (1 TeV)", "l");
+leg->AddEntry(signalH, "Narrow Z' (2 TeV)", "l");
+leg->AddEntry(signal3H, "Narrow Z' (3 TeV)", "l");
+leg->SetFillColor(0);
 leg->Draw("same");
 
 TLatex *cmsLabel = new TLatex();
 cmsLabel->SetNDC();
 //cmsLabel.DrawLatex(0.1,0.9, "CMS Preliminary, #sqrt{s} = 8 TeV, 19.7 fb^{-1}");
-cmsLabel->DrawLatex(0.8, 0.9, label.c_str());
+//cmsLabel->DrawLatex(0.8, 0.9, label.c_str());
 
 
 //qcd1H->Draw("same");
@@ -201,12 +255,12 @@ cmsLabel->DrawLatex(0.8, 0.9, label.c_str());
 
 //dataH->DrawNormalized("E same");
 
-  c1_1->cd();
-  c1_1->SetTopMargin(0.01);
-  c1_1->SetBottomMargin(0.3);
-  c1_1->SetRightMargin(0.05);
-  c1_1->SetLeftMargin(0.1);
-  c1_1->SetFillStyle(0);
+  c1->cd();
+  //c1->SetTopMargin(0.01);
+  //c1->SetBottomMargin(0.3);
+  //c1->SetRightMargin(0.05);
+  //c1->SetLeftMargin(0.1);
+  c1->SetFillStyle(0);
 
 
 TH1F *ratioH = new TH1F();
@@ -221,12 +275,12 @@ ratioH->GetXaxis()->SetLabelSize(0.11);
 ratioH->GetXaxis()->SetTitleSize(0.11);
 ratioH->GetXaxis()->SetTitle( "Dijet Invariant Mass");
 
-ratioH->Draw("E");
+//ratioH->Draw("E");
 
 
 TF1 *line = new TF1("line", "1", 0, 5000);
 line->SetLineColor(kBlack);
-line->Draw("same");
+//line->Draw("same");
 
 
 c1->SaveAs(Form("closureTest_%d_%d.pdf", tags, nsub));

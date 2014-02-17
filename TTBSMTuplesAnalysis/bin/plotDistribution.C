@@ -1,7 +1,17 @@
-void plotDistribution(string name, string label){
+void plotDistribution(string var, int nBins, float min, float max, string label, int tags, int nsub){
+
+gROOT->Reset();
 
 gStyle->SetOptStat(0);
 gStyle->SetOptTitle(0);
+
+stringstream ss;
+ss << tags;
+string tags_label = ss.str();
+stringstream ss2;
+ss2 << nsub;
+string nsub_label = ss2.str();
+
 
 TChain *data = new TChain("treeVars");
 TChain *ttbar10 = new TChain("treeVars");
@@ -14,19 +24,19 @@ TChain *signal3 = new TChain("treeVars");
 TChain *signal4 = new TChain("treeVars");
 
 
-data->Add("Dec3_data_inclRate.root");
-ttbar10->Add("Oct7_ttjets10.root");
-ttbar7->Add("Oct7_ttjets7.root");
-qcd->Add("Dec3_data_inclRate.root");
+data->Add("Feb12_all.root");
+ttbar10->Add("Jan13_ttjets10_ptw.root");
+ttbar7->Add("Jan13_ttjets7_ptw.root");
+qcd->Add("Feb12_all.root");
 signal->Add("Aug19_Zp20_sec0_ttpair__TriggernoWeight.root");
 signal1->Add("Aug19_Zp10_sec0_ttpair__TriggernoWeight.root");
 signal15->Add("Aug19_Zp15_sec0_ttpair__TriggernoWeight.root");
 signal3->Add("Aug19_Zp30_sec0_ttpair__TriggernoWeight.root");
 signal4->Add("Aug19_Zp40_sec0_ttpair__TriggernoWeight.root");
 
-int nBins = 100;
-float min = 500.;
-float max = 4500.;
+//int nBins = 50;
+//float min = 0;
+//float max = 1500;
 
 
 TH1F *dataH = new TH1F("dataH", "dataH", nBins,min,max);
@@ -41,18 +51,34 @@ TH1F *signal15H = new TH1F("signal15H", "signal15H", nBins,min,max);
 TH1F *signal3H = new TH1F("signal3H", "signal3H", nBins,min,max);
 TH1F *signal4H = new TH1F("signal4H", "signal4H", nBins,min,max);
 
-string var = "mttMass";
-string qcdvar = "mttMassPred";
-//string sel = "index == 0 && cutflow == 4";
-string sel = "(index == 0 && cutflow == 4)";
-string qcdsel = "(mistagWt)*(index == 1 && type11 == 0)";
+//string var = "jet1Pt";
+string qcdvar = var;
+if (var == "mttMass") qcdvar = "mttMassPred";
+string btag = " ";
+string btag0 = " && jet1SubjetMaxBDisc < 0.679 && jet2SubjetMaxBDisc < 0.679";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
+string btag1 = " && (jet1SubjetMaxBDisc < 0.679 || jet2SubjetMaxBDisc < 0.679) && (jet1SubjetMaxBDisc > 0.679 || jet2SubjetMaxBDisc > 0.679)";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
+string btag2 = " && jet1SubjetMaxBDisc > 0.679 && jet2SubjetMaxBDisc > 0.679";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
+string nsub_sel = " ";
+if (tags == 0) btag = btag0;
+else if (tags == 1) btag = btag1;
+else if (tags == 2) btag = btag2;
+else btag = " ";
+if (nsub == 1) nsub_sel = " && jet1tau32 < 0.7 && jet2tau32 < 0.7";
 
+string sel = "(index == 0 && cutflow == 4 && abs(deltaY) < 1.0" + btag + nsub_sel + ")";
+string qcdsel = "(mistagWt)*(index == 1 && abs(deltaY) < 1.0" + btag +")";
+if (nsub == 1) qcdsel = "(mistagWt)*(index == 1 && abs(deltaY) < 1.0" + btag + " && (jet1tau32 < 0.7 && jet2tau32 < 0.7) )";
+string ttbarsel = sel+"*(ptReweight)";
 
+TString btag_string = "0+1+2 b-tags";
+if (tags == 0) btag_string = "0 b-tags";
+if (tags == 1) btag_string = "1 b-tags";
+if (tags == 2) btag_string = "2 b-tags";
 
 
 data->Draw(Form("%s>>dataH", var.c_str()), sel.c_str());
-ttbar10->Draw(Form("%s>>ttbar10H", var.c_str()), sel.c_str());
-ttbar7->Draw(Form("%s>>ttbar7H", var.c_str()), sel.c_str());
+ttbar10->Draw(Form("%s>>ttbar10H", var.c_str()), ttbarsel.c_str());
+ttbar7->Draw(Form("%s>>ttbar7H", var.c_str()), ttbarsel.c_str());
 ttbar10->Draw(Form("%s>>ttbar10misH", var.c_str()), qcdsel.c_str());
 ttbar7->Draw(Form("%s>>ttbar7misH", var.c_str()), qcdsel.c_str());
 
@@ -85,9 +111,9 @@ signal15H->SetLineWidth(2);
 signal3H->SetLineWidth(2);
 dataH->SetMarkerStyle(20);
 
-float lumi = 19395.;
-float subSF = 0.95;
-
+float lumi = 19700.;
+float subSF = 0.95*0.95;
+float btagSF = 0.966*0.966;
 
 signalH->Scale(1. * lumi / 90778. );
 signal1H->Scale(1. * lumi / 101697. );
@@ -97,12 +123,18 @@ signal4H->Scale(1. * lumi / 98920. );
 
 
 
-ttbar7H->Scale(234. *subSF*subSF* lumi * 0.074 / 3082812.);
+float btag7SF[4] = { 1.13, 1.022, 0.966*0.966, 1.00 };
+float btag10SF[4] = { 1.13, 1.210, 0.966*0.966, 1.00 };  
+
+
+
+ttbar7H->Scale(234. *btag7SF[tags]*subSF*subSF* lumi * 0.074 / 3082812.);
 ttbar7misH->Scale(234. *subSF*subSF* lumi * 0.074 / 3082812.);
-ttbar10H->Scale(234. * subSF*subSF*lumi * 0.014 / 1249111.);
+ttbar10H->Scale(234. * btag10SF[tags]*subSF*subSF*lumi * 0.014 / 1249111.);
 ttbar10misH->Scale(234. * subSF*subSF*lumi * 0.014 / 1249111.);
 
-
+cout << "tt7:  " << ttbar7H->Integral() << endl;
+cout << "tt10: " << ttbar10H->Integral() << endl;
 
 cout << "ttbar    : " << ttbar7H->Integral() + ttbar10H->Integral() << endl;
 cout << "ttbar Mis: " << ttbar7misH->Integral() + ttbar10misH->Integral() << endl;
@@ -118,10 +150,10 @@ cout << "Z' 4 TeV : " << signal4H->GetEntries() / 98920. << endl;
 
 
 
-ttbar7H->Clone("ttbarH");
+TH1F *ttbarH = (TH1F *) ttbar7H->Clone("ttbarH");
 ttbarH->Add(ttbar10H);
-//ttbarH->Add(ttbar7misH, -1);
-//ttbarH->Add(ttbar10misH, -1);
+qcdH->Add(ttbar7misH, -1);
+qcdH->Add(ttbar10misH, -1);
 
 ttbarH->SetLineColor(kRed);
 ttbarH->SetFillColor(kRed);
@@ -131,7 +163,7 @@ ttbar7H->SetFillColor(kRed);
 
 THStack *stack = new THStack("stack", "stack");
 stack->Add(ttbarH);
-cout << ttbarH->Integral() << endl;
+cout << "Stack Integral: " << ttbarH->Integral() << endl;
 //stack->Add(ttbar10H);
 stack->Add(qcdH);
 
@@ -169,6 +201,7 @@ signal15H->Draw("hist same");
 
 
 TLegend *leg = new TLegend(0.75,0.6,0.9,0.88);
+leg->AddEntry(dataH, btag_string, "");
 leg->AddEntry(dataH, "Data", "p");
 leg->AddEntry(qcdH, "QCD", "f");
 leg->AddEntry(ttbarH, "t#bar{t}", "f");
@@ -180,7 +213,7 @@ leg->Draw("same");
 
 TLatex *cmsLabel = new TLatex();
 cmsLabel.SetNDC();
-cmsLabel.DrawLatex(0.1,0.9, "CMS Preliminary, #sqrt{s} = 8 TeV, 19.6 fb^{-1}");
+cmsLabel.DrawLatex(0.1,0.9, "CMS Preliminary, #sqrt{s} = 8 TeV, 19.7 fb^{-1}");
 cmsLabel.DrawLatex(0.8, 0.9, label.c_str());
 
 
@@ -226,32 +259,44 @@ line->Draw("same");
 
 gPad->RedrawAxis();
 
-TString outname = name.c_str();
+TString outname = var.c_str();
 
-c1->SaveAs(outname+".pdf");
-c1->SaveAs("c1.root");
+c1->SaveAs("ZPplots/"+outname+"_"+tags_label.c_str()+"_"+nsub_label.c_str()+".pdf");
 
-TFile *outfile = new TFile(outname+".root", "RECREATE");
+TFile *outfile = new TFile(outname+"_"+tags_label.c_str()+".root", "RECREATE");
 outfile->cd();
 
 TH1F *ttbarTotH = new TH1F();
-ttbarTotH = (TH1F *) ttbar7H->Clone("2btag__ttbar");
+ttbarTotH = (TH1F *) ttbar7H->Clone(Form("%dbtag__ttbar", tags));
 ttbarTotH->Add(ttbar10H);
 
-dataH->SetName("2btag__DATA");
-signalH->SetName("2btag__zp2000");
-ttbarTotH->SetName("2btag__ttbar");
-qcdH->SetName("2btag__qcd");
-signalH->Write("2btag__zp2000");
-signal1H->Write("2btag__zp1000");
-signal15H->Write("2btag__zp1500");
-signal3H->Write("2btag__zp3000");
-signal4H->Write("2btag__zp4000");
-qcdH->Write("2btag__qcd");
-dataH->Write("2btag__DATA");
+dataH->SetName(Form("%dbtag__DATA", tags));
+signalH->SetName(Form("%dbtag__zp2000", tags));
+ttbarTotH->SetName(Form("%dbtag__ttbar", tags));
+qcdH->SetName(Form("%dbtag__qcd", tags));
+signalH->Write(Form("%dbtag__zp2000", tags));
+signal1H->Write(Form("%dbtag__zp1000", tags));
+signal15H->Write(Form("%dbtag__zp1500", tags));
+signal3H->Write(Form("%dbtag__zp3000", tags));
+signal4H->Write(Form("%dbtag__zp4000", tags));
+qcdH->Write(Form("%dbtag__qcd", tags));
+dataH->Write(Form("%dbtag__DATA", tags));
 
 outfile->Write();
 outfile->Close();
+
+
+
+
+delete data;
+delete ttbar10;
+delete ttbar7;
+delete signal;
+delete signal1;
+delete signal15;
+delete signal3;
+delete signal4;
+delete qcd;
 
 
 }

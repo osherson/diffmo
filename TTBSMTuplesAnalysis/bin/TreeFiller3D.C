@@ -20,11 +20,11 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	cout << "The old chain contains " << nEntries << " entries." << endl;
 	
 	
-	float jet1Eta, jet2Eta, deltaY, genTopPt1, genTopPt2, jet1Mass, jet2Mass, jet1MinMass, jet2MinMass, jet1BDisc, jet2BDisc, jet1SubjetMaxBDisc, jet2SubjetMaxBDisc,
-			jet1tau32, jet2tau32, jet1Pt, jet2Pt, jetPtForMistag, mttMass, mttMassPred, mistagWt, mistagWtAll, mistagWtNsubAll, mistagWtNsub, index, cutflow, NNoutput, ptReweight;
-	int jet1NSubjets, jet2NSubjets;
+	float puWeight, jet1Eta, jet2Eta, deltaY, genTopPt1, genTopPt2, jet1Mass, jet2Mass, jet1MinMass, jet2MinMass, jet1BDisc, jet2BDisc, jet1SubjetMaxBDisc, jet2SubjetMaxBDisc,
+			jet1tau32, jet2tau32, jet1Pt, jet2Pt, jetPtForMistag, mttMass, mttMassPred, mistagWt, mistagWtErr, mistagWtAll, mistagWtNsubAll, mistagWtNsub, NNoutput, ptReweight, cutflow, index;
+	int jet1NSubjets, jet2NSubjets, npv;
 		
-	
+	origFiles->SetBranchAddress("npv", &npv);
 	origFiles->SetBranchAddress("jet1Eta", &jet1Eta);
 	origFiles->SetBranchAddress("jet2Eta", &jet2Eta);
 	origFiles->SetBranchAddress("deltaY", &deltaY);
@@ -59,11 +59,15 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	newTree->Branch("mistagWtNsubAll", &mistagWtNsubAll, "mistagWtNsubAll/F");
 	newTree->Branch("mistagWtAll", &mistagWtAll, "mistagWtAll/F");
 	newTree->Branch("ptReweight", &ptReweight, "ptReweight/F");
+	newTree->Branch("puWeight", &puWeight, "puWeight/F");
+	newTree->Branch("mistagWtErr", &mistagWtErr, "mistagWtErr/F");
 
 	newTree->SetBranchAddress("mistagWtNsub", &mistagWtNsub);
 	newTree->SetBranchAddress("misagWtNsubAll", &mistagWtNsubAll);
 	newTree->SetBranchAddress("mistagWtAll", &mistagWtAll);
 	newTree->SetBranchAddress("ptReweight", &ptReweight);
+	newTree->SetBranchAddress("puWeight", &puWeight);
+	newTree->SetBranchAddress("mistagWtErr", &mistagWtErr);
 	
 /*	
 	TMVA::Reader* reader = new TMVA::Reader();
@@ -87,23 +91,13 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	//TFile *mistagFileLow = new TFile("notCSVL_notCSVM_mistag.root");
 	//TFile *mistagFileMed = new TFile("CSVL_notCSVM_mistag.root");
 	//TFile *mistagFileHi = new TFile("CSVM_mistag.root");
-	TFile *mistagFileLow = new TFile("Jan21_mistag.root");//data_LowBscore_mistag_Dec16.root");
-	TFile *mistagFileMed = new TFile("Jan21_mistag.root");//data_MedBscore_mistag_Dec16.root");
-	TFile *mistagFileHi = new TFile("Jan21_mistag.root");//data_HiBscore_mistag_Dec16.root");
-	TFile *mistagFile = new TFile("Jan21_mistag.root");//data_AllBscore_mistag_Dec16.root");
+	TFile *mistagFile = new TFile("Feb12_mistag.root");//data_AllBscore_mistag_Dec16.root");
 	histName = "MISTAG_RATE_SUB_TTBAR_Inclusive";
-	TH1F *mistagRateHistAll = (TH1F *) mistagFile->Get( histName.c_str() )->Clone();	
-	TH1F *mistagRateHistLow = (TH1F *) mistagFileLow->Get( histName.c_str() )->Clone();	
-	TH1F *mistagRateHistMed = (TH1F *) mistagFileMed->Get( histName.c_str() )->Clone();	
-	TH1F *mistagRateHistHi = (TH1F *) mistagFileHi->Get( histName.c_str() )->Clone();	
-	string histName2 = "MISTAG_RATE_SUB_TTBAR_InclNsub";
-	TH1F *mistagRateHistNSAll = (TH1F *) mistagFile->Get( histName2.c_str() )->Clone();	
-	TH1F *mistagRateHistNSLow = (TH1F *) mistagFileLow->Get( histName2.c_str() )->Clone();	
-	TH1F *mistagRateHistNSMed = (TH1F *) mistagFileMed->Get( histName2.c_str() )->Clone();	
-	TH1F *mistagRateHistNSHi = (TH1F *) mistagFileHi->Get( histName2.c_str() )->Clone();	
+	TH3F *mistagRateHistAll = (TH3F *) mistagFile->Get( histName.c_str() )->Clone();	
 	cout << histName << endl;
 	cout << "Entries " << mistagRateHistAll->Integral() << endl;	
-	cout << "Entries2 " << mistagRateHistNSHi->Integral() << endl;
+	TFile *puFile = new TFile("puHists.root");
+	TH1F *puWeightsHist = (TH1F *) puFile->Get("weightsH");
 	
 	for (int i = 0; i < origFiles->GetEntries(); i++){
 	
@@ -111,11 +105,13 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 		if  (i % 1000000 == 0) cout << 100*(float(i) / float(nEntries)) << " Percent Complete." << endl;
 		mistagWt = 0.000;
 		mistagWtNsub = 30.0000;
+		puWeight = puWeightsHist->GetBinContent(npv); 	
 	
+
 		if (cutflow == 4 || index == 1){
 		
-			if (genTopPt1 > 400) genTopPt1 = 400;
-			if (genTopPt2 > 400) genTopPt2 = 400;
+		//	if (genTopPt1 > 400) genTopPt1 = 400;
+		//	if (genTopPt2 > 400) genTopPt2 = 400;
 			//NNoutput =  reader->EvaluateMVA("MLP");
 			ptReweight = sqrt( exp(0.156 - 0.00137*genTopPt1)*exp(0.156 - 0.00137*genTopPt2) );			
 			
@@ -127,36 +123,19 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 				if (jet1Pt == jetPtForMistag) {
 					probeJet = 1;
 					bScore = jet1SubjetMaxBDisc;
-					tauScore = jet2tau32;
+					tauScore = jet1tau32;
 				}
 				if (jet2Pt == jetPtForMistag) {
 					bScore = jet2SubjetMaxBDisc;
-					tauScore = jet1tau32;
+					tauScore = jet2tau32;
 					probeJet = 2;
 				}
 
-
-				if (bScore > 0.679) mistagWt = mistagRateHistHi->GetBinContent( mistagRateHistHi->FindBin( jetPtForMistag ) );			
-				else if (bScore > 0.244) mistagWt = mistagRateHistMed->GetBinContent( mistagRateHistMed->FindBin( jetPtForMistag ) );			
-				else mistagWt = mistagRateHistLow->GetBinContent( mistagRateHistLow->FindBin( jetPtForMistag ) );			
-				mistagWtAll = mistagRateHistAll->GetBinContent( mistagRateHistAll->FindBin( jetPtForMistag ) );
-
-				if (tauScore < 0.7){
-
-				if (bScore > 0.679) mistagWtNsub = mistagRateHistNSHi->GetBinContent( mistagRateHistNSHi->FindBin( jetPtForMistag ) );			
-				else if (bScore > 0.244) mistagWtNsub = mistagRateHistNSMed->GetBinContent( mistagRateHistNSMed->FindBin( jetPtForMistag ) );			
-				else mistagWtNsub = mistagRateHistNSLow->GetBinContent( mistagRateHistNSLow->FindBin( jetPtForMistag ) );			
-				mistagWtNsubAll = mistagRateHistNSAll->GetBinContent( mistagRateHistNSAll->FindBin( jetPtForMistag ) );
-				}
-				else {
-				mistagWtNsub = 0.0;
-				mistagWtNsubAll = 0.0;
-				}
-				//mttMass = mttMassPred;
-				//NNoutput = reader->EvaluateMVA("MLP");
+				int bin = mistagRateHistAll->FindBin( ptMap(jetPtForMistag),bMap(bScore),tauMap(tauScore) );
+				mistagWt = mistagRateHistAll->GetBinContent( bin );
+				mistagWtErr = mistagRateHistAll->GetBinError( bin );
 			}
-			
-			
+		
 			newTree->Fill();
 		
 		}
@@ -167,7 +146,6 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 
 	
 	
-	newTree->Draw("mistagWtNsub", "index == 1");	
 	
 
 
@@ -177,4 +155,77 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	newFile->Close();
 	
 }
+	
+float ptMap(float pt){
+
+
+	float out = -999.;
+
+	if (pt < 405) out = 0.1;
+	else if (pt < 410) out = 1.1;
+	else if (pt < 415) out = 2.1;
+	else if (pt < 420) out = 3.1;
+	else if (pt < 425) out = 4.1;
+	else if (pt < 430) out = 5.1;
+	else if (pt < 435) out = 6.1;
+	else if (pt < 440) out = 7.1;
+	else if (pt < 445) out = 8.1;
+	else if (pt < 450) out = 9.1;
+	else if (pt < 460) out = 10.1;
+	else if (pt < 470) out = 11.1;
+	else if (pt < 480) out = 12.1;
+	else if (pt < 490) out = 13.1;
+	else if (pt < 500) out = 14.1;
+	else if (pt < 525) out = 15.1;
+	else if (pt < 550) out = 16.1;
+	else if (pt < 575) out = 17.1;
+	else if (pt < 600) out = 18.1;
+	else if (pt < 650) out = 19.1;
+	else if (pt < 700) out = 20.1;
+	else if (pt < 750) out = 21.1;
+	else if (pt < 800) out = 22.1;
+	else if (pt < 900) out = 23.1;
+	else if (pt < 1000) out = 24.1;
+	else if (pt < 1100) out = 25.1;
+	else if (pt < 1250) out = 26.1;
+	else if (pt < 1500) out = 27.1;
+	else out = 28.1;
+
+	return out;
+
+}
+
+float bMap(float b){
+
+	float out = -999.;
+
+	if (b < 0.0) out = 0.1;
+	else if (b < 0.244) out = 1.1;
+	else if (b < 0.679) out = 2.1;
+	else if (b < 1.00) out = 3.1;
+
+	return out;
+
+}
+
+float tauMap(float t){
+
+	float out = -999.;
+
+	if (t < 0.4) out = 0.1;
+	else if (t < 0.5) out = 1.1;
+	else if (t < 0.6) out = 2.1;
+	else if (t < 0.7) out = 3.1;
+	else if (t < 0.8) out = 4.1;
+	else if (t < 0.9) out = 5.1;
+	else if (t < 1.0) out = 6.1;
+	else if (t < 1.2) out = 7.1;
+	else out = 8.1;
+
+	return out;
+
+
+
+} 
+	
 	
