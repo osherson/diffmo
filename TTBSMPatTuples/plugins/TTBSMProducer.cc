@@ -89,7 +89,7 @@ class TTBSMProducer : public edm::EDFilter {
   edm::InputTag             trigSrc_;
   edm::InputTag   rhoSrc_;          /// mean pt per unit area
   edm::InputTag   pvSrc_;           /// primary vertex
-  edm::InputTag  genJetsSrc_;
+  edm::InputTag   genJetsSrc_;
   std::vector<std::string>  trigs_;
   std::string               topTagName_;
   CATopTagFunctor           topTagFunctor_;
@@ -218,6 +218,10 @@ TTBSMProducer::TTBSMProducer(const edm::ParameterSet& iConfig) :
   produces<std::vector<double> > ("tau2");
   produces<std::vector<double> > ("tau3");
   produces<std::vector<double> > ("tau4");
+  produces<std::vector<double> > ("onepasstau1");
+  produces<std::vector<double> > ("onepasstau2");
+  produces<std::vector<double> > ("onepasstau3");
+  produces<std::vector<double> > ("onepasstau4");
 
   produces<std::vector<double> > ("topTagCHE");
   produces<std::vector<double> > ("topTagNE");
@@ -320,12 +324,25 @@ TTBSMProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   std::auto_ptr<std::vector<double> > tau2 ( new std::vector<double>() );
   std::auto_ptr<std::vector<double> > tau3 ( new std::vector<double>() );
   std::auto_ptr<std::vector<double> > tau4 ( new std::vector<double>() );
+  std::auto_ptr<std::vector<double> > onepasstau1 ( new std::vector<double>() );
+  std::auto_ptr<std::vector<double> > onepasstau2 ( new std::vector<double>() );
+  std::auto_ptr<std::vector<double> > onepasstau3 ( new std::vector<double>() );
+  std::auto_ptr<std::vector<double> > onepasstau4 ( new std::vector<double>() );
 
   Nsubjettiness Nsub1(1, Njettiness::AxesMode::kt_axes, 1.0, 0.8);
   Nsubjettiness Nsub2(2, Njettiness::AxesMode::kt_axes, 1.0, 0.8);
   Nsubjettiness Nsub3(3, Njettiness::AxesMode::kt_axes, 1.0, 0.8);
   Nsubjettiness Nsub4(4, Njettiness::AxesMode::kt_axes, 1.0, 0.8);
 
+  Nsubjettiness Nsubonepass1(1, Njettiness::AxesMode::onepass_kt_axes, 1.0, 0.8);
+  Nsubjettiness Nsubonepass2(2, Njettiness::AxesMode::onepass_kt_axes, 1.0, 0.8);
+  Nsubjettiness Nsubonepass3(3, Njettiness::AxesMode::onepass_kt_axes, 1.0, 0.8);
+  Nsubjettiness Nsubonepass4(4, Njettiness::AxesMode::onepass_kt_axes, 1.0, 0.8);
+
+  // double Rtrim = 0.2;
+  // double ptfrac = 0.05;
+  // fastjet::Filter trimmer_CA2_PFRAC5(fastjet::JetDefinition(fastjet::cambridge_algorithm, Rtrim), fastjet::SelectorPtFractionMin(ptfrac) );
+      
   // Number of reconstructed PV's
   *npv = h_pv->size();
 
@@ -408,7 +425,7 @@ TTBSMProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     double corr = jec_->getCorrection();
 
 
-reco::GenJet theMatchingGenJet;
+    reco::GenJet theMatchingGenJet;
 
 
     float eta1 = uncorrJet.eta();
@@ -416,13 +433,13 @@ reco::GenJet theMatchingGenJet;
     float eta2, phi2, deltaR;
 
 
-   //Find matching genJet for systematic smearing
+    //Find matching genJet for systematic smearing
 
-   if (!iEvent.isRealData()){
-   for ( std::vector<reco::GenJet>::const_iterator genJBegin = h_genJets->begin(),
+    if (!iEvent.isRealData()){
+    for ( std::vector<reco::GenJet>::const_iterator genJBegin = h_genJets->begin(),
 	   genJEnd = h_genJets->end(), igenjet = genJBegin; igenjet != genJEnd; ++igenjet) {
 
-	  eta2 = igenjet->eta();
+	   eta2 = igenjet->eta();
           phi2 = igenjet->phi();
 
 
@@ -432,11 +449,10 @@ reco::GenJet theMatchingGenJet;
 
 
           if (deltaR < 0.1) {
-		theMatchingGenJet = (*igenjet);
-	  }
-
-   }
-}
+		  theMatchingGenJet = (*igenjet);
+	   }
+    }
+    }
 
 
 
@@ -546,14 +562,21 @@ reco::GenJet theMatchingGenJet;
 	  tau2->push_back(Nsub2.result(combJet));
 	  tau3->push_back(Nsub3.result(combJet));
 	  tau4->push_back(Nsub4.result(combJet));
+    onepasstau1->push_back(Nsubonepass1.result(combJet));
+    onepasstau2->push_back(Nsubonepass2.result(combJet));
+    onepasstau3->push_back(Nsubonepass3.result(combJet));
+    onepasstau4->push_back(Nsubonepass4.result(combJet));
+
+
 	  
     	  reco::Candidate::LorentzVector uncorrCA8jet = ijet->correctedP4(1);
           reco::Candidate::PolarLorentzVector corrCA8jet (uncorrCA8jet.pt(), uncorrCA8jet.eta(), uncorrCA8jet.phi(), uncorrCA8jet.mass());
       
 	  
 	  ca8JetP4->push_back(corrCA8jet);	  
-	  
-	  
+	           
+    //fastjet::PseudoJet trimmed_jet_CA2_PFRAC5 = trimmer_CA2_PFRAC5(combJet);
+
 	  
   }
 	  
@@ -937,6 +960,10 @@ for (int i = 0; i < nSubjets; i++ ) {
   iEvent.put(tau2, "tau2");
   iEvent.put(tau3, "tau3");
   iEvent.put(tau4, "tau4");
+  iEvent.put(onepasstau1, "onepasstau1");
+  iEvent.put(onepasstau2, "onepasstau2");
+  iEvent.put(onepasstau3, "onepasstau3");
+  iEvent.put(onepasstau4, "onepasstau4");
   iEvent.put(topTagCHE, "topTagCHE");
   iEvent.put(topTagNE, "topTagNE");
   iEvent.put(topTagNumPF, "topTagNumPF");
