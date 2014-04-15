@@ -92,67 +92,67 @@ class TTPairAnalyzer:
     
         print 'Booking Histograms and Trees...'
         
-        self.mistagFile = ROOT.TFile("ALLjets_mistag.root")
-        self.mistagFile.cd()
-        self.mistag = self.mistagFile.Get("MISTAG_RATE_SUB_TTBAR_Inclusive").Clone()
-        self.mistag.SetName('mistag')
-        ROOT.SetOwnership( self.mistag, False )
+#        self.mistagFile = ROOT.TFile("ALLjets_mistag.root")
+#        self.mistagFile.cd()
+#        self.mistag = self.mistagFile.Get("MISTAG_RATE_SUB_TTBAR_Inclusive").Clone()
+#        self.mistag.SetName('mistag')
+#        ROOT.SetOwnership( self.mistag, False )
         
         
-        self.mistagFileWP1 = ROOT.TFile("mistag_WP1.root")
-        self.mistagFileWP1.cd()
-        self.mistagWP1 = self.mistagFileWP1.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistagWP1.SetName('mistagWP1')
-        ROOT.SetOwnership( self.mistagWP1, False )        
+#        self.mistagFileWP1 = ROOT.TFile("mistag_WP1.root")
+#        self.mistagFileWP1.cd()
+#        self.mistagWP1 = self.mistagFileWP1.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#        self.mistagWP1.SetName('mistagWP1')
+ #       ROOT.SetOwnership( self.mistagWP1, False )        
+#        
+#        self.mistagFileWP2 = ROOT.TFile("mistag_WP2.root")
+#        self.mistagFileWP2.cd()
+#        self.mistagWP2 = self.mistagFileWP2.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#        self.mistagWP2.SetName('mistagWP2')
+#        ROOT.SetOwnership( self.mistagWP2, False ) 
         
-        self.mistagFileWP2 = ROOT.TFile("mistag_WP2.root")
-        self.mistagFileWP2.cd()
-        self.mistagWP2 = self.mistagFileWP2.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistagWP2.SetName('mistagWP2')
-        ROOT.SetOwnership( self.mistagWP2, False ) 
+#        self.mistagFileWP3 = ROOT.TFile("mistag_WP3.root")
+#        self.mistagFileWP3.cd()
+#        self.mistagWP3 = self.mistagFileWP3.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#        self.mistagWP3.SetName('mistagWP3')
+#        ROOT.SetOwnership( self.mistagWP3, False ) 
         
-        self.mistagFileWP3 = ROOT.TFile("mistag_WP3.root")
-        self.mistagFileWP3.cd()
-        self.mistagWP3 = self.mistagFileWP3.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistagWP3.SetName('mistagWP3')
-        ROOT.SetOwnership( self.mistagWP3, False ) 
+#        self.mistagFileWP4 = ROOT.TFile("mistag_WP4.root")
+#        self.mistagFileWP4.cd()
+#        self.mistagWP4 = self.mistagFileWP4.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#        self.mistagWP4.SetName('mistagWP4')
+#        ROOT.SetOwnership( self.mistagWP4, False ) 
         
-        self.mistagFileWP4 = ROOT.TFile("mistag_WP4.root")
-        self.mistagFileWP4.cd()
-        self.mistagWP4 = self.mistagFileWP4.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistagWP4.SetName('mistagWP4')
-        ROOT.SetOwnership( self.mistagWP4, False ) 
-        
-        self.mistagFileWP5 = ROOT.TFile("mistag_WP5.root")
-        self.mistagFileWP5.cd()
-        self.mistagWP5 = self.mistagFileWP5.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistagWP5.SetName('mistagWP5')
-        ROOT.SetOwnership( self.mistagWP5, False ) 
+#        self.mistagFileWP5 = ROOT.TFile("mistag_WP5.root")
+#        self.mistagFileWP5.cd()
+#        self.mistagWP5 = self.mistagFileWP5.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#        self.mistagWP5.SetName('mistagWP5')
+#        ROOT.SetOwnership( self.mistagWP5, False ) 
        
-        self.mistagFile1B = ROOT.TFile("bjets_mistag.root")
-        self.mistagFile1B.cd()
-        self.mistag1B = self.mistagFile1B.Get("MISTAG_RATE_SUB_TTBAR_1btagT").Clone()
-        self.mistag1B.SetName('mistag1B')
-        ROOT.SetOwnership( self.mistag1B, False )
+#        self.mistagFile1B = ROOT.TFile("bjets_mistag.root")
+#        self.mistagFile1B.cd()
+#        self.mistag1B = self.mistagFile1B.Get("MISTAG_RATE_SUB_TTBAR_1btagT").Clone()
+#        self.mistag1B.SetName('mistag1B')
+#        ROOT.SetOwnership( self.mistag1B, False )
 
-        self.mistagFile2B = ROOT.TFile("bjets_mistag.root")
-        self.mistagFile2B.cd()
-        self.mistag2B = self.mistagFile2B.Get("MISTAG_RATE_SUB_TTBAR_2btagT").Clone()
-        self.mistag2B.SetName('mistag2B')
-        ROOT.SetOwnership( self.mistag2B, False )
+#        self.mistagFile2B = ROOT.TFile("bjets_mistag.root")
+#        self.mistagFile2B.cd()
+#        self.mistag2B = self.mistagFile2B.Get("MISTAG_RATE_SUB_TTBAR_2btagT").Clone()
+#        self.mistag2B.SetName('mistag2B')
+#        ROOT.SetOwnership( self.mistag2B, False )
 
-        self.mistagFile_type12 = ROOT.TFile("mistag_type12.root")
-        self.mistagFile_type12.cd()
-        self.mistag_type12 = self.mistagFile_type12.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-        self.mistag_type12.SetName('mistag_type12')
-        ROOT.SetOwnership( self.mistag_type12, False )
+#        self.mistagFile_type12 = ROOT.TFile("mistag_type12.root")
+#        self.mistagFile_type12.cd()
+#        self.mistag_type12 = self.mistagFile_type12.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#       self.mistag_type12.SetName('mistag_type12')
+#        ROOT.SetOwnership( self.mistag_type12, False )
 
-
-        self.mistagFile_type12_1B = ROOT.TFile("mistag_type12_oneB.root")
-        self.mistagFile_type12_1B.cd()
-	self.mistag_type12_1B = self.mistagFile_type12.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
-	self.mistag_type12_1B.SetName('mistag_type12_1B')
-	ROOT.SetOwnership( self.mistag_type12_1B, False )
+#
+#      self.mistagFile_type12_1B = ROOT.TFile("mistag_type12_oneB.root")
+#       self.mistagFile_type12_1B.cd()
+#	self.mistag_type12_1B = self.mistagFile_type12.Get("MISTAG_MU_REVERSE_SUB_TTBAR").Clone()
+#	self.mistag_type12_1B.SetName('mistag_type12_1B')
+#	ROOT.SetOwnership( self.mistag_type12_1B, False )
  
         self.triggerFile = ROOT.TFile(self.triggerFileStr + ".root")
         self.triggerFile.cd()
@@ -347,7 +347,7 @@ class TTPairAnalyzer:
         self.f.cd()
         self.f.Write()
         self.f.Close()
-        self.mistagFile.Close()
+        #self.mistagFile.Close()
         self.triggerFile.Close()
         self.modMassFile.Close()
     
@@ -379,12 +379,12 @@ class TTPairAnalyzer:
         event.getByLabel (self.allTopTagSubjetBDiscLabel, self.allTopTagSubjetBDiscHandle)
         event.getByLabel (self.allTopTagSubjetJetIDLabel, self.allTopTagSubjetJetIDHandle)
 	event.getByLabel (self.allTopTagPartonLabel, self.allTopTagPartonHandle)
-	#event.getByLabel (self.allgenTopP4Label, self.allgenTopP4Handle)
+	event.getByLabel (self.allgenTopP4Label, self.allgenTopP4Handle)
 	
 
         topSubjets = self.allTopTagSubjetsHandle.product()
 	topPartonFlavors = self.allTopTagPartonHandle.product()
-	#genTops = self.allgenTopP4Handle.product()
+	genTops = self.allgenTopP4Handle.product()
 	
  
 	ca8Jets = self.allca8Handle.product()
@@ -432,10 +432,10 @@ class TTPairAnalyzer:
             
         self.jet1Pt[0] = topJets[0].pt()
         self.jet1Mass[0] = topJetMass[0]
-        self.jet1Eta[0] = topJets[0].eta()
+        self.jet1Eta[0] = topJets[0].Rapidity()
         self.jet1Phi[0] = topJets[0].phi()
 	self.jet1Parton[0] = topPartonFlavors[0] 
-	self.genTopPt1[0] = 0#genTops[0].pt()
+	self.genTopPt1[0] = genTops[0].pt()
 	
     
         self.cutflow[0] = 1 #Events with >= 1 top candidate
@@ -489,10 +489,10 @@ class TTPairAnalyzer:
 			self.cutflow[0] = 3
 			self.jet2Pt[0] = topJets[1].pt()
 			self.jet2Mass[0] = topJetMass[1]
-			self.jet2Eta[0] = topJets[1].eta()
+			self.jet2Eta[0] = topJets[1].Rapidity()
 			self.jet2Phi[0] = topJets[1].phi()
 			self.jet2Parton[0] = topPartonFlavors[1]
-			self.genTopPt2[0] = 0#genTops[1].pt()			
+			self.genTopPt2[0] = genTops[1].pt()			
 
      
 			tagJet1Subjets = []
@@ -598,7 +598,7 @@ class TTPairAnalyzer:
 				self.cutflow[0] = 7
 				self.jet2Pt[0] = theWjetCand.pt()
 				self.jet2Mass[0] = theWjetCand.M()
-				self.jet2Eta[0] = theWjetCand.eta()
+				self.jet2Eta[0] = theWjetCand.Rapidity()
 				self.jet2Phi[0] = theWjetCand.phi()
 				self.jet2WMu[0] = wMu[theWjetCandIndex]
 				self.jet2BDisc[0] = wBDisc[theWjetCandIndex]
@@ -718,17 +718,17 @@ class TTPairAnalyzer:
 			jet1P4_mod.SetM(myrand_QCDdist_jet1)
 			ttMassMod = (wJets[jet3]+theWjetCand+jet1P4_mod).mass()
 			self.mttMassPred[0] = ttMassMod
-			self.mistagWtType12[0] = self.mistag_type12.GetBinContent( self.mistag_type12.FindBin(topJets[0].pt()) )
-			self.mistagWt[0] = self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
-			self.mistagWt1B[0] = self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
-			self.mistagWtType121B[0] = self.mistag_type12_1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
-			self.mistagWt2B[0] = self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
+			self.mistagWtType12[0] = 0#self.mistag_type12.GetBinContent( self.mistag_type12.FindBin(topJets[0].pt()) )
+			self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+			self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
+			self.mistagWtType121B[0] = 0#self.mistag_type12_1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
+			self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
 			self.jet1Pt[0] = topJets[0].pt()
-			self.jet1Eta[0] = topJets[0].eta()
+			self.jet1Eta[0] = topJets[0].Rapidity()
 			self.jet1Mass[0] = jet1P4_mod.M()
 			self.jet2Pt[0] = theWjetCand.pt()
                         self.jet2Mass[0] = theWjetCand.M()
-                        self.jet2Eta[0] = theWjetCand.eta()
+                        self.jet2Eta[0] = theWjetCand.Rapidity()
                         self.jet2Phi[0] = theWjetCand.phi()
 			self.jet2WMu[0] = wMu[1]
 			self.jet2BDisc[0] = wBDisc[1]
@@ -825,17 +825,17 @@ class TTPairAnalyzer:
 			jet1P4_modmassQCDdist.SetM( myrand_QCDdist_jet1 )
 			ttMassJet0modmassQCDdist = (topJets[0]+jet1P4_modmassQCDdist).mass()
 			self.mttMassPred[0] = ttMassJet0modmassQCDdist
-			self.mistagWt[0] = self.mistag.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
-			self.mistagWt1B[0] = self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[1].pt()) )
-			self.mistagWt2B[0] = self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[1].pt()) )
+			self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+			self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[1].pt()) )
+			self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[1].pt()) )
 			self.index[0] = 1
 			self.jet1Pt[0] = topJets[0].pt()
 			self.jet2Pt[0] = topJets[1].pt()
 			self.jetPtForMistag[0] = topJets[1].pt()
 			self.jet1Parton[0] = topPartonFlavors[0]
 			self.jet2Parton[0] = topPartonFlavors[1]
-			self.jet1Eta[0] = topJets[0].eta()
-			self.jet2Eta[0] = topJets[1].eta()
+			self.jet1Eta[0] = topJets[0].Rapidity()
+			self.jet2Eta[0] = topJets[1].Rapidity()
 			self.jet1Mass[0] = topJets[0].M()
 			self.jet2Mass[0] = myrand_QCDdist_jet1
 			self.jet1tau32[0] = tau32_jet1
@@ -865,15 +865,15 @@ class TTPairAnalyzer:
                         jet0P4_modmassQCDdist.SetM( myrand_QCDdist_jet0 )
                         ttMassJet1modmassQCDdist = (topJets[1]+jet0P4_modmassQCDdist).mass()
                         self.mttMassPred[0] = ttMassJet1modmassQCDdist
-                        self.mistagWt[0] = self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
-                        self.mistagWt1B[0] = self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
-                        self.mistagWt2B[0] = self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
+                        self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+                        self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
+                        self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
                         self.index[0] = 1
 			self.jet1Pt[0] = topJets[0].pt()
 			self.jet2Pt[0] = topJets[1].pt()
 			self.jetPtForMistag[0] = topJets[0].pt()
-			self.jet1Eta[0] = topJets[0].eta()
-			self.jet2Eta[0] = topJets[1].eta()
+			self.jet1Eta[0] = topJets[0].Rapidity()
+			self.jet2Eta[0] = topJets[1].Rapidity()
 			self.jet1Parton[0] = topPartonFlavors[0]
 			self.jet2Parton[0] = topPartonFlavors[1]
 			self.jet2Mass[0] = topJets[1].M()

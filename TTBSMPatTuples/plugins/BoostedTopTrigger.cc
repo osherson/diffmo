@@ -93,7 +93,19 @@ class BoostedTopTrigger : public edm::EDAnalyzer {
   TH1D * jetPtType12Num;
   TH1D * jetPtType12Den;
 
-  int nPassed11_;
+  TH1D * HThistType11;
+  TH1D * HThistType12;
+  TH1D * HThistAll;
+
+  TH1D * MassType11_low;
+  TH1D * MassType12_low;
+
+  TH1D * MassType11_high;
+  TH1D * MassType11_all;
+  TH1D * MassType12_high;
+  TH1D * MassType12_all;
+  
+int nPassed11_;
   int nTotal11_;
   int nPassed12_;
   int nTotal12_;
@@ -116,14 +128,26 @@ BoostedTopTrigger::BoostedTopTrigger(const edm::ParameterSet& iConfig)
   verbose_ = iConfig.getUntrackedParameter<bool>("Verbose", false);
   theHltProcessName = iConfig.getUntrackedParameter<std::string>("HltProcessName", "HLT");
   targetTrigger = iConfig.getUntrackedParameter<std::string>("TargetTrigger", "HLT_Jet300_v1");
-  threshold_ = iConfig.getUntrackedParameter<double>("threshold", 300.0);
+  threshold_ = iConfig.getUntrackedParameter<double>("threshold", 320.0);
   jetTag1_ = iConfig.getUntrackedParameter<edm::InputTag>("jetTag1");
   jetTag2_ = iConfig.getUntrackedParameter<edm::InputTag>("jetTag2");
 
   edm::Service<TFileService> fs;
   nPassed11_ = nTotal11_ = nPassed12_ = nTotal12_ = 0;
 
+  HThistType11 = fs->make<TH1D>("HThistType11", "HT, Type 1+1", 200, 0, 2000);
+  HThistType12 = fs->make<TH1D>("HThistType12", "HT, Type 1+2", 200, 0, 2000);
+  HThistAll = fs->make<TH1D>("HThistAll", "HT, All Events", 200, 0, 2000);
 
+  MassType11_low = fs->make<TH1D>("MassType11_low", "Inv. Mass Type 1+1", 500, 0, 5000);
+  MassType12_low = fs->make<TH1D>("MassType12_low", "Inv. Mass Type 1+2", 500, 0, 5000);
+  
+  MassType11_high = fs->make<TH1D>("MassType11_high", "Inv. Mass Type 1+1", 500, 0, 5000);
+  MassType12_high = fs->make<TH1D>("MassType12_high", "Inv. Mass Type 1+2", 500, 0, 5000);
+
+  MassType11_all = fs->make<TH1D>("MassType11_all", "Inv. Mass Type 1+1", 500, 0, 5000);
+  MassType12_all = fs->make<TH1D>("MassType12_all", "Inv. Mass Type 1+2", 500, 0, 5000);
+  
   jetPtType11Num = fs->make<TH1D>("jetPtType11Num",  "Jet p_{T}, Type 1 + 1, Numerator",   150, 0., 1500.);
   jetPtType11Den = fs->make<TH1D>("jetPtType11Den",  "Jet p_{T}, Type 1 + 1, Denominator", 150, 0., 1500.);
 
@@ -162,6 +186,10 @@ BoostedTopTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
    edm::Handle<vector<pat::Jet>  >   jetHandle2;
    iEvent.getByLabel( jetTag2_,   jetHandle2 );
 
+   edm::Handle< std::vector<reco::Vertex> > h_pv;
+   iEvent.getByLabel( "goodOfflinePrimaryVertices", h_pv );
+ 
+   unsigned int npv = h_pv->size();
    const trigger::TriggerObjectCollection trigObjs = aodTriggerEvent->getObjects();
    std::vector<TriggerObject> foundHLTTrigObjs; 
 
@@ -169,6 +197,20 @@ BoostedTopTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 				   aodTriggerEvent,
 				   trigObjs,
 				   foundHLTTrigObjs );
+
+
+   const vector<pat::Jet> *ca8Jets = jetHandle1.product();
+
+   float HTsum = 0.0;
+   int Nbtag = 0;
+   for (unsigned int i=0; i < ca8Jets->size(); i++){
+	
+	pat::Jet thisJet = (*ca8Jets)[i];
+	HTsum += thisJet.pt();
+	if (thisJet.bDiscriminator("combinedSecondaryVertexBJetTags") > 0.679) Nbtag++;
+   }
+
+
 
    /// Type 1+1
 
@@ -194,19 +236,27 @@ BoostedTopTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 
 
      if ( jet0.pt() > 350 &&
-	  mass0 && substructure0 &&
+	  mass0 &&
 	  jet1.pt() > 350 &&
-	  mass1 && substructure1
+	  mass1
 	  ) {
        
        jetPtType11Den->Fill( jet0.pt() );
+       HThistType11->Fill(HTsum );
        pass11 = true;
        ++nTotal11_;
-       
+	float invMass = (jet0.p4() + jet1.p4()).mass();     
+
+	MassType11_all->Fill( invMass );
+	if (npv >= 15) MassType11_high->Fill( invMass );
+        else if (npv < 15) MassType11_low->Fill( invMass);
+
+   
+       HThistAll->Fill(HTsum);
        bool passedTrig = false;
        if ( foundHLTTrigObjs.size() != 0 ){
 	 double trigPt = foundHLTTrigObjs[0].pt();
-	 if ( trigPt > threshold_ ) {
+       if ( Nbtag >= threshold_ ) {
 	   passedTrig = true;
 	 }
        }
@@ -234,23 +284,32 @@ BoostedTopTrigger::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
        bool substructure0 = jet0.numberOfDaughters() >= 3 && caTopTagInfo0->properties().minMass > 50.0;
 
        bool mass1 = jet1.mass() > 50.0;
+       
 
        if ( jet0.pt() > 350 &&
-	    mass0 && substructure0 &&
+	    mass0 &&
 	    jet1.pt() > 200 &&
 	    mass1 &&
 	    jet2.pt() > 30
 	    ) {
 
 	 jetPtType12Den->Fill( jet0.pt() );
+	HThistType12->Fill(HTsum );
        
+        HThistAll->Fill(HTsum);
 	 pass12 = true;
 	 ++nTotal12_;
        
+	float invMass = (jet0.p4() + jet1.p4() + jet2.p4()).mass();
+	MassType12_all->Fill( invMass );
+	if (npv >= 15) MassType12_high->Fill( invMass );
+        else if (npv < 15) MassType12_low->Fill( invMass);
+	
+
 	 bool passedTrig = false;
 	 if ( foundHLTTrigObjs.size() != 0 ){
 	   double trigPt = foundHLTTrigObjs[0].pt();
-	   if ( trigPt > 300 ) {
+	   if ( Nbtag >= threshold_ ) {
 	     passedTrig = true;
 	   }
 	 }
@@ -411,6 +470,8 @@ BoostedTopTrigger::getAodTriggerObjectsForModule (edm::InputTag collectionTag,
                                                   edm::Handle<trigger::TriggerEvent> aodTriggerEvent,
                                                   trigger::TriggerObjectCollection trigObjs,
                                                   std::vector<TriggerObject> & foundObjects  ) {
+
+   collectionTag = InputTag("hltL1sL1HTT150OrHTT175", "", "HLT"); 
 
 
   if (verbose_)

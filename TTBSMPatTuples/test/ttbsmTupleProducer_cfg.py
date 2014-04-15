@@ -104,7 +104,17 @@ myAnaTrigs = [
     'HLT_HT750_v9',
     'HLT_HT750_v10',
     'HLT_HT750_v11',
-    'HLT_HT750_v12'
+    'HLT_HT750_v12',
+    'HLT_PFJet320_v1',
+    'HLT_PFJet320_v2',
+    'HLT_PFJet320_v3',
+    'HLT_PFJet320_v4',
+    'HLT_PFJet320_v5',
+    'HLT_PFJet320_v6',
+    'HLT_PFJet320_v7',
+    'HLT_PFJet320_v8',
+    'HLT_PFJet320_v9',
+    'HLT_PFJet320_v10'
     ]
 process.ttbsmAna = cms.EDFilter('TTBSMProducer',
                                 wTagSrc = cms.InputTag('goodPatJetsCA8PrunedPFPacked'),

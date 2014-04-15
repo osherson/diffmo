@@ -46,6 +46,8 @@ class MistagMakerType1 :
 	self.weightsHandle = Handle( "double" )
         self.weightsLabel = ( "ttbsmAna", "weight" )
 
+	self.allgenTopP4Handle = Handle("vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > >" )
+	self.allgenTopP4Label = ("ttbsmAna", "genTopP4")
 
         self.__book__()
 
@@ -123,6 +125,8 @@ class MistagMakerType1 :
 	self.jet2tau32 = array('f', [-1.])
 	self.jet1Parton = array('i', [-999])
 	self.jet2Parton = array('i', [-999])
+	self.genTopPt1 = array('f', [-1.])
+	self.genTopPt2 = array('f', [-1.])
 
 
 	self.mistagVars.Branch('jet1Pt', self.jet1Pt, 'jet1Pt/F')
@@ -143,6 +147,8 @@ class MistagMakerType1 :
 	self.mistagVars.Branch('jet2tau32', self.jet2tau32, 'jet2tau32/F')
 	self.mistagVars.Branch('jet1Parton', self.jet1Parton, 'jet1Parton/I')
 	self.mistagVars.Branch('jet2Parton', self.jet2Parton, 'jet2Parton/I')
+	self.mistagVars.Branch('genTopPt1', self.genTopPt1, 'genTopPt1/F')
+	self.mistagVars.Branch('genTopPt2', self.genTopPt2, 'genTopPt2/F')
 
 
         
@@ -172,6 +178,8 @@ class MistagMakerType1 :
 	event.getByLabel (self.allTopTagPartonLabel, self.allTopTagPartonHandle )
 	topPartonFlavors = self.allTopTagPartonHandle.product()
 
+	event.getByLabel (self.allgenTopP4Label, self.allgenTopP4Handle)
+	genTops = self.allgenTopP4Handle.product()
 
 
 
@@ -262,6 +270,8 @@ class MistagMakerType1 :
 	    self.jet2TopTag[0] = topTag1
 	    self.jet1tau32[0] = jet1tau32Val
 	    self.jet2tau32[0] = jet2tau32Val
+	    self.genTopPt1[0] = genTops[0].pt()
+	    self.genTopPt2[0] = genTops[1].pt()
 	    self.mistagVars.Fill()
             x = ROOT.gRandom.Uniform(1.0)        
             if x < 0.5 :

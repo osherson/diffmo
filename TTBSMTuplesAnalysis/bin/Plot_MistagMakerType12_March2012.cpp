@@ -1,10 +1,10 @@
 {
 	TCanvas *c1000= new TCanvas("c1000","",200,10,960,600);
 
-	TFile *ROOT 			= new TFile("JAN15/data_mistag_Feb27.root");
-	TFile *Signal			= new TFile("JAN15/ZprimeNrw_2000_sec0_mistag_TriggerNominal.root");
-	TFile *ROOT_TTBAR1 		= new TFile("JAN15/ttjets_m700_mistag_cleanup.root");
-	TFile *ROOT_TTBAR2 		= new TFile("JAN15/ttjets_m1000_mistag_cleanup.root");
+	TFile *ROOT 			= new TFile("data_mistag_type12.root");
+	//TFile *Signal			= new TFile("ZprimeNrw_2000_sec0_mistag_TriggerNominal.root");
+	TFile *ROOT_TTBAR1 		= new TFile("ttjets7_mistag_type12.root");
+	TFile *ROOT_TTBAR2 		= new TFile("ttjets10_mistag_type12.root");
 
    /* TH1D * topBigBinTagPt		    =  ROOT	-> Get("jet1PtTag");
 	TH1D * topBigBinProbePt		    =  ROOT -> Get("jet1PtProbe");
@@ -15,12 +15,12 @@
         TH1D * topTagPt			        =  ROOT	-> Get("jet1PtTag_mu");
 	TH1D * topProbePt		        =  ROOT -> Get("jet1PtProbe_mu");
 
-	TH1D * signalTagPt				= Signal->Get("jet1PtTag_mu");
-	TH1D * signalProbePt				= Signal->Get("jet1PtProbe_mu");
+	//TH1D * signalTagPt				= Signal->Get("jet1PtTag_mu");
+	//TH1D * signalProbePt				= Signal->Get("jet1PtProbe_mu");
 
 
-	signalTagPt->Scale(0.08*19600./90000.);
-	signalProbePt->Scale(0.08*19600./90000.);
+	//signalTagPt->Scale(0.08*19600./90000.);
+	//signalProbePt->Scale(0.08*19600./90000.);
 
 
 
@@ -30,7 +30,7 @@
 	TH1D * topTagPtTTBAR2		    =  ROOT_TTBAR2 -> Get("jet1PtTag_mu");
 	TH1D * topProbePtTTBAR2		    =  ROOT_TTBAR2 -> Get("jet1PtProbe_mu");	
 	// Remove TTBAR contamination from data driven QCD estimate
-	double luminosity = (19598.);  
+	double luminosity = (7300.);  
 	double DataSetNevents_TT1_TuneZ2  = 3082812.;
 	double DataSetNevents_TT2_TuneZ2  = 1249111.;
 	double sigma_TT_TuneZ2   =  234;
@@ -113,14 +113,15 @@
 	
 	
 	MISTAG_RATE_SubtractTTBAR->Draw();
-	//MISTAG_RATE_NoSubtractTTBAR->Draw("same");
+	MISTAG_RATE_NoSubtractTTBAR->Draw("same");
+	MISTAG_RATE_NoSubtractTTBAR->SetMarkerColor(kRed);
 	MISTAG_RATE_SubtractTTBAR   ->SetName("MISTAG_MU_REVERSE_SUB_TTBAR");
     	c1000->SetLogx(1);
 	MISTAG_RATE_SubtractTTBAR->GetXaxis()->SetMoreLogLabels(1);
 	MISTAG_RATE_SubtractTTBAR->GetXaxis()->SetNoExponent(1);
 	prelim = TLatex();
     	prelim.SetNDC();
-        prelim.DrawLatex( 0.5, 0.91, "#scale[0.8]{CMS Preliminary, 8 TeV, 19.6 fb^{-1}}" );
+        prelim.DrawLatex( 0.5, 0.91, "#scale[0.8]{CMS Preliminary, 8 TeV, 7.3 fb^{-1}}" );
         //prelim.DrawLatex( 0.5, 0.91, "#scale[0.8]{Mistag Rate from QCD MC}" );
     
         c1000->SaveAs("mistag_plot_PAS.pdf");
@@ -128,7 +129,7 @@
 
   
     	TFile *Out;
-	Out = new TFile("mistag_type12_rebin.root","RECREATE");  //MISTAG_4p7fb
+	Out = new TFile("mistag_type12_oneB.root","RECREATE");  //MISTAG_4p7fb
 	Out->cd();
 	
 	MISTAG_RATE_SubtractTTBAR->Write();

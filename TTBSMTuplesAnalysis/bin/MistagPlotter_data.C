@@ -193,8 +193,8 @@ void MistagPlotter(TString outfileName) {
 	TH1F *rebin_tagH = (TH1F *) topTagPt[0]->Rebin(num_bins, "rebin_tagH", bins);
 	TH1F *rebin_probeH = (TH1F *) topProbePt[0]->Rebin(num_bins, "rebin_probeH", bins);	
 	
-	rebin_tagH->Divide(rebin_probeH);
-	rebin_tagH_nosub->Divide(rebin_probeH_nosub);
+	rebin_tagH->Divide(rebin_tagH, rebin_probeH, 1, 1, "B");
+	rebin_tagH_nosub->Divide(rebin_tagH_nosub, rebin_probeH_nosub, 1, 1, "B");
 	
 	TCanvas *c = new TCanvas("c", "", 860,600);
 	c->SetLogx(1);

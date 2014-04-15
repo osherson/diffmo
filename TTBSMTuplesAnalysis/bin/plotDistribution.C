@@ -24,10 +24,10 @@ TChain *signal3 = new TChain("treeVars");
 TChain *signal4 = new TChain("treeVars");
 
 
-data->Add("Feb12_all.root");
-ttbar10->Add("Jan13_ttjets10_ptw.root");
-ttbar7->Add("Jan13_ttjets7_ptw.root");
-qcd->Add("Feb12_all.root");
+data->Add("FINAL/data.root");
+ttbar10->Add("FINAL/ttjets10.root");
+ttbar7->Add("FINAL/ttjets7.root");
+qcd->Add("FINAL/data.root");
 signal->Add("Aug19_Zp20_sec0_ttpair__TriggernoWeight.root");
 signal1->Add("Aug19_Zp10_sec0_ttpair__TriggernoWeight.root");
 signal15->Add("Aug19_Zp15_sec0_ttpair__TriggernoWeight.root");
@@ -57,7 +57,7 @@ if (var == "mttMass") qcdvar = "mttMassPred";
 string btag = " ";
 string btag0 = " && jet1SubjetMaxBDisc < 0.679 && jet2SubjetMaxBDisc < 0.679";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
 string btag1 = " && (jet1SubjetMaxBDisc < 0.679 || jet2SubjetMaxBDisc < 0.679) && (jet1SubjetMaxBDisc > 0.679 || jet2SubjetMaxBDisc > 0.679)";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
-string btag2 = " && jet1SubjetMaxBDisc > 0.679 && jet2SubjetMaxBDisc > 0.679";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
+string btag2 = " && jet1SubjetMaxBDisc > 0.679 && jet2SubjetMaxBDisc > 0.679 && jet1BDisc > 0.678 && jet2BDisc > 0.679";// && jet1SubjetMaxBDisc > 0 && jet2SubjetMaxBDisc > 0";
 string nsub_sel = " ";
 if (tags == 0) btag = btag0;
 else if (tags == 1) btag = btag1;

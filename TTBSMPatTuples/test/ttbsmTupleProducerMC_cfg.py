@@ -61,11 +61,11 @@ process.ttbsmAna = cms.EDFilter('TTBSMProducer',
                                 jetPtSmear = cms.double(0.1), # note these three are fractional
                                 jetEtaSmear = cms.double(0.1),#
                                 jecPayloads = cms.vstring([
-                                    'FT_53_V10_AN3_L1FastJet_AK7PFchs.txt',
-                                    'FT_53_V10_AN3_L2Relative_AK7PFchs.txt',
-                                    'FT_53_V10_AN3_L3Absolute_AK7PFchs.txt',
-                                    #'FT_53_V10_AN3_L2L3Residual_AK7PFchs.txt',
-                                    'FT_53_V10_AN3_Uncertainty_AK7PFchs.txt'
+                                    'START53_L1FastJet_AK7PFchs.txt',
+                                    'START53_L2Relative_AK7PFchs.txt',
+                                    'START53_L3Absolute_AK7PFchs.txt',
+                                    #'START53_L2L3Residual_AK7PFchs.txt',
+                                    'START53_Uncertainty_AK7PFchs.txt'
                                     ]),
                                 pdfSet = cms.string("")
 

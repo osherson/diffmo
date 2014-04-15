@@ -1,10 +1,10 @@
 {
 	TCanvas *c1000= new TCanvas("c1000","",860,600);
 
-	TFile *ROOT 			= new TFile("Aug19_mistag.root");
-//	TFile *Signal			= new TFile("JAN15/ZprimeNrw_2000_mistag1.root");
-	TFile *ROOT_TTBAR1 		= new TFile("Aug19_ttjets7_sec0_mistag1.root");
-	TFile *ROOT_TTBAR2 		= new TFile("Aug19_ttjets10_sec0_mistag1.root");
+	TFile *ROOT 			= new TFile("Oct7_mistag_data.root");
+	//TFile *ROOT			= new TFile("Aug19_sec0_mistag1.root");
+	TFile *ROOT_TTBAR1 		= new TFile("Oct7_mistag_ttjets7.root");
+	TFile *ROOT_TTBAR2 		= new TFile("Oct7_mistag_ttjets10.root");
 
    /* TH1D * topBigBinTagPt		    =  ROOT	-> Get("jet1PtTag");
 	TH1D * topBigBinProbePt		    =  ROOT -> Get("jet1PtProbe");
@@ -12,8 +12,8 @@
 	TH1D * topBigBinTagPtTTBAR		=  ROOT_TTBAR -> Get("jet1PtTag");
 	TH1D * topBigBinProbePtTTBAR	=  ROOT_TTBAR -> Get("jet1PtProbe");	
 */
-        TH1D * topTagPt			        =  ROOT	-> Get("antiBTagPt");
-	TH1D * topProbePt		        =  ROOT -> Get("antiBProbePt");
+        TH1D * topTagPt			        =  ROOT	-> Get("lowmMinTagPt");
+	TH1D * topProbePt		        =  ROOT -> Get("lowmMinProbePt");
 
 
 //	TH1D * signalTagPt				= Signal->Get("antiTagPt");
@@ -23,13 +23,13 @@
 //	signalProbePt->Scale(0.08*19600./90000.);
 
 
-	TH1D * topTagPtTTBAR		    =  ROOT_TTBAR1 -> Get("antiBTagPt");
-	TH1D * topProbePtTTBAR		    =  ROOT_TTBAR1 -> Get("antiBProbePt");	
+	TH1D * topTagPtTTBAR		    =  ROOT_TTBAR1 -> Get("lowmMinTagPt");
+	TH1D * topProbePtTTBAR		    =  ROOT_TTBAR1 -> Get("lowmMinProbePt");	
 	
-	TH1D * topTagPtTTBAR2		    =  ROOT_TTBAR2 -> Get("antiBTagPt");
-	TH1D * topProbePtTTBAR2		    =  ROOT_TTBAR2 -> Get("antiBProbePt");	
+	TH1D * topTagPtTTBAR2		    =  ROOT_TTBAR2 -> Get("lowmMinTagPt");
+	TH1D * topProbePtTTBAR2		    =  ROOT_TTBAR2 -> Get("lowmMinProbePt");	
 	// Remove TTBAR contamination from data driven QCD estimate
-	double luminosity = (7400.);  
+	double luminosity = (19395.);  
 	double DataSetNevents_TT1_TuneZ2  = 3082812.;
 	double DataSetNevents_TT2_TuneZ2  = 1249111.;
 	double sigma_TT_TuneZ2   =  234;
@@ -117,14 +117,14 @@
 	prelim = TLatex();
     	prelim.SetNDC();
         prelim.DrawLatex( 0.159, 0.956, "#scale[0.8]{CMS Preliminary, #sqrt{s} = 8 TeV, 19.6 fb^{-1}}" );
-        //prelim.DrawLatex( 0.5, 0.91, "#scale[0.8]{Mistag Rate from QCD MC}" );
+        prelim.DrawLatex( 0.12, 0.85, "#scale[1.0]{WP5}" );
     
-        //c1000->SaveAs("mistag_plot_PAS.pdf");
+        c1000->SaveAs("mistag_lowmMin_1b.pdf");
 
 
   
     	TFile *Out;
-	Out = new TFile("mistag_lowmMin_oneB.root","RECREATE");  //MISTAG_4p7fb
+	Out = new TFile("mistag_lowmMin_1b.root","RECREATE");  //MISTAG_4p7fb
 	Out->cd();
 	
 	MISTAG_RATE_SubtractTTBAR->Write();

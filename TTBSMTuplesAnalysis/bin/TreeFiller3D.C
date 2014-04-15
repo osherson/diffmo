@@ -21,7 +21,7 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	
 	
 	float puWeight, jet1Eta, jet2Eta, deltaY, genTopPt1, genTopPt2, jet1Mass, jet2Mass, jet1MinMass, jet2MinMass, jet1BDisc, jet2BDisc, jet1SubjetMaxBDisc, jet2SubjetMaxBDisc,
-			jet1tau32, jet2tau32, jet1Pt, jet2Pt, jetPtForMistag, mttMass, mttMassPred, mistagWt, mistagWtErr, mistagWtAll, mistagWtNsubAll, mistagWtNsub, NNoutput, ptReweight, cutflow, index;
+			jet1tau32, jet2tau32, jet1Pt, jet2Pt, jetPtForMistag, mttMass, mttMassPred, mistagWt, mistagWtErr, mistagWtAll, mistagWtNsubAll, mistagWtNsub, NNoutput, ptReweight, cutflow, index, trigWt;
 	int jet1NSubjets, jet2NSubjets, npv;
 		
 	origFiles->SetBranchAddress("npv", &npv);
@@ -51,7 +51,7 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	origFiles->SetBranchAddress("mistagWt", &mistagWt);
 	origFiles->SetBranchAddress("genTopPt1", &genTopPt1);	
 	origFiles->SetBranchAddress("genTopPt2", &genTopPt2);	
-
+	origFiles->SetBranchAddress("trigWt", &trigWt);
 	
 	TFile *newFile = new TFile(outFile.c_str(), "RECREATE");
 	TTree *newTree = origFiles->CloneTree(0);
@@ -68,7 +68,7 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	newTree->SetBranchAddress("ptReweight", &ptReweight);
 	newTree->SetBranchAddress("puWeight", &puWeight);
 	newTree->SetBranchAddress("mistagWtErr", &mistagWtErr);
-	
+
 /*	
 	TMVA::Reader* reader = new TMVA::Reader();
 	reader->AddVariable("jet1Eta", &jet1Eta);
@@ -91,8 +91,10 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 	//TFile *mistagFileLow = new TFile("notCSVL_notCSVM_mistag.root");
 	//TFile *mistagFileMed = new TFile("CSVL_notCSVM_mistag.root");
 	//TFile *mistagFileHi = new TFile("CSVM_mistag.root");
-	TFile *mistagFile = new TFile("Feb12_mistag.root");//data_AllBscore_mistag_Dec16.root");
+	TFile *mistagFile = new TFile("Mar26_mistag.root");//data_AllBscore_mistag_Dec16.root");
 	histName = "MISTAG_RATE_SUB_TTBAR_Inclusive";
+	TFile *triggerFile = new TFile("trigger_weights.root");
+	TH1F *triggerHist = (TH1F *) triggerFile->Get("triggerHist");
 	TH3F *mistagRateHistAll = (TH3F *) mistagFile->Get( histName.c_str() )->Clone();	
 	cout << histName << endl;
 	cout << "Entries " << mistagRateHistAll->Integral() << endl;	
@@ -106,12 +108,12 @@ void TreeFiller(string inFiles, string outFile, string histName) {
 		mistagWt = 0.000;
 		mistagWtNsub = 30.0000;
 		puWeight = puWeightsHist->GetBinContent(npv); 	
-	
+		triggerWt = triggerHist->GetBinContent( triggerHist->FindBin( jet1Pt + jet2Pt ) );
 
 		if (cutflow == 4 || index == 1){
 		
-		//	if (genTopPt1 > 400) genTopPt1 = 400;
-		//	if (genTopPt2 > 400) genTopPt2 = 400;
+			if (genTopPt1 > 400) genTopPt1 = 400;
+			if (genTopPt2 > 400) genTopPt2 = 400;
 			//NNoutput =  reader->EvaluateMVA("MLP");
 			ptReweight = sqrt( exp(0.156 - 0.00137*genTopPt1)*exp(0.156 - 0.00137*genTopPt2) );			
 			

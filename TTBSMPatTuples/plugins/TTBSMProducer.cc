@@ -374,6 +374,7 @@ TTBSMProducer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     if (genTop.size() == 2) {
         *mttgen = (genTop[0]->p4() + genTop[1]->p4()).M();
+	//if (*mttgen > 700) return false;
     }
   }
 

@@ -19,11 +19,11 @@ void MistagPlotter(TString outfileName) {
 
 
 
-	TString filenames[3] = { "Oct7_mistag_data.root", "Oct7_mistag_ttjets7.root", "Oct7_mistag_ttjets10.root" };
+	TString filenames[3] = { "Oct7_mistag_data.root", "FINAL/Mar26_ttjets7_mistag.root", "FINAL/Mar26_ttjets10_mistag.root"};
 	
 	
 	
-	float jet1Pt, jet2Pt, jet1Mass, jet2Mass, jet1BTag, jet2BTag, jet1MinMass, jet2MinMass, jet1tau32, jet2tau32, x;
+	float jet1Pt, jet2Pt, genTopPt1, genTopPt2, jet1Mass, jet2Mass, jet1BTag, jet2BTag, jet1MinMass, jet2MinMass, jet1tau32, jet2tau32, x;
 	int jet1TopTag, jet2TopTag;
 	TRandom3 *random = new TRandom3();
 	
@@ -148,8 +148,10 @@ void MistagPlotter(TString outfileName) {
 		files->SetBranchAddress("jet2MinMass", &jet2MinMass);
 		files->SetBranchAddress("jet1tau32", &jet1tau32);
 		files->SetBranchAddress("jet2tau32", &jet2tau32);
-		
-		
+		files->SetBranchAddress("genTopPt1", &genTopPt1);
+		files->SetBranchAddress("genTopPt2", &genTopPt2);	
+
+	
 		
 		
 		for (int ev = 0; ev < files->GetEntries(); ev++){
@@ -159,12 +161,16 @@ void MistagPlotter(TString outfileName) {
 			files->GetEntry(ev);
 			
 			x = random->Rndm();
+			float ptWeight = 1.0;
+			if (genTopPt1 > 400) genTopPt1 = 400;
+			if (genTopPt2 > 400) genTopPt2 = 400;
+			cout << genTopPt1 << "   " << genTopPt2 << endl;	
 			
 			if (x < 0.5){
 			
 				if (jet1MinMass < 30.0) {
 		//		if (jet2BTag < 0.244) {			
-					topProbePt[i]->Fill(ptMap(jet2Pt), bMap(jet2BTag), tauMap(jet2tau32));
+					topProbePt[i]->Fill(ptMap(jet2Pt), bMap(jet2BTag), tauMap(jet2tau32), ptWeight);
 
 
 					topProbe1D[int(bMap(jet2BTag))][int(tauMap(jet2tau32))][i]->Fill(jet2Pt);
@@ -172,7 +178,7 @@ void MistagPlotter(TString outfileName) {
 
 					if (jet2TopTag && jet2BTag > bTagConds[cond] && jet2tau32 < nSubTagConds[cond] && jet1BTag > bProbeConds[cond] && jet1tau32 < nSubProbeConds[cond]) {
 		
-							topTagPt[i]->Fill(ptMap(jet2Pt), bMap(jet2BTag), tauMap(jet2tau32));
+							topTagPt[i]->Fill(ptMap(jet2Pt), bMap(jet2BTag), tauMap(jet2tau32), ptWeight);
 							topTag1D[int(bMap(jet2BTag))][int(tauMap(jet2tau32))][i]->Fill(jet2Pt);
 				}
 				}
@@ -183,13 +189,13 @@ void MistagPlotter(TString outfileName) {
 			
 				if (jet2MinMass < 30.0) {
 		//		if (jet1BTag < 0.244){	
-					topProbePt[i]->Fill(ptMap(jet1Pt), bMap(jet1BTag), tauMap(jet1tau32));
+					topProbePt[i]->Fill(ptMap(jet1Pt), bMap(jet1BTag), tauMap(jet1tau32), ptWeight);
 					topProbe1D[int(bMap(jet1BTag))][int(tauMap(jet1tau32))][i]->Fill(jet1Pt);
 		
 
 					if (jet1TopTag && jet1BTag > bTagConds[cond] && jet1tau32 < nSubTagConds[cond]  && jet2BTag > bProbeConds[cond] && jet2tau32 < nSubProbeConds[cond]) {
 
-						topTagPt[i]->Fill(ptMap(jet1Pt), bMap(jet1BTag), tauMap(jet1tau32));
+						topTagPt[i]->Fill(ptMap(jet1Pt), bMap(jet1BTag), tauMap(jet1tau32), ptWeight);
 						topTag1D[int(bMap(jet1BTag))][int(tauMap(jet1tau32))][i]->Fill(jet1Pt);
 						
 
@@ -239,7 +245,7 @@ void MistagPlotter(TString outfileName) {
 				topProbe1D[csvBin][tauBin][0]->Add(topTag1D[csvBin][tauBin][1], -1);
 				topProbe1D[csvBin][tauBin][0]->Add(topTag1D[csvBin][tauBin][2], -1);
 
-				topTag1D[csvBin][tauBin][0]->Divide(topProbe1D[csvBin][tauBin][0]);
+				topTag1D[csvBin][tauBin][0]->Divide(topTag1D[csvBin][tauBin][0], topProbe1D[csvBin][tauBin][0], 1, 1, "B");
 
 			}	
 		}
@@ -260,7 +266,7 @@ void MistagPlotter(TString outfileName) {
 	//TH3F *rebin_tagH = (TH3F *) topTagPt[0]->Rebin(1,"rebin_tagH");//X(num_bins, "rebin_tagH", bins);
 	//TH3F *rebin_probeH = (TH3F *) topProbePt[0]->Rebin(1, "rebin_probeH");//X(num_bins, "rebin_probeH", bins);	
 	
-	rebin_tagH->Divide(rebin_probeH);
+	rebin_tagH->Divide(rebin_tagH, rebin_probeH, 1, 1, "B");
 
 	
 

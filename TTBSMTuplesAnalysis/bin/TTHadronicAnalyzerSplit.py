@@ -226,21 +226,21 @@ for event in events:
     #	continue
 
 
-    #eventPassed = False
-    #if options.useMC :
-    #	 eventPassed = True
+    eventPassed = False
+    if options.useMC :
+    	 eventPassed = True
 
     #print eventPassed 
 
  
-    #if not options.useMC :
-    #    eventPassed = triggerSelection.select(event)
+    if not options.useMC :
+        eventPassed = triggerSelection.select(event)
     	
 
-    #if eventPassed:
-    analyzer.analyze(event)
-    #else:
-    #	continue
+    if eventPassed:
+    	analyzer.analyze(event)
+    else:
+    	continue
 
 del analyzer
 
