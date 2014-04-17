@@ -137,7 +137,6 @@ void HEPtuplizer::beginJob()
 bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Make cuts/adjustments/corrections:
 	{
 	// shorthand
-	std::cout<<"welcome!\n";
   	typedef std::vector<reco::Candidate::PolarLorentzVector> p4_vector;
 
 	// handles and labels start here :
@@ -145,25 +144,17 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
   	iEvent.getByLabel( pvSrc_, h_pv );
 
 
-	std::cout<<"1!\n";
   	edm::Handle<std::vector<pat::Jet> > h_ca8Jets;
 	iEvent.getByLabel( ca8Src_, h_ca8Jets);
-	std::cout<<"2!\n";
   	edm::Handle<std::vector<pat::Jet> > h_Pca8Jets;
 	iEvent.getByLabel( ca8toptagSrc_, h_Pca8Jets);
-	std::cout<<"3!\n";
  	edm::Handle<std::vector<pat::Jet> > h_topTag;
 	iEvent.getByLabel( ca8prunedSrc_, h_topTag);
-	std::cout<<"4!\n";
     	edm::Handle<std::vector<pat::Muon> > muonHandle;
     	iEvent.getByLabel (muonSrc_, muonHandle);
-	std::cout<<"5!\n";
     	edm::Handle<std::vector<pat::Electron > > electronHandle;
     	iEvent.getByLabel (electronSrc_, electronHandle);
-	std::cout<<"6!\n";
 	// handles and labels end here!
-
-	std::cout<<"loaded all the event stuff!\n";
 	// event
   	std::auto_ptr<unsigned int> npv( new unsigned int() );
 	// lepton
@@ -211,7 +202,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	std::auto_ptr<std::vector<double>> Tsub2CSV(new std::vector<double>());
 	std::auto_ptr<std::vector<double>> Tsub3CSV(new std::vector<double>());
 
-	std::cout<<"created the auto-pointers!\n";
 	// Number of reconstructed PV's
   	*npv = h_pv->size();
 	// MET:
@@ -230,14 +220,30 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 		muonsiso->push_back(pfIso);
 		reco::Candidate::PolarLorentzVector muon_nocuts (pt, imuon->eta(), imuon->phi(), imuon->mass());
 		muons->push_back(muon_nocuts);
-		unsigned int is_tight_muon = 1;
-		if (not imuon->isGlobalMuon()) is_tight_muon = 0;
-		if (not imuon->isTrackerMuon()) is_tight_muon = 0;
-		if (not static_cast<int>( imuon->numberOfValidHits()) > 10) is_tight_muon = 0;
-		if (not imuon->dB() < 0.2) is_tight_muon = 0;
-		if (not imuon->normChi2() < 10) is_tight_muon = 0;
-		if (not imuon->numberOfMatchedStations() > 0) is_tight_muon = 0;
-		if (not imuon->track()->hitPattern().numberOfValidPixelHits() > 0) is_tight_muon = 0;
+		unsigned int is_tight_muon = 0;
+		if (imuon->isGlobalMuon()) 
+			{
+			if (imuon->isTrackerMuon()) 
+				{
+				if (static_cast<int>( imuon->numberOfValidHits()) > 10) 
+					{
+					if (imuon->dB() < 0.2) 
+						{
+						if (imuon->normChi2() < 10) 
+							{
+							if (imuon->numberOfMatchedStations() > 0) 
+								{
+								if (imuon->track()->hitPattern().numberOfValidPixelHits() > 0) 
+									{
+									is_tight_muon = 1;
+									} 
+								}
+							}
+						}
+					}
+				}
+			}
+
 		muonsistight->push_back(is_tight_muon);
 		if (is_tight_muon == 0) 
 			{
@@ -246,7 +252,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 			}	
 	}
 
-	std::cout<<"muons are done!\n";
 	// electrons
     	for ( std::vector<pat::Electron>::const_iterator electronBegin = electronHandle->begin(), electronEnd = electronHandle->end(), ielectron = electronBegin; ielectron != electronEnd; ++ielectron ) 
 	{
@@ -258,9 +263,14 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 		electronsiso->push_back(pfIso);
 		reco::Candidate::PolarLorentzVector electron_nocuts (pt, ielectron->eta(), ielectron->phi(), ielectron->mass());
 		electrons->push_back(electron_nocuts);
-		unsigned int is_tight_ele = 1;
-		if (not ielectron->dB() < 0.2) is_tight_ele = 0;
-		if (not ielectron->gsfTrack()->trackerExpectedHitsInner().numberOfHits() < 1) is_tight_ele = 0;
+		unsigned int is_tight_ele = 0;
+		if (ielectron->dB() < 0.2) 
+			{
+			if (not ielectron->gsfTrack()->trackerExpectedHitsInner().numberOfHits() < 1) 
+				{
+				is_tight_ele = 1;
+				}
+			}
 		electronsistight->push_back(is_tight_ele);
 		if (is_tight_ele == 0) 
 			{
@@ -270,7 +280,7 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	}
 
 
-	std::cout<<"electrons are done!\n";
+
 	// Jet Collections
 	// Multi-obj Quantities
 	std::vector<double> tau1quant;
@@ -341,8 +351,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 		
 		
 	}
-
-	std::cout<<"CA8s are done!\n";
 	// Prunced CA8 (previously Wtag)
 	for ( std::vector<pat::Jet>::const_iterator jetBegin = h_Pca8Jets->begin(), jetEnd = h_Pca8Jets->end(), ijet = jetBegin; ijet != jetEnd; ++ijet )
 	{
@@ -464,7 +472,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 
 	}
 
-	std::cout<<"PCA8s are done!\n";
 	// TopTagged
 	for ( std::vector<pat::Jet>::const_iterator jetBegin = h_topTag->begin(), jetEnd = h_topTag->end(), ijet = jetBegin; ijet != jetEnd; ++ijet ) 
 		{
@@ -583,7 +590,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 		Topjets->push_back(corrJet);
 
 		}
-	std::cout<<"CA8s are done!\n";
 
 
 	// here we start finishing up
@@ -630,7 +636,6 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	iEvent.put(Ttau2, "Ttau2");
 	iEvent.put(Ttau3, "Ttau3");
 	iEvent.put(Ttau4, "Ttau4");
-	std::cout<<"put stuff!!!!\n";
 
 	return true;
 }
