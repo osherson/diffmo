@@ -87,9 +87,11 @@ HEPtuplizer::HEPtuplizer(const edm::ParameterSet& iConfig) :
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > ("muons"); // muon
 	produces<std::vector<unsigned int>>("muonsistight");
 	produces<std::vector<double>>("muonsiso");
+	produces<std::vector<signed int>>("muonscharge");
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > ("electrons"); // electron
 	produces<std::vector<unsigned int>>("electronsistight");
 	produces<std::vector<double>>("electronsiso");
+	produces<std::vector<signed int>>("electronscharge");
 	// jet collections:
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > ("CA8jets"); // basic ca8
 	produces<std::vector<double>>("CA8jetsCSV");
@@ -161,8 +163,10 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
         std::auto_ptr<p4_vector> muons( new p4_vector() );
 	std::auto_ptr<std::vector<unsigned int> > muonsistight ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<double>> muonsiso(new std::vector<double>());
+	std::auto_ptr<std::vector<signed int> > muonscharge ( new std::vector<signed int>() );
         std::auto_ptr<p4_vector> electrons( new p4_vector() );
 	std::auto_ptr<std::vector<unsigned int> > electronsistight ( new std::vector<unsigned int>() );
+	std::auto_ptr<std::vector<signed int> > electronscharge ( new std::vector<signed int>() );
 	std::auto_ptr<std::vector<double>> electronsiso(new std::vector<double>());
 	// jets
   	std::auto_ptr<p4_vector> CA8jets( new p4_vector() );
@@ -218,6 +222,8 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	  	double pt    = imuon->pt() ;
 	  	double pfIso = (chIso + nhIso + gIso) / pt;
 		muonsiso->push_back(pfIso);
+		signed int charge = imuon->charge();
+		muonscharge->push_back(charge);
 		reco::Candidate::PolarLorentzVector muon_nocuts (pt, imuon->eta(), imuon->phi(), imuon->mass());
 		muons->push_back(muon_nocuts);
 		unsigned int is_tight_muon = 0;
@@ -261,6 +267,8 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	  	double pt    = ielectron->pt() ;
 	  	double pfIso = (chIso + nhIso + gIso) / pt;
 		electronsiso->push_back(pfIso);
+		signed int charge = ielectron->charge();
+		electronscharge->push_back(charge);
 		reco::Candidate::PolarLorentzVector electron_nocuts (pt, ielectron->eta(), ielectron->phi(), ielectron->mass());
 		electrons->push_back(electron_nocuts);
 		unsigned int is_tight_ele = 0;
@@ -598,9 +606,11 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	iEvent.put( muons, "muons");
 	iEvent.put( muonsistight, "muonsistight");
 	iEvent.put( muonsiso, "muonsiso");
+	iEvent.put( muonscharge, "muonscharge");
 	iEvent.put( electrons, "electrons");
 	iEvent.put( electronsistight, "electronsistight");
 	iEvent.put( electronsiso, "electronsiso");
+	iEvent.put( electronscharge, "electronscharge");
 	iEvent.put(CA8jets, "CA8jets");
 	iEvent.put(CA8jetsCSV, "CA8jetsCSV");	
 	iEvent.put(prunedCA8jets, "prunedCA8jets");
