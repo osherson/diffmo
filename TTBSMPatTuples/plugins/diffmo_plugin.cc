@@ -54,7 +54,8 @@ namespace LHAPDF{
 		}
 
 // Class Def:
-class HEPtuplizer : public edm::EDFilter 	{ // open primary class def
+class HEPtuplizer : public edm::EDFilter 	
+{ // open primary class def
    public:
       explicit HEPtuplizer(const edm::ParameterSet&);
      ~HEPtuplizer();
@@ -63,22 +64,31 @@ class HEPtuplizer : public edm::EDFilter 	{ // open primary class def
       virtual bool filter(edm::Event&, const edm::EventSetup&); // this is essentially the Ntuplizer code
       virtual void endJob() ;
 	// member data
-	edm::InputTag pvSrc_;
-	edm::InputTag ca8Src_;
-	edm::InputTag ca8prunedSrc_;
-	edm::InputTag ca8toptagSrc_;
-	edm::InputTag muonSrc_;
-	edm::InputTag electronSrc_;
-					}; // close primary class def
+	edm::InputTag 			pvSrc_;
+	edm::InputTag 			ca8Src_;
+	edm::InputTag 			ca8prunedSrc_;
+	edm::InputTag 			ca8toptagSrc_;
+	edm::InputTag 			ak5Src_;
+	edm::InputTag 			muonSrc_;
+	edm::InputTag 			electronSrc_;  
+}; // close primary class def
 
 HEPtuplizer::HEPtuplizer(const edm::ParameterSet& iConfig) :
 	pvSrc_ 		(iConfig.getParameter<edm::InputTag>("pvSrc")),
+	ak5Src_ 	(iConfig.getParameter<edm::InputTag>("ak5Src")),
 	ca8Src_ 	(iConfig.getParameter<edm::InputTag>("ca8Src")),
 	ca8prunedSrc_ 	(iConfig.getParameter<edm::InputTag>("ca8prunedSrc")),
 	ca8toptagSrc_ 	(iConfig.getParameter<edm::InputTag>("ca8toptagSrc")),
 	muonSrc_  	(iConfig.getParameter<edm::InputTag>("muonSrc")),
 	electronSrc_  	(iConfig.getParameter<edm::InputTag>("electronSrc"))
 	{
+
+
+
+	// Get the factorized jet corrector. 
+	// The payloads contain N elements, 
+	// the Nth is the uncertainty, and the first N-1 elements are the
+  	// actual correction levels. 
 
 	// List what branches we'll fill:
 	// event info:
@@ -145,13 +155,14 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
   	edm::Handle< std::vector<reco::Vertex> > h_pv;
   	iEvent.getByLabel( pvSrc_, h_pv );
 
-
+  	edm::Handle<std::vector<pat::Jet> > h_ak5Jets;
+	iEvent.getByLabel( ak5Src_, h_ak5Jets);
   	edm::Handle<std::vector<pat::Jet> > h_ca8Jets;
 	iEvent.getByLabel( ca8Src_, h_ca8Jets);
   	edm::Handle<std::vector<pat::Jet> > h_Pca8Jets;
-	iEvent.getByLabel( ca8toptagSrc_, h_Pca8Jets);
+	iEvent.getByLabel( ca8prunedSrc_, h_Pca8Jets);
  	edm::Handle<std::vector<pat::Jet> > h_topTag;
-	iEvent.getByLabel( ca8prunedSrc_, h_topTag);
+	iEvent.getByLabel( ca8toptagSrc_, h_topTag);
     	edm::Handle<std::vector<pat::Muon> > muonHandle;
     	iEvent.getByLabel (muonSrc_, muonHandle);
     	edm::Handle<std::vector<pat::Electron > > electronHandle;
@@ -168,7 +179,9 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	std::auto_ptr<std::vector<unsigned int> > electronsistight ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<signed int> > electronscharge ( new std::vector<signed int>() );
 	std::auto_ptr<std::vector<double>> electronsiso(new std::vector<double>());
-	// jets
+	// jets  	
+	std::auto_ptr<p4_vector> AK5jets( new p4_vector() );
+	std::auto_ptr<std::vector<double>> AK5jetsCSV(new std::vector<double>());  
   	std::auto_ptr<p4_vector> CA8jets( new p4_vector() );
 	std::auto_ptr<std::vector<double>> CA8jetsCSV(new std::vector<double>());  
   	std::auto_ptr<p4_vector> prunedCA8jets( new p4_vector() );
@@ -289,7 +302,7 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 
 
 
-	// Jet Collections
+		// -----  Jet Collections
 	// Multi-obj Quantities
 	std::vector<double> tau1quant;
 	std::vector<double> tau2quant;
@@ -484,6 +497,7 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	for ( std::vector<pat::Jet>::const_iterator jetBegin = h_topTag->begin(), jetEnd = h_topTag->end(), ijet = jetBegin; ijet != jetEnd; ++ijet ) 
 		{
     		reco::Candidate::LorentzVector uncorrJet = ijet->correctedP4(0);
+
 		reco::Candidate::PolarLorentzVector corrJet (uncorrJet.pt(), uncorrJet.eta(), uncorrJet.phi(), uncorrJet.mass());
 		TjetsCSV->push_back(ijet->bDiscriminator("combinedSecondaryVertexBJetTags"));
 		unsigned int Tnsub = ijet->numberOfDaughters();
@@ -598,6 +612,15 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 		Topjets->push_back(corrJet);
 
 		}
+	// AK5
+	for ( std::vector<pat::Jet>::const_iterator jetBegin = h_ak5Jets->begin(), jetEnd = h_ak5Jets->end(), ijet = jetBegin; ijet != jetEnd; ++ijet ) 
+	{
+		reco::Candidate::LorentzVector uncorrJet = ijet->correctedP4(0);
+		reco::Candidate::PolarLorentzVector corrJet (uncorrJet.pt(), uncorrJet.eta(), uncorrJet.phi(), uncorrJet.mass());
+		AK5jetsCSV->push_back(ijet->bDiscriminator("combinedSecondaryVertexBJetTags"));
+		AK5jets->push_back(corrJet);
+
+	}
 
 
 	// here we start finishing up
@@ -611,6 +634,8 @@ bool HEPtuplizer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Ma
 	iEvent.put( electronsistight, "electronsistight");
 	iEvent.put( electronsiso, "electronsiso");
 	iEvent.put( electronscharge, "electronscharge");
+	iEvent.put(AK5jets, "AK5jets");
+	iEvent.put(AK5jetsCSV, "AK5jetsCSV");
 	iEvent.put(CA8jets, "CA8jets");
 	iEvent.put(CA8jetsCSV, "CA8jetsCSV");	
 	iEvent.put(prunedCA8jets, "prunedCA8jets");

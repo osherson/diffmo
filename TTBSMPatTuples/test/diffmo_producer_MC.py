@@ -7,6 +7,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000))
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/eos/uscms/store/user/lpctlbsm/noreplica/dsperka/SingletopWprime_M-1100_right_TuneZ2star_8TeV-comphep/Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3/99bd99199697666ff01397dad5652e9e/tlbsm_53x_v3_mc_128_1_eB8.root'))
 process.diffmo = cms.EDFilter('HEPtuplizer', 
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
+				ak5Src = cms.InputTag('goodPatJetsPF'),
 				ca8Src = cms.InputTag('goodPatJetsCA8PF'),
 				ca8prunedSrc = cms.InputTag('goodPatJetsCA8PrunedPFPacked'),
 				ca8toptagSrc = cms.InputTag('goodPatJetsCATopTagPFPacked'),
