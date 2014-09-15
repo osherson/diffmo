@@ -1,18 +1,67 @@
 import FWCore.ParameterSet.Config as cms
 
-########################### good vs selected? ############################
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing('analysis')
+options.register('runOnData', 0, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag for data (True) or MC (False), used to decide whether to apply b-tagging SF")
+options.register('JES', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Scale. Options are nominal (off), up, and down - forced to nominal for data")
+options.register('JER', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Resolution Smearing. Options are nominal, up, and down - forced to nominal for data")
+
+options.parseArguments()
+print options
+
+############### jesFactor ###############
+# 0.00 for no jes uncertainty
+# +/- n to scale up or down by n% and add in quadrature with uncertainty. 0.03 for CA8 jets from AK7. 
+
+############### jerFactor ###############
+# 0.10 for the default resolution smearing for both pT and the angular distributions
+# +/- 0.10 to scale up or down the resolution. So, 0.20 or 0.00
+
+if options.runOnData:
+	runOnData = cms.bool(True)
+	jesFactor = cms.double(0.00)
+	jerFactor = cms.double(0.10)
+else:
+	runOnData = cms.bool(False)
+	if options.JES == 'nominal':
+		jesFactor = cms.double(0.00)
+	if options.JES == 'up':
+		jesFactor = cms.double(0.03)
+	if options.JES == 'down':
+		jesFactor = cms.double(-0.03)
+	if options.JER == 'nominal':
+		jerFactor = cms.double(0.10)
+	if options.JER == 'up':
+		jerFactor = cms.double(0.20)
+	if options.JER == 'down':
+		jerFactor = cms.double(0.00)
+
+if options.runOnData:
+	theJecPayloads = cms.vstring([
+		'FT_53_V21_AN5_L1FastJet_AK7PFchs.txt',
+		'FT_53_V21_AN5_L2Relative_AK7PFchs.txt',
+		'FT_53_V21_AN5_L3Absolute_AK7PFchs.txt',
+		'FT_53_V21_AN5_L2L3Residual_AK7PFchs.txt',
+		'FT_53_V21_AN5_Uncertainty_AK7PFchs.txt'
+	])
+else:
+	theJecPayloads = cms.vstring([
+		'START53_V27_L1FastJet_AK7PFchs.txt',
+		'START53_V27_L2Relative_AK7PFchs.txt',
+		'START53_V27_L3Absolute_AK7PFchs.txt',
+		'START53_V27_Uncertainty_AK7PFchs.txt'
+	])
 
 # Run:
 process = cms.Process("diffmo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/eos/uscms/store/user/lpctlbsm/noreplica/yxin/Jet/Run2012A-22Jan2013-v1_TLBSM_53x_v3/45cbb6c27540456f7aaf244304c73a89/tlbsm_53x_v3_data_100_1_hIa.root'))
 process.diffmogen = cms.EDFilter('DiFfMoGeneral',
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				metSrc = cms.InputTag('patMETsPFlow'),
 				triggerSrc = cms.InputTag('placeholder'),
-				isData = cms.bool(True),
+				isData = runOnData,
 				readTriggers = cms.bool(False),
 				triggers = cms.vstring([
 					'placeholder1',
@@ -35,17 +84,12 @@ process.diffmoca8 =   cms.EDFilter("DiFfMoHadronic",
 				subcorr = cms.string('no'),
 				btagType = cms.string(''),
 				basecorr = cms.int32(1),
-				isData = cms.bool(True),
-				jetScale = cms.double(0.0),   #
-				jetPtSmear = cms.double(0.1), # note these three are fractional
-				jetEtaSmear = cms.double(0.1),#
-				jecPayloads = cms.vstring([
-					'START53_L1FastJet_AK7PFchs.txt',
-					'START53_L2Relative_AK7PFchs.txt',
-					'START53_L3Absolute_AK7PFchs.txt',
-					'START53_Uncertainty_AK7PFchs.txt'
-					]),
-				mkSubSize = cms.double(0.0),
+				isData = runOnData,
+				jetScale = jesFactor,
+				jetPtSmear = jerFactor,
+				jetAngularSmear = jerFactor,
+				jecPayloads = theJecPayloads,
+				mkSubSize = cms.double(1.0),
 				addTopTagInfo = cms.bool(False),
 				jetName = cms.string('UnprunedCA8'))
 
@@ -71,12 +115,6 @@ process.diffmoca8ppsub =  process.diffmoca8pp.clone(
 				subcorr = cms.string('no'),
 				jetName = cms.string('SelectedSubjetsPrunedCA8'))
 
-#goodPatJetsCA8PF
-#goodPatJetsCA8PrunedPFPacked
-#goodPatJetsCATopTagPFPacked
-#				jetSrc = cms.InputTag('selectedPatJetsCATopTagSubjetsPF'),
-#selectedPatJetsCA8PrunedSubjetsPF
-# 
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 process.p = cms.Path(	process.diffmogen*
 			process.diffmoleps1*
@@ -84,11 +122,6 @@ process.p = cms.Path(	process.diffmogen*
 			process.diffmoca8*
 			process.diffmoca8pp*
 			process.diffmoca8tt
-			#process.diffmoHadronicTop
-			#process.diffmoca8tt
-			#process.diffmoca8ppsub*
-			#process.diffmoca8ttsub
-
 			)
 process.out = cms.OutputModule("PoolOutputModule",
 							   fileName = cms.untracked.string("diffmotester.root"),
