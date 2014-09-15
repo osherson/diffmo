@@ -67,4 +67,24 @@ namespace LEPDF
 		}
 		return is_tight_ele;
 	}
+
+	unsigned int lepModTight(std::vector<pat::Electron>::const_iterator electron)
+	{
+		double abseta = std::abs(electron->superCluster()->eta());
+		if (abseta <= 1.4442 || abseta >= 1.5660) {
+			return 0;
+		}
+		else {
+			if (electron->dB() >= 0.02) {
+				return 0;
+			}
+			else {
+				//not sure about this one
+				if (electron->gsfTrack()->dz() >= 0.01) {
+					return 0;
+				}
+				else return 1;
+			}
+		}
+	}
 }

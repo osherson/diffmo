@@ -40,6 +40,7 @@ lepName_	(iConfig.getParameter<std::string>("lepName"))
 {
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > (lepName_);
 	produces<std::vector<unsigned int>>(lepName_+"istight");
+	produces<std::vector<unsigned int>>(lepName_+"modtight");
 	produces<std::vector<double>>(lepName_+"iso");
 	produces<std::vector<signed int>>(lepName_+"charge");
 }
@@ -58,6 +59,7 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	std::auto_ptr<p4_vector> leps( new p4_vector() );
 	std::auto_ptr<std::vector<unsigned int> > lepsistight ( new std::vector<unsigned int>() );
+	std::auto_ptr<std::vector<unsigned int> > lepmodtight ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<signed int> > lepscharge ( new std::vector<signed int>() );
 	std::auto_ptr<std::vector<double>> lepsiso(new std::vector<double>());
 
@@ -75,6 +77,8 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			reco::Candidate::PolarLorentzVector lep_nocuts (ielec->pt(), ielec->eta(), ielec->phi(), ielec->mass());
 			leps->push_back(lep_nocuts);
 			lepsistight->push_back(LEPDF::lepTight(ielec));
+			//modified selection for electrons
+			lepmodtight->push_back(LEPDF::lepModTight(ielec));
 		}
 	}
 	if (is_mu)
@@ -88,10 +92,13 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			reco::Candidate::PolarLorentzVector lep_nocuts (imuon->pt(), imuon->eta(), imuon->phi(), imuon->mass());
 			leps->push_back(lep_nocuts);
 			lepsistight->push_back(LEPDF::lepTight(imuon));
+			//not currently useful for muons
+			lepmodtight->push_back(LEPDF::lepTight(imuon));
 		}
 	}
 	iEvent.put( leps, lepName_);
 	iEvent.put( lepsistight, lepName_+"istight");
+	iEvent.put( lepmodtight, lepName_+"modtight");
 	iEvent.put( lepscharge, lepName_+"charge");
 	iEvent.put( lepsiso, lepName_+"iso");
 	return true;
