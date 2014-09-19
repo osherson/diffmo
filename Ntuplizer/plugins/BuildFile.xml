@@ -1,6 +1,6 @@
 <export>
 </export>
-<library   name="AnalysisTTBSMPatTuplesplugins" file="*.cc">
+<library   name="AnalysisNtuplizerplugins" file="*.cc">
   <use   name="FWCore/Framework"/>
   <use   name="FWCore/ParameterSet"/>
   <use   name="FWCore/MessageLogger"/>
@@ -11,9 +11,9 @@
   <use   name="DataFormats/TrackReco"/>
   <use   name="DataFormats/PatCandidates"/>
   <use   name="PhysicsTools/UtilAlgos"/>
-  <use   name="Analysis/BoostedTopAnalysis"/>
   <use   name="ElectroWeakAnalysis/Utilities"/>
   <use   name="HLTrigger/HLTcore"/>
+  <use   name="CondFormats/JetMETObjects"/>
   <use   name = "fastjet"/>
   <use   name="root"/>
 </library>

@@ -11,8 +11,9 @@
 
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h" 
 #include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 
-#include "Analysis/SHyFT/interface/SHyFTPFSelector.h"
+//#include "Analysis/SHyFT/interface/SHyFTPFSelector.h"
 
 #include <iostream>
 using namespace std;

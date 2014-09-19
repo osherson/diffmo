@@ -1,7 +1,0 @@
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_6.root
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_5.root
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_4.root
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_3.root
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_2.root
-/store/user/srappocc/QCDDiJet_Pt800to1000/qcd_800_ttbsm_10TeV_v1/ca22e1aed44b252c67f3a30248fdc775/./ttbsm_ca_pat_331_1.root
-

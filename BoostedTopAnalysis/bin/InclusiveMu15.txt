@@ -1,6 +1,0 @@
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_6_1_eB7.root
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_5_1_Nn4.root
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_4_1_aXr.root
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_3_1_ZfL.root
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_2_1_URV.root
-dcap:///pnfs/cms/WAX/11/store/user/srappocc/InclusiveMu15/ttbsm_361_v1/b1d67a30642fd6ff3b587d38017fc160/semiSkimPretag_1_1_LLX.root
