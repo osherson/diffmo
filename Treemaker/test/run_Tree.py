@@ -6,9 +6,7 @@ import ROOT
 
 from optparse import OptionParser
 
-#from example_treemaker import *
 from top_xs_tree import *
-
 
 #### This bit allows us to run the analyzer using command-line options
 parser = OptionParser()
