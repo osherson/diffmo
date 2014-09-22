@@ -5,10 +5,8 @@ import math
 from math import *
 import sys
 
-sys.path.insert(0, '/uscms_data/d3/osherson/HEP_GROUP_NTUPLES/DiFfMo/CMSSW_5_3_14/src/Analysis/Treemaker/Tools')
-from JetTools import *
-from lepWmaker import *
-
+from Analysis.Tools.JetTools import *
+from Analysis.Tools.lepWmaker import *
 
 class tree_maker:
 	def __init__(self, prunedname, unprunedname, outputname):
