@@ -4,19 +4,15 @@ from array import array
 import math
 from math import *
 import sys
-#from operator import itemgetter,attrgetter
 
-#sys.path.insert(0, '/uscms_data/d3/osherson/HEP_GROUP_NTUPLES/DiFfMo/CMSSW_5_3_14/src/Analysis/Treemaker/Tools')
-sys.path.insert(0, '../Tools')
-from JetTools import *
-from lepWmaker import *
-
+from Analysis.Tools.JetTools import *
 
 class tree_maker:
-	def __init__(self, prunedname, unprunedname, outputname):
+	def __init__(self, prunedname, unprunedname, outputname, seed):
 		# load all the event info:
 		self.numbtag = 0
 		self.name = outputname
+		self.seed = seed
 
 		#General Quantities
 		#N Primary Vertices
@@ -31,9 +27,8 @@ class tree_maker:
 		
 		#Pruned Jet Collection
 		#We need this for CSV values and subjet CSV values
-		########################## I want to eventually compare this pruned collection vs the top tagged one. For now, let's use prunded because marc ###############
 		self.prunedHandle = Handle("vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > > " )
-		self.prunedLabel  = ( prunedname[0], prunedname[1] )
+		self.prunedLabel  = ( "diffmoca8pp", "PrunedCA8CORR" )
 
 		#Btagging CSV values
 		self.CSVHandle = Handle( "std::vector<double>" )
@@ -52,7 +47,7 @@ class tree_maker:
 		#TopTagged Jet collection
 		#Eventually this is the one we will use most likely
 		self.topTaggedHandle = Handle("vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > > " )
-		self.topTaggedLabel  = ( "diffmoca8tt", "TopTaggedPrunedCA8")
+		self.topTaggedLabel  = ( "diffmoca8tt", "TopTaggedPrunedCA8CORR")
 		
 		#Number of Subjets
 		self.NsubjetsHandle = Handle( "std::vector<unsigned int>" )
@@ -69,8 +64,8 @@ class tree_maker:
 		#Unpruned Jet collection
 		#We need this to get N-subjettiness
 		self.unprunedHandle = Handle("vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > > ")
-		self.unprunedLabel  = (unprunedname[0], unprunedname[1])	
-		
+		self.unprunedLabel  = ( "diffmoca8", "UnprunedCA8CORR" )
+
 		#N-Subjettiness(tau)
 		self.t1Handle = Handle( "std::vector<double>" )
 		self.t1Label  = (unprunedname[0], unprunedname[1]+"tau1")
@@ -96,8 +91,7 @@ class tree_maker:
 		self.f = ROOT.TFile( self.name + ".root", "recreate" )
 		self.f.cd()
 		self.treeVars = ROOT.TTree('treeVars', 'treeVars')
-		# making histograms:
-		# self.object = array ("type", [initial value]) <- init val should be debug number.
+
 		self.run = array('i', [-1])
 		self.event = array('l', [-1])
 		self.lumi = array('i', [-1])
@@ -135,6 +129,10 @@ class tree_maker:
 		self.deltaPhi = array('f', [-10.0])
 		self.cutflow = array('f', [-1.0])
 
+		self.mistagWt = array('f', [-1.0])
+		self.mistagWt1B = array('f', [-1.0])
+		self.mistagWt2B = array('f', [-1.0])
+
 		self.treeVars.Branch('run', self.run, 'run/I')
 		self.treeVars.Branch('event', self.event, 'event/L')
 		self.treeVars.Branch('lumi', self.lumi, 'lumi/I')
@@ -162,16 +160,19 @@ class tree_maker:
 		self.treeVars.Branch('jet2tau32', self.jet2tau32, 'jet2tau32/F')
 		self.treeVars.Branch('jet1nSubj', self.jet1nSubj, 'jet1nSubj/I')
 		self.treeVars.Branch('jet2nSubj', self.jet2nSubj, 'jet2nSubj/I')
-	
-		self.treeVars.Branch('jet1nDaughters', self.jet1nDaughters, 'jet1nDaughters/I')
-		self.treeVars.Branch('jet2nDaughters', self.jet2nDaughters, 'jet2nDaughters/I')
-		
 		self.treeVars.Branch('jet1minMass', self.jet1minMass, 'jet1minMass/F')
 		self.treeVars.Branch('jet2minMass', self.jet2minMass, 'jet2minMass/F')
+
+		self.treeVars.Branch('jet1nDaughters', self.jet1nDaughters, 'jet1nDaughters/I')
+		self.treeVars.Branch('jet2nDaughters', self.jet2nDaughters, 'jet2nDaughters/I')
 
 		self.treeVars.Branch('deltaY', self.deltaY, 'deltaY/F')
 		self.treeVars.Branch('deltaPhi', self.deltaPhi, 'deltaPhi/F')
 		self.treeVars.Branch('cutflow', self.cutflow, 'cutflow/F')
+
+		self.treeVars.Branch('mistagWt', self.mistagWt, 'mistagWt/F')
+		self.treeVars.Branch('mistagWt1B', self.mistagWt1B, 'mistagWt1B/F')
+		self.treeVars.Branch('mistagWt2B', self.mistagWt2B, 'mistagWt2B/F')
 
 		self.invarmass = array('f', [-1.0])
 		self.jetangle = array('f', [-10.0])
@@ -231,137 +232,196 @@ class tree_maker:
 		minMass = self.minMassHandle.product()
 		topTagTopMass = self.topTagTopMassHandle.product()
 
-		#if (self.prunedHandle.isValid() and self.unprunedHandle.isValid()) :
+		jet1topTagged = 0
+		jet2topTagged = 0
+
 		if (self.prunedHandle.isValid() and self.unprunedHandle.isValid() and self.topTaggedHandle.isValid()) :
 			unpj = self.unprunedHandle.product()
 			pj = self.prunedHandle.product()
 			ttpj = self.topTaggedHandle.product()
 			
+			#Total number of events seen:
+			self.cutflow[0] = 0.0
+			self.treeVars.Fill()
+
 			## approximately 3% of the time we have more pj than unpj. Why? Shouldn't this be impossible?
 			## The pruning can separate 2 subjets into standalone jets so this makes sense
 			if len(unpj)<len(pj):
 				self.numbtag=self.numbtag+1
 
-			if len(pj) < 2 or len(unpj) < 2 or len(ttpj) < 2:
-				self.cutflow[0] = 1.0
+			#One jet, including top tagged:
+			if len(pj) < 1 or len(unpj) < 1 or len(ttpj) < 1:
+				self.cutflow[0] = 0.1
 				self.treeVars.Fill()
-				if len(pj) < 2:
-					self.cutflow[0] = 1.1
+				if len(pj) < 1:
+					self.cutflow[0] = 0.11
 					self.treeVars.Fill()
-				if len(unpj) < 2:
-					self.cutflow[0] = 1.2
+				if len(unpj) < 1:
+					self.cutflow[0] = 0.12
 					self.treeVars.Fill()
-					#print len(unpj),len(pj)
-				if len(ttpj) < 2:
-					self.cutflow[0] = 1.3
+				if len(ttpj) < 1:
+					self.cutflow[0] = 0.13
 					self.treeVars.Fill()
-					#print len(unpj),len(pj)
 				self.reset()
 				return
 
+			#Make sure there's at least a top condidiate by checking the pT
+			nTopCand = 0
+			for i in range(0,len(ttpj) ) :
+				if( ttpj[i].pt() > 400 ) :
+					nTopCand = nTopCand + 1
+					#HTsum += topJets[i].pt()
+				if nTopCand < 1 :
+					self.reset()
+					return
 			
+			self.MET[0] = metPt
+			self.npv[0] = npv
+
+			#Number of events with >=1 i top jet with pt >400
+			self.cutflow[0] = 1.0
+			self.treeVars.Fill()
+
+			#Reorder to make sure the highest pT is first. This is after any JEC. Is this correct?
+			#pt_sorted_jets = ttpj
+			pt_sorted_jets = ReorderByPt(ttpj)
+
 			#We need these for the substructure
 			ca1 = ROOT.TLorentzVector()
-			ca2 = ROOT.TLorentzVector()
-			
-			pt_sorted_pj = ReorderByPt(pj)
 
-			ca1.SetPtEtaPhiM(pt_sorted_pj[0].Pt(), pt_sorted_pj[0].Eta(), pt_sorted_pj[0].Phi(), pt_sorted_pj[0].M())
-			ca2.SetPtEtaPhiM(pt_sorted_pj[1].Pt(), pt_sorted_pj[1].Eta(), pt_sorted_pj[1].Phi(), pt_sorted_pj[1].M())
+			#We create the CA jet to match and fill the first jet's parameters			
+			ca1.SetPtEtaPhiM(pt_sorted_jets[0].Pt(), pt_sorted_jets[0].Eta(), pt_sorted_jets[0].Phi(), pt_sorted_jets[0].M())
+			self.jet1pt[0] = ca1.Pt()
+			self.jet1eta[0] = ca1.Eta()
+			self.jet1phi[0] = ca1.Phi()
+			self.jet1mass[0] = ca1.M()
 
 			#Match unpruned jets with pruned - so we have both subjet btagging and nsubjettiness
 			#This returns the index of the jet in the first collection that matches within dr = 0.4 to the jet of the second argument
 			jet1matchIndex = MatchCol(unpj, ca1)
-			jet2matchIndex = MatchCol(unpj, ca2)
-
 			#This is temporary so we get the correct pj index for CSV and subjet CSV
 			jet1matchIndex_pj = MatchCol(pj, ca1)
-			jet2matchIndex_pj = MatchCol(pj, ca2)
-
 			#Again temporary to match toptagged for Nsubjets, minMass, and topMass
 			jet1matchIndex_tt = MatchCol(ttpj, ca1)
-			jet2matchIndex_tt = MatchCol(ttpj, ca2)
 
-			up_match1 = ROOT.TLorentzVector()
-			up_match1.SetPtEtaPhiM(unpj[jet1matchIndex].Pt(), unpj[jet1matchIndex].Eta(), unpj[jet1matchIndex].Phi(), unpj[jet1matchIndex].M())
-
-			# Do we have matches?
-			if jet1matchIndex==-1 or jet2matchIndex==-1:
-				self.cutflow[0] = 2.0
+			#Make sure matching is correct for jet1
+			if jet1matchIndex==-1 or jet1matchIndex_pj==-1 or jet1matchIndex_tt ==-1:
+				self.cutflow[0] = 1.1
 				self.treeVars.Fill()
 				if jet1matchIndex==-1:
+					self.cutflow[0] = 1.11
+					self.treeVars.Fill()
+				if jet1matchIndex_pj==-1:
+					self.cutflow[0] = 1.12
+					self.treeVars.Fill()
+				if jet1matchIndex_tt==-1:
+					self.cutflow[0] = 1.13
+					self.treeVars.Fill()
+				self.reset()
+				return
+
+			#Make sure the subjets are filled
+			if len(nSubjets)==0:
+				self.cutflow[0] = 1.2
+				self.treeVars.Fill()
+				self.reset()
+				return
+
+			#Top Tagging Parameters
+			jet1minMassVal = minMass[jet1matchIndex_tt]
+			self.jet1nSubj[0] = nSubjets[jet1matchIndex_tt]
+			self.jet1minMass[0] = jet1minMassVal
+			#### This should rightfully be jet1mass and jet2mass ####
+			self.jet1topMass[0] = topTagTopMass[jet1matchIndex_tt]
+	
+			#Check if jet 1 is top taggged
+			if self.jet1topMass[0] > 140.0 and self.jet1topMass[0] < 250.0 and self.jet1minMass[0] > 50.0 and self.jet1nSubj[0] > 2:
+				#First jet is fully Top-Tagged
+				self.cutflow[0] = 2.0
+				self.treeVars.Fill()
+				jet1topTagged = 1
+			else:
+				self.cutflow[0] = 1.3
+				self.treeVars.Fill()
+				# self.reset()					#We don't want to return so that we can fill the mistag contribution
+				# return
+		
+			#Do the same as above for a second jet now
+			if len(pj) < 2 or len(unpj) < 2 or len(ttpj) < 2:
+				if jet1topTagged:
 					self.cutflow[0] = 2.1
 					self.treeVars.Fill()
-				if jet2matchIndex==-1:
+					if len(pj) < 2:
+						self.cutflow[0] = 2.11
+						self.treeVars.Fill()
+					if len(unpj) < 2:
+						self.cutflow[0] = 2.12
+						self.treeVars.Fill()
+					if len(ttpj) < 2:
+						self.cutflow[0] = 2.13
+						self.treeVars.Fill()
+				self.reset()
+				return
+
+			#Jet 2 Basic Parameters
+			ca2 = ROOT.TLorentzVector()
+			ca2.SetPtEtaPhiM(pt_sorted_jets[1].Pt(), pt_sorted_jets[1].Eta(), pt_sorted_jets[1].Phi(), pt_sorted_jets[1].M())
+			self.jet2pt[0] = ca2.Pt()
+			self.jet2eta[0] = ca2.Eta()
+			self.jet2phi[0] = ca2.Phi()
+			self.jet2mass[0] = ca2.M()
+			
+			#Jet 2 Matching
+			jet2matchIndex_tt = MatchCol(ttpj, ca2)
+			jet2matchIndex_pj = MatchCol(pj, ca2)
+			jet2matchIndex = MatchCol(unpj, ca2)
+
+			#Make sure matching is correct for jet2
+			if jet2matchIndex==-1 or jet2matchIndex_pj==-1 or jet2matchIndex_tt ==-1:
+				if jet1topTagged:
 					self.cutflow[0] = 2.2
 					self.treeVars.Fill()
+					if jet2matchIndex==-1:
+						self.cutflow[0] = 2.21
+						self.treeVars.Fill()
+					if jet2matchIndex_pj==-1:
+						self.cutflow[0] = 2.22
+						self.treeVars.Fill()
+					if jet2matchIndex_tt==-1:
+						self.cutflow[0] = 2.23
+						self.treeVars.Fill()
 				self.reset()
 				return
 
-			################# subjet csv is tied with pj, so we want only the index that matches that appropriate jet #####################
-
-			############# can be removed eventually ###################
-			if jet1matchIndex == jet2matchIndex:
-				print "jet indices %i match" %jet1matchIndex
-				print "jet1 = %d %d %d %d" %(ca1.Pt(), ca1.Eta(), ca1.Phi(), ca1.M())
-				print "jet2 = %d %d %d %d" %(ca2.Pt(), ca2.Eta(), ca2.Phi(), ca2.M())
-				print "up   = %d %d %d %d" %(unpj[jet1matchIndex].Pt(), unpj[jet1matchIndex].Eta(), unpj[jet1matchIndex].Phi(), unpj[jet1matchIndex].M())
-				print "deltaR1 = %d deltaR2 = %d" %(up_match1.DeltaR(ca1), up_match1.DeltaR(ca2))
-
-			self.MET[0] = metPt
-			self.npv[0] = npv
-
-			# Do we have matches to topTags?
-			if jet1matchIndex_tt==-1 or jet2matchIndex_tt==-1:
-				self.cutflow[0] = 2.3
-				self.treeVars.Fill()
-				if jet1matchIndex_tt==-1:
-					self.cutflow[0] = 2.4
+			#2nd jet with pT > 400:
+			jet2ptcheck = 0
+			if self.jet2pt[0] > 400.:
+				if jet1topTagged:
+					self.cutflow[0] = 3.0
 					self.treeVars.Fill()
-				if jet2matchIndex_tt==-1:
-					self.cutflow[0] = 2.5
-					self.treeVars.Fill()
-				self.reset()
-				return
-			
-			# print nSubjets
-			# print jet1matchIndex,jet2matchIndex
-			# print jet1matchIndex_tt,jet2matchIndex_tt
-			# print len(nSubjets)
-			# print nsubjetsPruned
-			# print jet2matchIndex_pj
-			# print len(nsubjetsPruned)
-
-			if len(nSubjets)==0:
-				self.cutflow[0] = 3.0
-				self.treeVars.Fill()
-				self.reset()
-				return
+					jet2ptcheck = 1
 			else:
-				self.jet1nSubj[0] = nSubjets[jet1matchIndex_tt]
-				self.jet2nSubj[0] = nSubjets[jet2matchIndex_tt]
-				if len(nSubjets)<3:
-					self.cutflow[0] = 4.0
+				if jet1topTagged:
+					self.cutflow[0] = 2.3
 					self.treeVars.Fill()
-					self.reset()
-					return
+				# self.reset()
+				# return
+
+			#Jet 2 top-tagging parameters
+			jet2minMassVal = minMass[jet2matchIndex_tt]
+			self.jet2nSubj[0] = nSubjets[jet2matchIndex_tt]
+			self.jet2minMass[0] = jet2minMassVal
+			self.jet2topMass[0] = topTagTopMass[jet2matchIndex_tt]
+
 			##################### We don't really need this but here it is ###################################
 			if len(nDaughters)>0:
 				self.jet1nDaughters[0] = nDaughters[jet1matchIndex]
 				self.jet2nDaughters[0] = nDaughters[jet2matchIndex]
 
-			################ We should probably get the mass and mimass from the tag infos after adding to the ntuple ######################
-			################ At this moment, we're actually completely unable to make the min mass, but it's correlated to tau32, so let's look there first ##################
-
-		 	self.jet1pt[0] = ca1.Pt()
-			self.jet2pt[0] = ca2.Pt()
-			self.jet1eta[0] = ca1.Eta()
-			self.jet2eta[0] = ca2.Eta()
-			self.jet1phi[0] = ca1.Phi()
-			self.jet2phi[0] = ca2.Phi()
-			self.jet1mass[0] = ca1.M()
-			self.jet2mass[0] = ca2.M()
+			#Invarient Mass			
 			self.invarmass[0] = (ca1+ca2).M()
+
+			#Angular Parameters
 			self.jetangle[0] = ca1.DeltaR(ca2)
 			self.deltaY[0] = (ca1.Rapidity() - ca2.Rapidity())
 			deltaPhi = ca1.Phi() - ca2.Phi()
@@ -371,25 +431,27 @@ class tree_maker:
 				deltaPhi = deltaPhi + 2*ROOT.TMath.Pi()
 			self.deltaPhi[0] = deltaPhi
 
+			#Nsubjettiness
+			if Tau2[jet1matchIndex] == 0 or Tau2[jet2matchIndex] == 0 :
+				if jet1topTagged and jet2ptcheck:
+					self.cutflow[0] == 3.1
+					self.treeVars.Fill()
+				self.reset()
+				return
+
+			jet1tau32Val = Tau3[jet1matchIndex] / Tau2[jet1matchIndex]
+			jet2tau32Val = Tau3[jet2matchIndex] / Tau2[jet2matchIndex]
+			self.jet1tau32[0] = jet1tau32Val
+			self.jet2tau32[0] = jet2tau32Val
+
+			#Fill the btagging information
 			self.jet1csv[0] = CSVVals[jet1matchIndex_pj]
 			self.jet2csv[0] = CSVVals[jet2matchIndex_pj]
-
-			self.jet1minMass[0] = minMass[jet1matchIndex_tt]
-			self.jet2minMass[0] = minMass[jet2matchIndex_tt]
-
-			#### This should rightfully be jet1mass and jet2mass ####
-			self.jet1topMass[0] = topTagTopMass[jet1matchIndex_tt]
-			self.jet2topMass[0] = topTagTopMass[jet2matchIndex_tt]
 			
-			#if jet2matchIndex_pj<jet1matchIndex_pj:
-				#print "sorted pj"
-			# if Tau2[0]
-			self.jet1tau32[0] = Tau3[jet1matchIndex] / Tau2[jet1matchIndex]
-			self.jet2tau32[0] = Tau3[jet2matchIndex] / Tau2[jet2matchIndex]
-
-			############# Let's make this a loop over all subjets eventually and not just the leading 4 ##############################
+			#Fill the subjet btagging information
 			if jet1matchIndex_pj>len(subjet1CSV) or jet1matchIndex_pj>len(subjet2CSV) or jet1matchIndex_pj>len(subjet3CSV) or jet1matchIndex_pj>len(subjet4CSV):
-				print "Out of range: %i, %i, %i, %i, %i, %i, %i" %(jet1matchIndex_pj, len(subjet1CSV), len(subjet2CSV), len(subjet3CSV), len(subjet4CSV), len(pt_sorted_pj), len(unpj))
+				print "Out of range: %i, %i, %i, %i, %i, %i, %i" %(jet1matchIndex_pj, len(subjet1CSV), len(subjet2CSV), len(subjet3CSV), len(subjet4CSV), len(pt_sorted_jets), len(unpj))
+				self.reset()
 				return
 			jet1subjetCSVs = []
 			jet1subjetCSVs.append(subjet1CSV[jet1matchIndex_pj])
@@ -398,7 +460,8 @@ class tree_maker:
 			jet1subjetCSVs.append(subjet4CSV[jet1matchIndex_pj])
 
 			if jet2matchIndex_pj>len(subjet1CSV) or jet2matchIndex_pj>len(subjet2CSV) or jet2matchIndex_pj>len(subjet3CSV) or jet2matchIndex_pj>len(subjet4CSV):
-				print "Out of range: %i, %i, %i, %i, %i, %i, %i" %(jet2matchIndex_pj, len(subjet1CSV), len(subjet2CSV), len(subjet3CSV), len(subjet4CSV), len(pt_sorted_pj), len(unpj))
+				print "Out of range: %i, %i, %i, %i, %i, %i, %i" %(jet2matchIndex_pj, len(subjet1CSV), len(subjet2CSV), len(subjet3CSV), len(subjet4CSV), len(pt_sorted_jets), len(unpj))
+				self.reset()
 				return
 			jet2subjetCSVs = []
 			jet2subjetCSVs.append(subjet1CSV[jet2matchIndex_pj])
@@ -409,25 +472,74 @@ class tree_maker:
 			self.jet1maxSubjetCSV[0] = max(jet1subjetCSVs)
 			self.jet2maxSubjetCSV[0] = max(jet2subjetCSVs)
 
-			if self.jet1topMass[0] <= 140.0 or self.jet1topMass[0] >= 250.0 or self.jet2topMass[0] <= 140.0 or self.jet2topMass[0] >= 250.0:
-				self.cutflow[0] = 5.0
+			#Check if the second jet is top-tagged
+			if self.jet2topMass[0] > 140.0 and self.jet2topMass[0] < 250.0 and self.jet2minMass[0] > 50.0 and self.jet2nSubj[0] > 2:
+				#Two top-tagged jets with pt>400
+				if jet1topTagged and jet2ptcheck:
+					self.cutflow[0] = 4.0
+					self.index[0] = 1
+					self.treeVars.Fill()
+					jet2topTagged = 1
+				#Second jet is top tagged, but the first is not
+				elif jet2ptcheck:
+					self.cutflow[0] = 3.3
+					self.treeVars.Fill()
+			else:
+				self.cutflow[0] = 3.2
 				self.treeVars.Fill()
-				if self.jet1topMass[0] <= 140.0 or self.jet1topMass[0] >= 250.0:
-					self.cutflow[0] = 5.1
-					self.treeVars.Fill()
-				if self.jet2topMass[0] <= 140.0 or self.jet2topMass[0] >= 250.0:
-					self.cutflow[0] = 5.2
-					self.treeVars.Fill()
+				# self.reset()
+				# return
+
+
+			#Mistag Contribution
+			if nTopCand < 2:
 				self.reset()
 				return
 
-			if self.jet1minMass[0] <= 50.0:
-				self.cutflow[0] = 6.0
-				self.treeVars.Fill()
-				return
+			temp_x = ROOT.TRandom3(self.seed)
+			x = temp_x.Uniform(1.0)
 
-			self.index[0] = 1
-			self.treeVars.Fill()
+			bTag1 = max(jet1subjetCSVs) > 0.679
+			bTag2 = max(jet2subjetCSVs) > 0.679
+	
+			bTagLoose1 = max(jet1subjetCSVs) > 0.244
+			bTagLoose2 = max(jet2subjetCSVs) > 0.244
+
+			topTag1WP1 = jet1topTagged and jet1tau32Val < 0.7 and bTagLoose1
+			topTag2WP1 = jet2topTagged and jet2tau32Val < 0.7 and bTagLoose2
+			
+			topTag1WP2 = jet1topTagged and jet1tau32Val < 0.6 and bTagLoose1
+			topTag2WP2 = jet2topTagged and jet2tau32Val < 0.6 and bTagLoose2
+
+			topTag1WP3 = jet1topTagged and jet1tau32Val < 0.55 and bTag1
+			topTag2WP3 = jet2topTagged and jet2tau32Val < 0.55 and bTag2
+
+			topTag1WP4 = jet1topTagged and jet1tau32Val < 0.5 and bTag1 and jet1minMassVal > 65
+			topTag2WP4 = jet2topTagged and jet2tau32Val < 0.5 and bTag2 and jet2minMassVal > 65
+
+			topTag1WP5 = jet1topTagged and jet1tau32Val < 0.4 and bTag1 and jet1minMassVal > 55
+			topTag2WP5 = jet2topTagged and jet2tau32Val < 0.4 and bTag2 and jet2minMassVal > 55
+	
+
+			if x < 0.5:
+				if jet1topTagged:
+					self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
+					self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[1].pt()) )
+					self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[1].pt()) )
+					self.index[0] = 2
+					self.treeVars.Fill()
+					self.reset()
+
+			if x >= 0.5:
+				if jet2topTagged:
+					self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
+					self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
+					self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
+					self.index[0] = 2
+					self.treeVars.Fill()
+					self.reset()
+
+			#self.treeVars.Fill()
 			self.reset()
 			return 			
 
@@ -463,15 +575,19 @@ class tree_maker:
 		self.jet1minMass[0] = -1.0
 		self.jet2minMass[0] = -1.0
 
+		self.jet1nDaughters[0] = -1
+		self.jet2nDaughters[0] = -1
+
 		self.deltaY[0] = -10.0
 		self.deltaPhi[0] = -10.0
 		self.cutflow[0] = -1.0
 
+		self.mistagWt[0] = -1.0
+		self.mistagWt1B[0] = -1.0
+		self.mistagWt2B[0] = -1.0
+
 		self.invarmass[0] = -1.0
 		self.jetangle[0] = -10.0
-
-		self.jet1nDaughters[0] = -1
-		self.jet2nDaughters[0] = -1
 
 	def __del__(self):	
 		print str(self.numbtag)

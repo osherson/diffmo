@@ -6,15 +6,13 @@ import ROOT
 
 from optparse import OptionParser
 
-#from example_treemaker import *
-from top_xs_tree import *
-
+from top_xs_TreeMaker import *
 
 #### This bit allows us to run the analyzer using command-line options
 parser = OptionParser()
 
 parser.add_option('-i', '--dirs', metavar='F', type='string', action='store',
-					default='/uscms_data/d3/dfehling/diffmo_072314_update/CMSSW_5_3_17/src/Analysis/Ntuplizer/test/Data_Run_C_lumi/res/',
+                    default='/uscms_data/d3/dfehling/diffmo_091014_update/CMSSW_5_3_17/src/Analysis/Ntuplizer/test/Data_Run_C_condor/res/',
 					dest='dirs',
 					help='Input Directories (glob format)')
 
@@ -34,7 +32,7 @@ parser.add_option('--totalSec', metavar='N', type='int', action='store',
 					help='Total number of sections (will be this number + 1)')
 
 parser.add_option('--seed', metavar='N', type='int', action='store',
-					default=1234,
+					default=12345,
 					dest='seed',
 					help='Random Seed')
 
