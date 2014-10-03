@@ -1,1 +1,0 @@
-dcap:///pnfs/cms/WAX/11/store/user/skhalil/WJetsToLNu_TuneD6T_7TeV-madgraph-tauola/shyft_387_v1/58c449dbeb9a6e986b9b7014f36267b3/shyft_386_mc_9_1_poS.root
