@@ -139,7 +139,7 @@ process.p = cms.Path(	process.diffmogen*
 process.out = cms.OutputModule("PoolOutputModule",
 							   fileName = cms.untracked.string("diffmo_v4.root"),
 							   SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p')),
-							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*'))
+							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_TriggerResults_*_PAT'))
 process.outpath = cms.EndPath(process.out)
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.out.dropMetaData = cms.untracked.string("DROPPED")
