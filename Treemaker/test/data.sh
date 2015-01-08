@@ -2,9 +2,11 @@
 
 for i in `seq 0 20`;
 do 
-#     python TTHadronicAnalyzerSplit.py --analyzer=TTPairAnalyzer --dirs='/uscms_data/d3/dfehling/NTUPLES/from_jim/TTBAR_ALLHAD/all_data/' --outfile=Jan14_data_newPilotMistag --triggerFile=TRIGGER_EFF_TYPE11 --triggerWeight=noWeight --modMassFile=ModMassFileQCD --mistagFile='/uscms_data/d3/dfehling/NTUPLES/from_pilot/data_AllBscore_mistag_Dec16.root' --useMC --sec=${i} --totalSec=20 &
 
-python run_TopXS_Tree.py --dirs='/uscms_data/d3/dfehling/diffmo_091014_update/CMSSW_5_3_17/src/Analysis/Ntuplizer/test/Data_Run_C_condor/res/' --outfile=data_run_C_lumi_sec_${i} --sec=${i} --totalSec=20 &
+python run_top_xs_TreeMaker.py --dirs='/uscms_data/d3/dfehling/NTUPLES/Jan7/data_A/' --outfile=output/data_A_sec_${i} --sec=${i} --sec=${i} --totalSec=20 --mistagFile=mistag_lowMPM &
+python run_top_xs_TreeMaker.py --dirs='/uscms_data/d3/dfehling/NTUPLES/Jan7/data_B/' --outfile=output/data_B_sec_${i} --sec=${i} --sec=${i} --totalSec=20 --mistagFile=mistag_lowMPM &
+python run_top_xs_TreeMaker.py --dirs='/uscms_data/d3/dfehling/NTUPLES/Jan7/data_C/' --outfile=output/data_C_sec_${i} --sec=${i} --sec=${i} --totalSec=20 --mistagFile=mistag_lowMPM &
+python run_top_xs_TreeMaker.py --dirs='/uscms_data/d3/dfehling/NTUPLES/Jan7/data_D/' --outfile=output/data_D_sec_${i} --sec=${i} --sec=${i} --totalSec=20 --mistagFile=mistag_lowMPM &
 
 done
 exit
