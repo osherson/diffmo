@@ -71,7 +71,7 @@ for event in events:
 	count = count + 1
 	if count % 10000 == 0 or count == 1:
 			percentDone = float(count) / float(ntotal) * 100.0
-			print 'Processing Job {0} {1:10.0f}/{2:10.0f} : {3:5.2f} %'.format(section, count, ntotal, percentDone )
+			print 'Processing Job {0:2.0f} {1:10.0f}/{2:10.0f} : {3:5.2f} %'.format(section, count, ntotal, percentDone )
 
 	error = analyzer.analyze(event)
 	analyzer.reset()
