@@ -2,10 +2,9 @@ import FWCore.ParameterSet.Config as cms
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
-options.register('runOnData', 0, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag for data (True) or MC (False), used to decide whether to apply b-tagging SF")
+options.register('runOnData', 1, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag for data (True) or MC (False), used to decide whether to apply b-tagging SF")
 options.register('JES', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Scale. Options are nominal (off), up, and down - forced to nominal for data")
 options.register('JER', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Resolution Smearing. Options are nominal, up, and down - forced to nominal for data")
-
 options.parseArguments()
 print options
 
@@ -38,11 +37,11 @@ else:
 
 if options.runOnData:
 	theJecPayloads = cms.vstring([
-		'FT_53_V21_AN5_L1FastJet_AK7PFchs.txt',
-		'FT_53_V21_AN5_L2Relative_AK7PFchs.txt',
-		'FT_53_V21_AN5_L3Absolute_AK7PFchs.txt',
-		'FT_53_V21_AN5_L2L3Residual_AK7PFchs.txt',
-		'FT_53_V21_AN5_Uncertainty_AK7PFchs.txt'
+		'Winter14_V5_DATA_L1FastJet_AK7PFchs.txt',
+		'Winter14_V5_DATA_L2Relative_AK7PFchs.txt',
+		'Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
+		'Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt',
+		'Winter14_V5_DATA_Uncertainty_AK7PFchs.txt'
 	])
 else:
 	theJecPayloads = cms.vstring([
@@ -55,18 +54,12 @@ else:
 # Run:
 process = cms.Process("diffmo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
-process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/eos/uscms/store/user/lpctlbsm/noreplica/yxin/Jet/Run2012A-22Jan2013-v1_TLBSM_53x_v3/45cbb6c27540456f7aaf244304c73a89/tlbsm_53x_v3_data_100_1_hIa.root'))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
+process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:root://xrootd.unl.edu//store/results/b2g/StoreResults/JetHT/USER/Run2012B_22Jan2013_TLBSM_53x_0161496fccaa0bf55fbb525b618345b5-v1/00000/00F149B6-E46B-E411-841F-0025905A610C.root'))
 process.diffmogen = cms.EDFilter('DiFfMoGeneral',
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				metSrc = cms.InputTag('patMETsPFlow'),
-				triggerSrc = cms.InputTag('placeholder'),
-				isData = runOnData,
-				readTriggers = cms.bool(False),
-				triggers = cms.vstring([
-					'placeholder1',
-					'placeholder2'
-					]))
+				isData = runOnData)
 process.diffmoleps1 = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatMuonsPFlowLoose'),
 				lepType = cms.string('muon'),
@@ -103,7 +96,11 @@ process.diffmoca8pp = process.diffmoca8.clone(
 process.diffmoca8tt = process.diffmoca8pp.clone(
 				jetSrc = cms.InputTag('goodPatJetsCATopTagPFPacked'),
 				addTopTagInfo = cms.bool(True),
-				jetName = cms.string('TopTaggedPrunedCA8'))
+				jetName = cms.string('TopTaggedCA8'))
+
+process.diffmohep = process.diffmoca8pp.clone(
+				jetSrc = cms.InputTag('goodPatJetsCAHEPTopTagPFPacked'),
+				jetName = cms.string('HEPTopTagged'))
 
 process.diffmoca8ttsub = process.diffmoca8pp.clone(
 				jetSrc = cms.InputTag('selectedPatJetsCATopTagSubjetsPF'),
@@ -116,17 +113,19 @@ process.diffmoca8ppsub =  process.diffmoca8pp.clone(
 				jetName = cms.string('SelectedSubjetsPrunedCA8'))
 
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
-process.p = cms.Path(	process.diffmogen*
+process.p = cms.Path(	
+			process.diffmogen*
 			process.diffmoleps1*
 			process.diffmoleps2*
 			process.diffmoca8*
 			process.diffmoca8pp*
-			process.diffmoca8tt
+			process.diffmoca8tt*
+			process.diffmohep
 			)
 process.out = cms.OutputModule("PoolOutputModule",
 							   fileName = cms.untracked.string("diffmotester.root"),
 							   SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p')),
-							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_diffmoHadronic_*_*'))
+							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_diffmoHadronic_*_*', 'keep *_TriggerResults_*_PAT'))
 process.outpath = cms.EndPath(process.out)
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.out.dropMetaData = cms.untracked.string("DROPPED")

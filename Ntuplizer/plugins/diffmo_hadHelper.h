@@ -6,7 +6,6 @@
 #include "fastjet/tools/Filter.hh"
 #include <fastjet/ClusterSequence.hh>
 #include <fastjet/ClusterSequenceArea.hh>
-#include <math.h>
 
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
@@ -24,7 +23,7 @@ namespace HADDF
 	typedef std::vector<reco::Candidate::PolarLorentzVector> p4_vector;
 	reco::Candidate::PolarLorentzVector blank (0.0, 0.0, 0.0, -100.0);
 
-	void CalculateTaus(std::vector<pat::Jet>::const_iterator jet, std::auto_ptr<std::vector<double>> &tau1, std::auto_ptr<std::vector<double>> &tau2, std::auto_ptr<std::vector<double>> &tau3, std::auto_ptr<std::vector<double>> &tau4)
+	void CalculateTaus(std::vector<pat::Jet>::const_iterator jet, std::auto_ptr<std::vector<double> > &tau1, std::auto_ptr<std::vector<double>> &tau2, std::auto_ptr<std::vector<double>> &tau3, std::auto_ptr<std::vector<double>> &tau4)
 	{
 		// tau vars
 		Nsubjettiness t1(1, Njettiness::AxesMode::onepass_kt_axes, 1.0, 0.8);
@@ -72,7 +71,6 @@ namespace HADDF
 		tau2->push_back(T2);
 		tau3->push_back(T3);
 		tau4->push_back(T4);
-
 		// make custom jets:
 		// AK
 		fastjet::JetDefinition jet_def_ak2(fastjet::antikt_algorithm, 0.2);
@@ -305,7 +303,7 @@ namespace HADDF
 		}
 	}
 
-	void  ApplyJec(std::vector<pat::Jet>::const_iterator jet, boost::shared_ptr<FactorizedJetCorrector> jec, boost::shared_ptr<JetCorrectionUncertainty> jecUnc, edm::Handle<std::vector<reco::GenJet> > genJ, std::auto_ptr<p4_vector> &jetC, std::auto_ptr<p4_vector> &sub0C, std::auto_ptr<p4_vector> &sub1C, std::auto_ptr<p4_vector> &sub2C, std::auto_ptr<p4_vector> &sub3C, unsigned int nsub, unsigned int npv, double rhoVal, double scale, double smear, double angularSmear, bool dosub, bool isData, double jecValue)
+	void  ApplyJec(std::vector<pat::Jet>::const_iterator jet, boost::shared_ptr<FactorizedJetCorrector> jec, boost::shared_ptr<JetCorrectionUncertainty> jecUnc, bool isData, edm::Handle<std::vector<reco::GenJet> > genJ, std::auto_ptr<p4_vector> &jetC, std::auto_ptr<p4_vector> &sub0C, std::auto_ptr<p4_vector> &sub1C, std::auto_ptr<p4_vector> &sub2C, std::auto_ptr<p4_vector> &sub3C, unsigned int nsub, unsigned int npv, double rhoVal, double scale, double smear, double angularSmear, bool dosub, double &JEC)
 	{
 		reco::Candidate::LorentzVector uncorrJet = jet->correctedP4(0);
 		jec->setJetEta( uncorrJet.eta() );
@@ -313,32 +311,21 @@ namespace HADDF
 		jec->setJetE  ( uncorrJet.energy() );
 		jec->setJetA  ( jet->jetArea() );
 		jec->setRho   ( rhoVal );
-		jec->setNPV   (npv);
+		jec->setNPV   ( npv );
 		double corr = jec->getCorrection();
 		reco::GenJet theMatchingGenJet;
 
-
 		float eta1 = uncorrJet.eta();
 		float phi1 = uncorrJet.phi();
-		float eta2, phi2, deltaR, deltaphi_gen;
-
+		float eta2, phi2, deltaR;
 
 		//Find matching genJet for systematic smearing
-
-		if (!isData) {
+		if(!isData) {
 			for ( std::vector<reco::GenJet>::const_iterator genJBegin = genJ->begin(), genJEnd = genJ->end(), igenjet = genJBegin; igenjet != genJEnd; ++igenjet) 
 			{
 				eta2 = igenjet->eta();
 				phi2 = igenjet->phi();
-				deltaphi_gen = phi2-phi1;
-				if (deltaphi_gen > M_PI ) {
-					deltaphi_gen = deltaphi_gen - 2*M_PI;
-				}
-				if (deltaphi_gen < -M_PI) {
-					deltaphi_gen = deltaphi_gen + 2*M_PI;
-				}
-
-				deltaR = sqrt( (eta2-eta1)*(eta2-eta1) + (deltaphi_gen)*(deltaphi_gen) );
+				deltaR = sqrt( (eta2-eta1)*(eta2-eta1) + (phi2-phi1)*(phi2-phi1) );
 				if (deltaR < 0.1) theMatchingGenJet = (*igenjet);
 			}
 		}
@@ -357,7 +344,7 @@ namespace HADDF
 			// Scale up or down by jetScale_
 			double ijetscale = (1 + sign * unc);
 			corr *= ijetscale;
-		} 
+		}
 		// angular_UP/DOWN
 		double etaScale = 1.0;
 		double phiScale = 1.0;
@@ -372,20 +359,12 @@ namespace HADDF
 		{
 			double recophi = jet->phi();
 			double genphi = theMatchingGenJet.phi();
-			double deltaphi = (recophi-genphi);
-			if (deltaphi > M_PI ) {
-				deltaphi = deltaphi - 2*M_PI;
-			}
-			if (deltaphi < -M_PI) {
-				deltaphi = deltaphi + 2*M_PI;
-			}
-			deltaphi *= angularSmear;
-
+			double deltaphi = (recophi-genphi)*angularSmear;
 			phiScale = std::max((double)0.0,(recophi+deltaphi)/recophi);
 		}
 		// smear_UP/DOWN
 		double ptSmear= 1.0;
-		if( fabs(smear) > -1.0 && theMatchingGenJet.pt() > 15.0 )  //This is negative because even at smear=0.00 we want to smear the pt down
+		if( fabs(smear) > -1.0 && theMatchingGenJet.pt() > 15.0 )  
 		{
 			double recopt = jet->pt();
 			double genpt = theMatchingGenJet.pt();
@@ -393,15 +372,14 @@ namespace HADDF
 			double deltapt = (recopt-genpt)*smear_factor;
 			ptSmear = std::max((double)0.0, (recopt+deltapt)/recopt);
 		}
-	
+
 		reco::Candidate::PolarLorentzVector corrJet (uncorrJet.pt(), uncorrJet.eta(), uncorrJet.phi(), uncorrJet.mass());
 		corrJet *=  (corr * ptSmear);
 		corrJet.SetEta( corrJet.eta() * etaScale );
 		corrJet.SetPhi( corrJet.phi() * phiScale );
-
+	
 		jetC->push_back( corrJet );
-		jecValue = corr * ptSmear;
-
+		JEC = corr * ptSmear;
 		if (dosub)
 		{
 			int startnull = 0;
@@ -473,11 +451,11 @@ namespace HADDF
 			}
 		}
 	}
-
-	void AddTopTagInfo(std::vector<pat::Jet>::const_iterator jet, std::auto_ptr<std::vector<double> > &topTagMinMass, std::auto_ptr<std::vector<double> > &topTagTopMass, double jecValue)
+	
+	void AddTopTagInfo(std::vector<pat::Jet>::const_iterator jet, std::auto_ptr<std::vector<double> > &topTagMinMass, std::auto_ptr<std::vector<double> > &topTagTopMass, double JEC)
 	{
 		const reco::CATopJetTagInfo * catopTag = dynamic_cast<reco::CATopJetTagInfo const *>(jet->tagInfo("CATop"));
-		topTagMinMass->push_back( catopTag->properties().minMass * (jecValue) );
-		topTagTopMass->push_back( catopTag->properties().topMass * (jecValue) );
+		topTagMinMass->push_back( catopTag->properties().minMass * (JEC) );
+		topTagTopMass->push_back( catopTag->properties().topMass * (JEC) );
 	}
 }

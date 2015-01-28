@@ -38,11 +38,11 @@ else:
 
 if options.runOnData:
 	theJecPayloads = cms.vstring([
-		'FT_53_V21_AN5_L1FastJet_AK7PFchs.txt',
-		'FT_53_V21_AN5_L2Relative_AK7PFchs.txt',
-		'FT_53_V21_AN5_L3Absolute_AK7PFchs.txt',
-		'FT_53_V21_AN5_L2L3Residual_AK7PFchs.txt',
-		'FT_53_V21_AN5_Uncertainty_AK7PFchs.txt'
+		'Winter14_V5_DATA_L1FastJet_AK7PFchs.txt',
+		'Winter14_V5_DATA_L2Relative_AK7PFchs.txt',
+		'Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
+		'Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt',
+		'Winter14_V5_DATA_Uncertainty_AK7PFchs.txt'
 	])
 else:
 	theJecPayloads = cms.vstring([
@@ -55,18 +55,12 @@ else:
 # Run:
 process = cms.Process("diffmo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
-process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('root://xrootd.unl.edu//store/results/B2G/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/02621A0E-40C2-E211-9F42-002590593902.root'))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
+process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:root://xrootd.unl.edu//store/results/B2G/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/02621A0E-40C2-E211-9F42-002590593902.root'))
 process.diffmogen = cms.EDFilter('DiFfMoGeneral',
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				metSrc = cms.InputTag('patMETsPFlow'),
-				triggerSrc = cms.InputTag('placeholder'),
-				isData = runOnData,
-				readTriggers = cms.bool(False),
-				triggers = cms.vstring([
-					'placeholder1',
-					'placeholder2'
-					]))
+				isData = runOnData)
 process.diffmoleps1 = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatMuonsPFlowLoose'),
 				lepType = cms.string('muon'),
@@ -103,7 +97,11 @@ process.diffmoca8pp = process.diffmoca8.clone(
 process.diffmoca8tt = process.diffmoca8pp.clone(
 				jetSrc = cms.InputTag('goodPatJetsCATopTagPFPacked'),
 				addTopTagInfo = cms.bool(True),
-				jetName = cms.string('TopTaggedPrunedCA8'))
+				jetName = cms.string('TopTaggedCA8'))
+
+process.diffmohep = process.diffmoca8pp.clone(
+				jetSrc = cms.InputTag('goodPatJetsCAHEPTopTagPFPacked'),
+				jetName = cms.string('HEPTopTagged'))
 
 process.diffmoca8ttsub = process.diffmoca8pp.clone(
 				jetSrc = cms.InputTag('selectedPatJetsCATopTagSubjetsPF'),
@@ -121,12 +119,13 @@ process.p = cms.Path(	process.diffmogen*
 			process.diffmoleps2*
 			process.diffmoca8*
 			process.diffmoca8pp*
-			process.diffmoca8tt
+			process.diffmoca8tt*
+			process.diffmohep
 			)
 process.out = cms.OutputModule("PoolOutputModule",
 							   fileName = cms.untracked.string("diffmotester.root"),
 							   SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p')),
-							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_diffmoHadronic_*_*'))
+							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_diffmoHadronic_*_*', 'keep *_TriggerResults_*_PAT'))
 process.outpath = cms.EndPath(process.out)
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.out.dropMetaData = cms.untracked.string("DROPPED")
