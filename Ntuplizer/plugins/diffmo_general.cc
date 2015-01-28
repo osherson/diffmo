@@ -36,10 +36,10 @@ DiFfMoGeneral::DiFfMoGeneral(const edm::ParameterSet& iConfig) :
 	metSrc_	   (iConfig.getParameter<edm::InputTag>("metSrc")),
 	isData_    (iConfig.getParameter<bool>("isData"))
 {
-	produces<unsigned int>				("npv");
-	produces<unsigned int>				("npvTrue");
-	produces<double>					("metpt");
-	produces<double>					("metphi");
+	produces<unsigned int>	("npv");
+	produces<unsigned int>	("npvTrue");
+	produces<double>		("metpt");
+	produces<double>		("metphi");
 }
 
 void DiFfMoGeneral::beginJob()

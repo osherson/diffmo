@@ -1,4 +1,6 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/Math/interface/deltaPhi.h"
+#include "DataFormats/Math/interface/deltaR.h"
 #include "Nsubjettiness.hh"
 #include "Njettiness.hh"
 #include <fastjet/JetDefinition.hh>
@@ -320,16 +322,16 @@ namespace HADDF
 		float eta2, phi2, deltaR;
 
 		//Find matching genJet for systematic smearing
-		if(!isData) {
+		if ( !isData ) {
 			for ( std::vector<reco::GenJet>::const_iterator genJBegin = genJ->begin(), genJEnd = genJ->end(), igenjet = genJBegin; igenjet != genJEnd; ++igenjet) 
 			{
 				eta2 = igenjet->eta();
 				phi2 = igenjet->phi();
-				deltaR = sqrt( (eta2-eta1)*(eta2-eta1) + (phi2-phi1)*(phi2-phi1) );
+				deltaR  = reco::deltaR(eta1, phi1, eta2, phi2);
 				if (deltaR < 0.1) theMatchingGenJet = (*igenjet);
 			}
-		}
-		// scale_UP/DOWN
+		
+}		// scale_UP/DOWN
 		if ( fabs(scale) > 0.0001 ) 
 		{
 			jecUnc->setJetEta( uncorrJet.eta() );
@@ -359,12 +361,12 @@ namespace HADDF
 		{
 			double recophi = jet->phi();
 			double genphi = theMatchingGenJet.phi();
-			double deltaphi = (recophi-genphi)*angularSmear;
+			double deltaphi = reco::deltaPhi(recophi, genphi)*angularSmear;
 			phiScale = std::max((double)0.0,(recophi+deltaphi)/recophi);
 		}
 		// smear_UP/DOWN
 		double ptSmear= 1.0;
-		if( fabs(smear) > -1.0 && theMatchingGenJet.pt() > 15.0 )  
+		if( fabs(smear) > -1.0 && theMatchingGenJet.pt() > 15.0 )  //This is negative because even at smear=0.00 we want to smear the pt down
 		{
 			double recopt = jet->pt();
 			double genpt = theMatchingGenJet.pt();
