@@ -241,10 +241,10 @@ namespace LEPDF
 									{
 										if (lepPFIso(electron) < 0.15)
 										{
-											if(hConCol.isValid())// && beamspot.isValid())
+											if(hConCol.isValid() && hBeamspot.isValid())
 											{
 												// if(electron->passConversionVeto())
-												if(!ConversionTools::hasMatchedConversion( *electron, hConCol, beamspot.position()))
+												if(!ConversionTools::hasMatchedConversion( *electron, hConCol, hBeamspot.product()->position()))
 												{
 													if(electron->gsfTrack()->trackerExpectedHitsInner().numberOfHits() <= 1)
 													{
@@ -290,10 +290,10 @@ namespace LEPDF
 									{
 										if ((electron->pt() >= 20 && lepPFIso(electron) < 0.15) || (electron->pt() < 20 && lepPFIso(electron) < 0.10))
 										{
-											if(hConCol.isValid())// && beamspot.isValid())
+											if(hConCol.isValid() && hBeamspot.isValid())
 											{
 												// if(electron->passConversionVeto())
-												if(!ConversionTools::hasMatchedConversion( *electron, hConCol, beamspot.position()))
+												if(!ConversionTools::hasMatchedConversion( *electron, hConCol, hBeamspot.product()->position()))
 												{
 													if(electron->gsfTrack()->trackerExpectedHitsInner().numberOfHits() <= 1)
 													{
