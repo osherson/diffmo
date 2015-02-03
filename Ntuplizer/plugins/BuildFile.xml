@@ -13,6 +13,7 @@
   <use   name="PhysicsTools/UtilAlgos"/>
   <use   name="HLTrigger/HLTcore"/>
   <use   name="CondFormats/JetMETObjects"/>
+  <use   name="RecoEgamma/EgammaTools"/>
   <use   name = "fastjet"/>
   <use   name="root"/>
 </library>

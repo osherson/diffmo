@@ -330,8 +330,7 @@ namespace HADDF
 				deltaR  = reco::deltaR(eta1, phi1, eta2, phi2);
 				if (deltaR < 0.1) theMatchingGenJet = (*igenjet);
 			}
-		
-}		// scale_UP/DOWN
+		}		// scale_UP/DOWN
 		if ( fabs(scale) > 0.0001 ) 
 		{
 			jecUnc->setJetEta( uncorrJet.eta() );

@@ -36,15 +36,15 @@ private:
 	std::string 	useNsub_;
 	std::string 	subcorr_;
 	signed int  	basecorr_;
-	double          scale_;
-	double          smear_;
-	double          angularSmear_;
+	double			scale_;
+	double 			smear_;
+	double 			angularSmear_;
 	std::vector<std::string>  jecPayloads_; /// files for JEC payloads
-	bool        	isData_;
-	bool    		doB_;
-	bool	        doT_;
-	bool        	doSubcorr_;
-	double			mkSubSize_;
+	bool 			isData_;
+	bool 			doB_;
+	bool 			doT_;
+	bool 			doSubcorr_;
+	double 			mkSubSize_;
 	boost::shared_ptr<FactorizedJetCorrector> jec_;
 	boost::shared_ptr<JetCorrectionUncertainty> jecUnc_;
 	bool 			addTopTag_;
