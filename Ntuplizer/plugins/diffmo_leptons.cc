@@ -86,10 +86,10 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			lepscharge->push_back(imuon->charge());
 			reco::Candidate::PolarLorentzVector lep_nocuts (imuon->pt(), imuon->eta(), imuon->phi(), imuon->mass());
 			leps->push_back(lep_nocuts);
-			lepsistight->push_back(LEPDF::lepTight(imuon));
+			lepsistight->push_back(LEPDF::lepTight(imuon, hPV));
 			lepsisloose->push_back(LEPDF::lepLoose(imuon));
 			//not currently useful for muons
-			lepmodtight->push_back(LEPDF::lepTight(imuon));
+			lepmodtight->push_back(LEPDF::lepTight(imuon, hPV));
 		}
 	}
 	if (is_el)
@@ -109,7 +109,7 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			lepscharge->push_back(ielec->charge());
 			reco::Candidate::PolarLorentzVector lep_nocuts (ielec->pt(), ielec->eta(), ielec->phi(), ielec->mass());
 			leps->push_back(lep_nocuts);
-			lepsistight->push_back(LEPDF::lepTight(ielec));
+			lepsistight->push_back(LEPDF::lepTight(ielec, hPV, hConversions, hBeamSpot));
 			lepsisloose->push_back(LEPDF::lepLoose(ielec, hPV, hConversions, hBeamSpot));
 			//modified selection for electrons
 			lepmodtight->push_back(LEPDF::lepModTight(ielec));
