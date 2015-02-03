@@ -67,7 +67,8 @@ else:
 # Run:
 process = cms.Process("diffmo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000))
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:root://xrootd.unl.edu//store/results/B2G/SingleMu/StoreResults-V2-Run2012B-22Jan2013-v1_TLBSM_53x_v3-db7dd8e58134469d4e102fe8d5e205b6/SingleMu/USER/StoreResults-V2-Run2012B-22Jan2013-v1_TLBSM_53x_v3-db7dd8e58134469d4e102fe8d5e205b6/0000/00601C8F-1CD0-E211-9CE8-0026189438E4.root'))
 #General
 process.diffmoGen = cms.EDFilter('DiFfMoGeneral',
@@ -84,7 +85,7 @@ process.diffmoMuonPFlow = cms.EDFilter('DiFfMoLepton',
 process.diffmoMuonPFlowLoose = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatMuonsPFlowLoose'),
 				lepType = cms.string('muon'),
-				lepName = cms.string('muon_loose'),
+				lepName = cms.string('muonLoose'),
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				beamSpotSrc = cms.InputTag('offlineBeamSpot'))
 #Electrons
@@ -97,7 +98,7 @@ process.diffmoElePFlow = cms.EDFilter('DiFfMoLepton',
 process.diffmoElePFlowLoose = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatElectronsPFlowLoose'),
 				lepType = cms.string('electron'),
-				lepName = cms.string('electron_loose'),
+				lepName = cms.string('electronLoose'),
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				beamSpotSrc = cms.InputTag('offlineBeamSpot'))
 #CA8 jets
@@ -153,7 +154,7 @@ process.diffmoCa8ppsub =  process.diffmoCa8pp.clone(
 				subcorr = cms.string('no'),
 				jetName = cms.string('SelectedSubjetsPrunedCA8'))
 
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.p = cms.Path(	
 			process.diffmoGen*
 			process.diffmoMuonPFlow*
@@ -167,7 +168,7 @@ process.p = cms.Path(
 			process.diffmoAk5
 			)
 process.out = cms.OutputModule("PoolOutputModule",
-							   fileName = cms.untracked.string("diffmotester_data.root"),
+							   fileName = cms.untracked.string("diffmotester_singleMu_data.root"),
 							   SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p')),
 							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_TriggerResults_*_HLT'))
 process.outpath = cms.EndPath(process.out)

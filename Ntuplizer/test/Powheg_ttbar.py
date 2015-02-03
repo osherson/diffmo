@@ -67,7 +67,8 @@ else:
 # Run:
 process = cms.Process("diffmo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000))
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents))
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:root://xrootd.unl.edu//store/results/B2G/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/02621A0E-40C2-E211-9F42-002590593902.root'))
 #General
 process.diffmoGen = cms.EDFilter('DiFfMoGeneral',
@@ -84,7 +85,7 @@ process.diffmoMuonPFlow = cms.EDFilter('DiFfMoLepton',
 process.diffmoMuonPFlowLoose = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatMuonsPFlowLoose'),
 				lepType = cms.string('muon'),
-				lepName = cms.string('muon_loose'),
+				lepName = cms.string('muonLoose'),
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				beamSpotSrc = cms.InputTag('offlineBeamSpot'))
 #Electrons
@@ -97,7 +98,7 @@ process.diffmoElePFlow = cms.EDFilter('DiFfMoLepton',
 process.diffmoElePFlowLoose = cms.EDFilter('DiFfMoLepton',
 				lepSrc = cms.InputTag('selectedPatElectronsPFlowLoose'),
 				lepType = cms.string('electron'),
-				lepName = cms.string('electron_loose'),
+				lepName = cms.string('electronLoose'),
 				pvSrc = cms.InputTag('goodOfflinePrimaryVertices'),
 				beamSpotSrc = cms.InputTag('offlineBeamSpot'))
 #CA8 jets
@@ -153,7 +154,7 @@ process.diffmoCa8ppsub =  process.diffmoCa8pp.clone(
 				subcorr = cms.string('no'),
 				jetName = cms.string('SelectedSubjetsPrunedCA8'))
 
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.p = cms.Path(	
 			process.diffmoGen*
 			process.diffmoMuonPFlow*
@@ -167,7 +168,7 @@ process.p = cms.Path(
 			process.diffmoAk5
 			)
 process.out = cms.OutputModule("PoolOutputModule",
-							   fileName = cms.untracked.string("diffmotester_data.root"),
+							   fileName = cms.untracked.string("diffmotester_Powheg_ttbar.root"),
 							   SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p')),
 							   outputCommands = cms.untracked.vstring('drop *','keep *_diffmo*_*_*', 'keep *_*prunedGenParticles*_*_*', 'keep *_TriggerResults_*_HLT'))
 process.outpath = cms.EndPath(process.out)
