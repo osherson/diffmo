@@ -207,7 +207,7 @@ namespace LEPDF
 		return is_loose_muon;
 	}
 
-	unsigned int lepLoose(std::vector<pat::Electron>::const_iterator electron, const edm::Handle< std::vector<reco::Vertex> > hVtx, const edm::Handle<reco::ConversionCollection> hConCol, const reco::BeamSpot & beamspot)
+	unsigned int lepLoose(std::vector<pat::Electron>::const_iterator electron, const edm::Handle< std::vector<reco::Vertex> > hVtx, const edm::Handle<reco::ConversionCollection> hConCol, const edm::Handle<reco::BeamSpot> hBeamspot)
 	{
 		//Selection taken from here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification#New_instructions_GitHub 02/02/2015
 		reco::Vertex vtx = *(hVtx->begin()); // I THINK we only want the first PV. It is supposed to be the most likely PV.
