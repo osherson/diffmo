@@ -114,7 +114,7 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			leps->push_back(lep_nocuts);
 			lepsistight->push_back(LEPDF::lepTight(ielec));
 			lepsistight2->push_back(LEPDF::lepTight2(ielec, hPV, hConversions, hBeamSpot));
-			lepsisloose->push_back(LEPDF::lepTight2(ielec, hPV, hConversions, hBeamSpot));
+			lepsisloose->push_back(LEPDF::lepLoose(ielec, hPV, hConversions, hBeamSpot));
 			//modified selection for electrons
 			lepmodtight->push_back(LEPDF::lepModTight(ielec));
 		}
