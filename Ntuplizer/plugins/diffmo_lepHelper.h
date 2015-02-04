@@ -28,74 +28,18 @@ namespace LEPDF
 		return pfIso;
 	}
 
-	unsigned int lepTight(std::vector<pat::Muon>::const_iterator muon)
+	unsigned int lepTight(std::vector<pat::Muon>::const_iterator muon, const edm::Handle< std::vector<reco::Vertex> > hVtx)
 	{
-		unsigned int is_tight_muon = 0;
-		if (muon->isGlobalMuon()) 
-			{
-				if (muon->isTrackerMuon()) 
-				{
-					if (static_cast<int>( muon->numberOfValidHits()) > 10) 
-					{
-						if (muon->dB() < 0.2) 
-						{
-							if (muon->normChi2() < 10) 
-							{
-								if (muon->numberOfMatchedStations() > 0) 
-								{
-									if (muon->track()->hitPattern().numberOfValidPixelHits() > 0) 
-									{
-										is_tight_muon = 1;
-									} 
-								}
-							}
-						}
-					}
-				}
-			}
-		return is_tight_muon;
-	}
-
-	unsigned int lepTight(std::vector<pat::Electron>::const_iterator electron)
-	{
-		unsigned int is_tight_ele = 0;
-		if (electron->dB() < 0.2) 
-		{
-			if (not electron->gsfTrack()->trackerExpectedHitsInner().numberOfHits() < 1) 
-			{
-				is_tight_ele = 1;
-			}
-		}
-		return is_tight_ele;
-	}
-
-	unsigned int lepModTight(std::vector<pat::Electron>::const_iterator electron)
-	{
-		double abseta = std::abs(electron->superCluster()->eta());
-		if (abseta <= 1.4442 || abseta >= 1.5660) 
-		{
-			return 0;
-		}
-		else
-		{
-			if (electron->dB() >= 0.02) return 0;
-			else if (electron->gsfTrack()->dz() >= 0.01) return 0;
-			else return 1;
-		}
-	}
-
-	unsigned int lepTight2(std::vector<pat::Muon>::const_iterator muon, const edm::Handle< std::vector<reco::Vertex> > hVtx)
-	{
-		reco::Vertex vtx = *(hVtx->begin()); // I THINK we only want the first PV. It is supposed to be the most likely PV.
+		reco::Vertex vtx = *(hVtx->begin());
 		unsigned int is_tight_muon = 0;
 		if (muon->isTightMuon(vtx)) is_tight_muon = 1;
 		return is_tight_muon;
 	}
 
-	unsigned int lepTight2(std::vector<pat::Electron>::const_iterator electron, const edm::Handle< std::vector<reco::Vertex> > hVtx, const edm::Handle<reco::ConversionCollection> hConCol, const edm::Handle<reco::BeamSpot> hBeamspot)
+	unsigned int lepTight(std::vector<pat::Electron>::const_iterator electron, const edm::Handle< std::vector<reco::Vertex> > hVtx, const edm::Handle<reco::ConversionCollection> hConCol, const edm::Handle<reco::BeamSpot> hBeamspot)
 	{
 		//Selection taken from here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification#New_instructions_GitHub 02/02/2015
-		reco::Vertex vtx = *(hVtx->begin()); // I THINK we only want the first PV. It is supposed to be the most likely PV.
+		reco::Vertex vtx = *(hVtx->begin());
 
 		unsigned int is_tight_ele = 0;
 		if (electron->isEB()) 
@@ -198,6 +142,21 @@ namespace LEPDF
 			}
 		}
 		return is_tight_ele;
+	}
+
+	unsigned int lepModTight(std::vector<pat::Electron>::const_iterator electron)
+	{
+		double abseta = std::abs(electron->superCluster()->eta());
+		if (abseta <= 1.4442 || abseta >= 1.5660) 
+		{
+			return 0;
+		}
+		else
+		{
+			if (electron->dB() >= 0.02) return 0;
+			else if (electron->gsfTrack()->dz() >= 0.01) return 0;
+			else return 1;
+		}
 	}
 
 	unsigned int lepLoose(std::vector<pat::Muon>::const_iterator muon)
