@@ -8,11 +8,14 @@ import sys
 from Analysis.Tools.JetTools import *
 
 class tree_maker:
-	def __init__(self, prunedname, unprunedname, outputname, seed):
+	def __init__(self, outputname, seed, mistagFileStr, modMassFileStr, triggerFileStr):
 		# load all the event info:
 		self.numbtag = 0
 		self.name = outputname
 		self.seed = seed
+		self.mistagFileStr = mistagFileStr
+		self.modMassFileStr = modMassFileStr
+		self.triggerFileStr = triggerFileStr
 
 		#General Quantities
 		#N Primary Vertices
@@ -32,17 +35,17 @@ class tree_maker:
 
 		#Btagging CSV values
 		self.CSVHandle = Handle( "std::vector<double>" )
-		self.CSVLabel  = ( prunedname[0], prunedname[1]+"csv" )
+		self.CSVLabel  = ( "diffmoca8pp", "PrunedCA8csv" )
 
 		#Subjet btagging CSV values
 		self.subjet1CSVHandle = Handle( "std::vector<double>" )
-		self.subjet1CSVLabel  = ( prunedname[0], prunedname[1]+"sub0csv" )
+		self.subjet1CSVLabel  = ( "diffmoca8pp", "PrunedCA8sub0csv" )
 		self.subjet2CSVHandle = Handle( "std::vector<double>" )
-		self.subjet2CSVLabel  = ( prunedname[0], prunedname[1]+"sub1csv" )
+		self.subjet2CSVLabel  = ( "diffmoca8pp", "PrunedCA8sub1csv" )
 		self.subjet3CSVHandle = Handle( "std::vector<double>" )
-		self.subjet3CSVLabel  = ( prunedname[0], prunedname[1]+"sub2csv" )
+		self.subjet3CSVLabel  = ( "diffmoca8pp", "PrunedCA8sub2csv" )
 		self.subjet4CSVHandle = Handle( "std::vector<double>" )
-		self.subjet4CSVLabel  = ( prunedname[0], prunedname[1]+"sub3csv" )
+		self.subjet4CSVLabel  = ( "diffmoca8pp", "PrunedCA8sub3csv" )
 
 		#TopTagged Jet collection
 		#Eventually this is the one we will use most likely
@@ -68,24 +71,57 @@ class tree_maker:
 
 		#N-Subjettiness(tau)
 		self.t1Handle = Handle( "std::vector<double>" )
-		self.t1Label  = (unprunedname[0], unprunedname[1]+"tau1")
+		self.t1Label  = ("diffmoca8", "UnprunedCA8tau1")
 		self.t2Handle = Handle( "std::vector<double>" )
-		self.t2Label  = (unprunedname[0], unprunedname[1]+"tau2")
+		self.t2Label  = ("diffmoca8", "UnprunedCA8tau2")
 		self.t3Handle = Handle( "std::vector<double>" )
-		self.t3Label  = (unprunedname[0], unprunedname[1]+"tau3")
+		self.t3Label  = ("diffmoca8", "UnprunedCA8tau3")
 		self.t4Handle = Handle( "std::vector<double>" )
-		self.t4Label  = (unprunedname[0], unprunedname[1]+"tau4")
+		self.t4Label  = ("diffmoca8", "UnprunedCA8tau4")
 		
 		#Number of Daughters
 		self.NdaughtersHandle = Handle( "std::vector<unsigned int>" )
-		self.NdaughtersLabel  = ( unprunedname[0], unprunedname[1]+"nsub" )
+		self.NdaughtersLabel  = ("diffmoca8", "UnprunedCA8nsub" )
+
+		#Trigger
+		self.triggerHandle = Handle( "edm::TriggerResults" )
+		self.triggerLabel  = ( "TriggerResults" )
 
 		self.__book__()
 
 	def __book__(self):
 
-
-		#Mistag files?!
+		if (self.mistagFileStr == ''):
+			self.doMistag = False
+		else:
+			self.mistagFile = ROOT.TFile(self.mistagFileStr + ".root")
+			self.mistagFile.cd()
+			self.mistag = ROOT.TH1F()
+			self.mistag = self.mistagFile.Get("MISTAG_MPM_REVERSE_SUB_TTBAR").Clone()
+			self.mistag.SetName('mistag')
+			ROOT.SetOwnership( self.mistag, False )
+			self.doMistag = True
+		
+		if (self.modMassFileStr == ''):
+			self.doModMass = False
+		else:
+			self.modMassFile = ROOT.TFile(self.modMassFileStr + ".root")
+			self.modMassFile.cd()
+			self.modMass = ROOT.TH1F()
+			self.modMass = self.modMassFile.Get("jetMassOneTag_MassWindow").Clone()
+			self.modMass.SetName('modMass')
+			ROOT.SetOwnership( self.modMass, False )
+			self.doModMass = True
+		
+		if (self.triggerFileStr == ''):
+			self.doTrigger = False
+		else:
+			self.triggerFile = ROOT.TFile(self.triggerFileStr + ".root")
+			self.triggerFile.cd()
+			self.trigger = self.triggerFile.Get("TRIGGER_EFF").Clone()
+			self.trigger.SetName('trigger')
+			ROOT.SetOwnership( self.trigger, False )
+			self.doTrigger = True
 
 		print "Booking Histograms and Trees..."
 		self.f = ROOT.TFile( self.name + ".root", "recreate" )
@@ -111,12 +147,18 @@ class tree_maker:
 		self.jet2mass = array('f', [-1.0])
 		self.jet1topMass = array('f', [-1.0])
 		self.jet2topMass = array('f', [-1.0])
+		self.jet1topMassRaw = array('f', [-1.0])
+		self.jet2topMassRaw = array('f', [-1.0])
 		self.jet1csv = array('f', [-1.0])
 		self.jet2csv = array('f', [-1.0])
 		self.jet1maxSubjetCSV = array('f', [-1.0])
 		self.jet2maxSubjetCSV = array('f', [-1.0])
 		self.jet1tau32 = array('f', [-1.0])
 		self.jet2tau32 = array('f', [-1.0])
+		self.jet1tau31 = array('f', [-1.0])
+		self.jet2tau31 = array('f', [-1.0])
+		self.jet1tau21 = array('f', [-1.0])
+		self.jet2tau21 = array('f', [-1.0])
 		self.jet1nSubj = array('i', [-1])
 		self.jet2nSubj = array('i', [-1])
 		self.jet1minMass = array('f', [-1.0])
@@ -132,6 +174,9 @@ class tree_maker:
 		self.mistagWt = array('f', [-1.0])
 		self.mistagWt1B = array('f', [-1.0])
 		self.mistagWt2B = array('f', [-1.0])
+
+		self.htSum = array('f', [-1.0])
+		self.triggerEff = array('f', [1.0])
 
 		self.treeVars.Branch('run', self.run, 'run/I')
 		self.treeVars.Branch('event', self.event, 'event/L')
@@ -152,12 +197,18 @@ class tree_maker:
 		self.treeVars.Branch('jet2mass', self.jet2mass, 'jet2mass/F')
 		self.treeVars.Branch('jet1topMass', self.jet1topMass, 'jet1topMass/F')
 		self.treeVars.Branch('jet2topMass', self.jet2topMass, 'jet2topMass/F')
+		self.treeVars.Branch('jet1topMassRaw', self.jet1topMassRaw, 'jet1topMassRaw/F')
+		self.treeVars.Branch('jet2topMassRaw', self.jet2topMassRaw, 'jet2topMassRaw/F')
 		self.treeVars.Branch('jet1csv', self.jet1csv, 'jet1csv/F')
 		self.treeVars.Branch('jet2csv', self.jet2csv, 'jet2csv/F')
 		self.treeVars.Branch('jet1maxSubjetCSV', self.jet1maxSubjetCSV, 'jet1maxSubjetCSV/F')
 		self.treeVars.Branch('jet2maxSubjetCSV', self.jet2maxSubjetCSV, 'jet2maxSubjetCSV/F')
 		self.treeVars.Branch('jet1tau32', self.jet1tau32, 'jet1tau32/F')
 		self.treeVars.Branch('jet2tau32', self.jet2tau32, 'jet2tau32/F')
+		self.treeVars.Branch('jet1tau31', self.jet1tau31, 'jet1tau31/F')
+		self.treeVars.Branch('jet2tau31', self.jet2tau31, 'jet2tau31/F')
+		self.treeVars.Branch('jet1tau21', self.jet1tau21, 'jet1tau21/F')
+		self.treeVars.Branch('jet2tau21', self.jet2tau21, 'jet2tau21/F')
 		self.treeVars.Branch('jet1nSubj', self.jet1nSubj, 'jet1nSubj/I')
 		self.treeVars.Branch('jet2nSubj', self.jet2nSubj, 'jet2nSubj/I')
 		self.treeVars.Branch('jet1minMass', self.jet1minMass, 'jet1minMass/F')
@@ -173,6 +224,9 @@ class tree_maker:
 		self.treeVars.Branch('mistagWt', self.mistagWt, 'mistagWt/F')
 		self.treeVars.Branch('mistagWt1B', self.mistagWt1B, 'mistagWt1B/F')
 		self.treeVars.Branch('mistagWt2B', self.mistagWt2B, 'mistagWt2B/F')
+
+		self.treeVars.Branch('htSum', self.htSum, 'htSum/F')
+		self.treeVars.Branch('triggerEff', self.triggerEff, 'triggerEff/F')
 
 		self.invarmass = array('f', [-1.0])
 		self.jetangle = array('f', [-10.0])
@@ -234,6 +288,7 @@ class tree_maker:
 
 		jet1topTagged = 0
 		jet2topTagged = 0
+		HTsum = 0
 
 		if (self.prunedHandle.isValid() and self.unprunedHandle.isValid() and self.topTaggedHandle.isValid()) :
 			unpj = self.unprunedHandle.product()
@@ -270,11 +325,12 @@ class tree_maker:
 			for i in range(0,len(ttpj) ) :
 				if( ttpj[i].pt() > 400 ) :
 					nTopCand = nTopCand + 1
-					#HTsum += topJets[i].pt()
+					HTsum += ttpj[i].pt()
 				if nTopCand < 1 :
 					self.reset()
 					return
 			
+			self.htSum[0] = HTsum
 			self.MET[0] = metPt
 			self.npv[0] = npv
 
@@ -333,6 +389,7 @@ class tree_maker:
 			self.jet1minMass[0] = jet1minMassVal
 			#### This should rightfully be jet1mass and jet2mass ####
 			self.jet1topMass[0] = topTagTopMass[jet1matchIndex_tt]
+			self.jet1topMassRaw[0] = topTagTopMass[jet1matchIndex_tt]
 	
 			#Check if jet 1 is top taggged
 			if self.jet1topMass[0] > 140.0 and self.jet1topMass[0] < 250.0 and self.jet1minMass[0] > 50.0 and self.jet1nSubj[0] > 2:
@@ -360,6 +417,8 @@ class tree_maker:
 					if len(ttpj) < 2:
 						self.cutflow[0] = 2.13
 						self.treeVars.Fill()
+				self.cutflow[0] = 2.2
+				self.treeVars.Fill()
 				self.reset()
 				return
 
@@ -379,30 +438,40 @@ class tree_maker:
 			#Make sure matching is correct for jet2
 			if jet2matchIndex==-1 or jet2matchIndex_pj==-1 or jet2matchIndex_tt ==-1:
 				if jet1topTagged:
-					self.cutflow[0] = 2.2
+					self.cutflow[0] = 2.3
 					self.treeVars.Fill()
 					if jet2matchIndex==-1:
-						self.cutflow[0] = 2.21
+						self.cutflow[0] = 2.31
 						self.treeVars.Fill()
 					if jet2matchIndex_pj==-1:
-						self.cutflow[0] = 2.22
+						self.cutflow[0] = 2.32
 						self.treeVars.Fill()
 					if jet2matchIndex_tt==-1:
-						self.cutflow[0] = 2.23
+						self.cutflow[0] = 2.33
 						self.treeVars.Fill()
+				self.cutflow[0] = 2.4
+				self.treeVars.Fill()
 				self.reset()
 				return
 
 			#2nd jet with pT > 400:
 			jet2ptcheck = 0
 			if self.jet2pt[0] > 400.:
+				jet2ptcheck = 1
 				if jet1topTagged:
 					self.cutflow[0] = 3.0
 					self.treeVars.Fill()
-					jet2ptcheck = 1
+				#Temporary
+				else:
+					self.cutflow[0] = 9.1
+					self.treeVars.Fill()
 			else:
 				if jet1topTagged:
-					self.cutflow[0] = 2.3
+					self.cutflow[0] = 2.5
+					self.treeVars.Fill()
+				#Temporary
+				else:
+					self.cutflow[0] = 9.2
 					self.treeVars.Fill()
 				# self.reset()
 				# return
@@ -412,6 +481,7 @@ class tree_maker:
 			self.jet2nSubj[0] = nSubjets[jet2matchIndex_tt]
 			self.jet2minMass[0] = jet2minMassVal
 			self.jet2topMass[0] = topTagTopMass[jet2matchIndex_tt]
+			self.jet2topMassRaw[0] = topTagTopMass[jet2matchIndex_tt]
 
 			##################### We don't really need this but here it is ###################################
 			if len(nDaughters)>0:
@@ -432,10 +502,12 @@ class tree_maker:
 			self.deltaPhi[0] = deltaPhi
 
 			#Nsubjettiness
-			if Tau2[jet1matchIndex] == 0 or Tau2[jet2matchIndex] == 0 :
+			if Tau2[jet1matchIndex] == 0 or Tau2[jet2matchIndex] == 0 or Tau1[jet1matchIndex] == 0 or Tau1[jet2matchIndex] == 0:
 				if jet1topTagged and jet2ptcheck:
 					self.cutflow[0] == 3.1
 					self.treeVars.Fill()
+				self.cutflow[0] = 3.2
+				self.treeVars.Fill()
 				self.reset()
 				return
 
@@ -443,6 +515,16 @@ class tree_maker:
 			jet2tau32Val = Tau3[jet2matchIndex] / Tau2[jet2matchIndex]
 			self.jet1tau32[0] = jet1tau32Val
 			self.jet2tau32[0] = jet2tau32Val
+
+			jet1tau31Val = Tau3[jet1matchIndex] / Tau1[jet1matchIndex]
+			jet2tau31Val = Tau3[jet2matchIndex] / Tau1[jet2matchIndex]
+			self.jet1tau31[0] = jet1tau31Val
+			self.jet2tau31[0] = jet2tau31Val
+
+			jet1tau21Val = Tau2[jet1matchIndex] / Tau1[jet1matchIndex]
+			jet2tau21Val = Tau2[jet2matchIndex] / Tau1[jet2matchIndex]
+			self.jet1tau21[0] = jet1tau21Val
+			self.jet2tau21[0] = jet2tau21Val
 
 			#Fill the btagging information
 			self.jet1csv[0] = CSVVals[jet1matchIndex_pj]
@@ -476,25 +558,33 @@ class tree_maker:
 			if self.jet2topMass[0] > 140.0 and self.jet2topMass[0] < 250.0 and self.jet2minMass[0] > 50.0 and self.jet2nSubj[0] > 2:
 				#Two top-tagged jets with pt>400
 				if jet1topTagged and jet2ptcheck:
+					jet2topTagged = 1
 					self.cutflow[0] = 4.0
 					self.index[0] = 1
 					self.treeVars.Fill()
-					jet2topTagged = 1
 				#Second jet is top tagged, but the first is not
 				elif jet2ptcheck:
-					self.cutflow[0] = 3.3
+					jet2topTagged = 1
+					self.cutflow[0] = 3.4
+					self.treeVars.Fill()
+				#Temporary
+				else:
+					self.cutflow[0] = 10.1
 					self.treeVars.Fill()
 			else:
-				self.cutflow[0] = 3.2
+				self.cutflow[0] = 3.3
 				self.treeVars.Fill()
 				# self.reset()
 				# return
-
 
 			#Mistag Contribution
 			if nTopCand < 2:
 				self.reset()
 				return
+
+			#Temporary
+			self.cutflow[0] = 11
+			self.treeVars.Fill()
 
 			temp_x = ROOT.TRandom3(self.seed)
 			x = temp_x.Uniform(1.0)
@@ -520,21 +610,80 @@ class tree_maker:
 			topTag1WP5 = jet1topTagged and jet1tau32Val < 0.4 and bTag1 and jet1minMassVal > 55
 			topTag2WP5 = jet2topTagged and jet2tau32Val < 0.4 and bTag2 and jet2minMassVal > 55
 	
+			if self.doMistag:
+				mistagBin1 = self.mistag.FindBin(self.jet1pt[0])
+				mistagBin2 = self.mistag.FindBin(self.jet2pt[0])
+				# mistag_1B_Bin1 = self.mistag_1B.FindBin(self.jet1pt[0])
+				# mistag_1B_Bin2 = self.mistag_1B.FindBin(self.jet2pt[0])
+				# mistag_2B_Bin1 = self.mistag_2B.FindBin(self.jet1pt[0])
+				# mistag_2B_Bin2 = self.mistag_12.FindBin(self.jet2pt[0])
+
+				#Make sure we're not in the overflow and underflow (we should never be under)
+				if self.mistag.IsBinOverflow(mistagBin1):
+					mistagBin1 = self.mistag.GetNbinsX()
+				elif mistagBin1 == 0:
+					mistagBin1 = 1
+				if self.mistag.IsBinOverflow(mistagBin2):
+					mistagBin2 = self.mistag.GetNbinsX()
+				elif mistagBin2 == 0:
+					mistagBin2 = 1
+
+				# if self.mistag_1B.IsBinOverflow(mistag_1B_Bin1):
+				# 	mistag_1B_Bin1 = self.mistag_1B.GetNbinsX()
+				# elif mistag_1B_Bin1 == 0:
+				# 	mistag_1B_Bin1 = 1
+				# if self.mistag_1B.IsBinOverflow(mistag_1B_Bin2):
+				# 	mistag_1B_Bin2 = self.mistag_1B.GetNbinsX()
+				# elif mistag_1B_Bin2 == 0:
+				# 	mistag_1B_Bin2 = 1
+
+				# if self.mistag_2B.IsBinOverflow(mistag_2B_Bin1):
+				# 	mistag_2B_Bin1 = self.mistag_2B.GetNbinsX()
+				# elif mistag_2B_Bin1 == 0:
+				# 	mistag_2B_Bin1 = 1
+				# if self.mistag_2B.IsBinOverflow(mistag_2B_Bin2):
+				# 	mistag_2B_Bin2 = self.mistag_2B.GetNbinsX()
+				# elif mistag_2B_Bin2 == 0:
+				# 	mistag_2B_Bin2 = 1
+
+			if self.doTrigger:
+				triggerBin = self.trigger.FindBin(HTsum)
+				if self.trigger.IsBinOverflow(triggerBin):
+					triggerBin = self.trigger.GetNbinsX()
+				elif triggerBin == 0:
+					triggerBin = 1
+				
+				self.triggerEff = self.trigger.GetBinContent( triggerBin )
 
 			if x < 0.5:
 				if jet1topTagged:
-					self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[1].pt()) )
-					self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[1].pt()) )
-					self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[1].pt()) )
+					
+					if self.doModMass:
+						self.jet2topMass[0] = self.modMass.GetRandom()
+
+					if self.doMistag:
+						self.mistagWt[0] = self.mistag.GetBinContent( mistagBin2 )
+					else:
+						self.mistagWt[0] = 0
+
+					self.mistagWt1B[0] = 0#self.mistag_1B.GetBinContent( mistagBin2 )
+					self.mistagWt2B[0] = 0#self.mistag_2B.GetBinContent( mistagBin2 )
 					self.index[0] = 2
 					self.treeVars.Fill()
 					self.reset()
 
 			if x >= 0.5:
 				if jet2topTagged:
-					self.mistagWt[0] = 0#self.mistag.GetBinContent( self.mistag.FindBin(topJets[0].pt()) )
-					self.mistagWt1B[0] = 0#self.mistag1B.GetBinContent( self.mistag1B.FindBin(topJets[0].pt()) )
-					self.mistagWt2B[0] = 0#self.mistag2B.GetBinContent( self.mistag2B.FindBin(topJets[0].pt()) )
+
+					if self.doModMass:
+						self.jet1topMass[0] = self.modMass.GetRandom()
+
+					if self.doMistag:
+						self.mistagWt[0] = self.mistag.GetBinContent( mistagBin1 )
+					else:
+						self.mistagWt[0] = 0
+					self.mistagWt1B[0] = 0#self.mistag_1B.GetBinContent( mistagBin1 )
+					self.mistagWt2B[0] = 0#self.mistag_2B.GetBinContent( mistagBin1 )
 					self.index[0] = 2
 					self.treeVars.Fill()
 					self.reset()
@@ -564,12 +713,18 @@ class tree_maker:
 		self.jet2mass[0] = -1.0
 		self.jet1topMass[0] = -1.0
 		self.jet2topMass[0] = -1.0
+		self.jet1topMassRaw[0] = -1.0
+		self.jet2topMassRaw[0] = -1.0
 		self.jet1csv[0] = -1.0
 		self.jet2csv[0] = -1.0
 		self.jet1maxSubjetCSV[0] = -1.0
 		self.jet2maxSubjetCSV[0] = -1.0
 		self.jet1tau32[0] = -1.0
 		self.jet2tau32[0] = -1.0
+		self.jet1tau31[0] = -1.0
+		self.jet2tau31[0] = -1.0
+		self.jet1tau21[0] = -1.0
+		self.jet2tau21[0] = -1.0
 		self.jet1nSubj[0] = -1
 		self.jet2nSubj[0] = -1
 		self.jet1minMass[0] = -1.0
@@ -586,6 +741,9 @@ class tree_maker:
 		self.mistagWt1B[0] = -1.0
 		self.mistagWt2B[0] = -1.0
 
+		self.htSum[0] = -1.0
+		self.triggerEff[0] = -1.0
+
 		self.invarmass[0] = -1.0
 		self.jetangle[0] = -10.0
 
@@ -594,4 +752,9 @@ class tree_maker:
 		self.f.cd()
 		self.f.Write()
 		self.f.Close()
-		
+		if self.doMistag:
+			self.mistagFile.Close()
+		if self.doModMass:
+			self.modMassFile.Close()
+		if self.doTrigger:
+			self.triggerFile.Close()
