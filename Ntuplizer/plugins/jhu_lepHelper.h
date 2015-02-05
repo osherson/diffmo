@@ -2,7 +2,7 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 
-// Helper functions for diffmo's lepton module
+// Helper functions for jhu's lepton module
 namespace LEPDF
 {
 

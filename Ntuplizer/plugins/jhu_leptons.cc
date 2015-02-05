@@ -1,10 +1,7 @@
-// leptonic actions
-
 #include <memory>
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDFilter.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -12,7 +9,7 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
-#include "Analysis/Ntuplizer/plugins/diffmo_lepHelper.h"
+#include "Analysis/Ntuplizer/plugins/jhu_lepHelper.h"
 
 #include <iostream>
 
@@ -20,11 +17,11 @@ using namespace std;
 using namespace LEPDF;
 
 // Class Def:
-class DiFfMoLepton : public edm::EDFilter 	
+class jhuLepton : public edm::EDFilter 	
 { // open primary class def
 	public:
-		explicit DiFfMoLepton(const edm::ParameterSet&);
-		~DiFfMoLepton();
+		explicit jhuLepton(const edm::ParameterSet&);
+		~jhuLepton();
 	private:
 		virtual void beginJob() ;
 		virtual bool filter(edm::Event&, const edm::EventSetup&); // this is essentially the Ntuplizer code
@@ -37,7 +34,7 @@ class DiFfMoLepton : public edm::EDFilter
 		edm::InputTag	beamSpotSrc_;
 }; // close primary class def
 
-DiFfMoLepton::DiFfMoLepton(const edm::ParameterSet& iConfig) :
+jhuLepton::jhuLepton(const edm::ParameterSet& iConfig) :
 	lepSrc_		(iConfig.getParameter<edm::InputTag>("lepSrc")),
 	lepType_	(iConfig.getParameter<std::string>("lepType")),
 	lepName_	(iConfig.getParameter<std::string>("lepName")),
@@ -52,16 +49,16 @@ DiFfMoLepton::DiFfMoLepton(const edm::ParameterSet& iConfig) :
 	produces<std::vector<signed int>>(lepName_+"charge");
 }
 
-void DiFfMoLepton::beginJob()
+void jhuLepton::beginJob()
 {
 	std::cout << "adding lepton... "<<lepName_<<"\n";
 }
 
-void DiFfMoLepton::endJob() 
+void jhuLepton::endJob() 
 {
 }
 
-bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
+bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
 	std::auto_ptr<p4_vector> leps( new p4_vector() );
 	std::auto_ptr<std::vector<unsigned int> > lepsistight ( new std::vector<unsigned int>() );
@@ -124,7 +121,7 @@ bool DiFfMoLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	return true;
 }
 
-DiFfMoLepton::~DiFfMoLepton(){}
+jhuLepton::~jhuLepton(){}
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(DiFfMoLepton);
+DEFINE_FWK_MODULE(jhuLepton);

@@ -16,11 +16,11 @@ using namespace std;
 
 
 // Class Def:
-class DiFfMoGeneral : public edm::EDFilter 	
+class jhuGeneral : public edm::EDFilter 	
 { // open primary class def
 	 public:
-		explicit DiFfMoGeneral(const edm::ParameterSet&);
-		~DiFfMoGeneral();
+		explicit jhuGeneral(const edm::ParameterSet&);
+		~jhuGeneral();
 	 private:
 		virtual void beginJob() ;
 		virtual bool filter(edm::Event&, const edm::EventSetup&); // this is essentially the Ntuplizer code
@@ -31,7 +31,7 @@ class DiFfMoGeneral : public edm::EDFilter
 	bool isData_;
 }; // close primary class def
 
-DiFfMoGeneral::DiFfMoGeneral(const edm::ParameterSet& iConfig) :
+jhuGeneral::jhuGeneral(const edm::ParameterSet& iConfig) :
 	pvSrc_	   (iConfig.getParameter<edm::InputTag>("pvSrc")),
 	metSrc_	   (iConfig.getParameter<edm::InputTag>("metSrc")),
 	isData_    (iConfig.getParameter<bool>("isData"))
@@ -42,12 +42,12 @@ DiFfMoGeneral::DiFfMoGeneral(const edm::ParameterSet& iConfig) :
 	produces<double>		("metphi");
 }
 
-void DiFfMoGeneral::beginJob()
+void jhuGeneral::beginJob()
 {
 	std::cout << "adding general event info\n";
 }
 
-bool DiFfMoGeneral::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Make cuts/adjustments/corrections:
+bool jhuGeneral::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //Make cuts/adjustments/corrections:
 {
 	// handles and labels start here :
 	edm::Handle< std::vector<reco::Vertex> > h_pv;
@@ -95,11 +95,11 @@ bool DiFfMoGeneral::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) //
 	return true;
 }
 
-void DiFfMoGeneral::endJob() 
+void jhuGeneral::endJob() 
 {
 }
 
-DiFfMoGeneral::~DiFfMoGeneral(){}
+jhuGeneral::~jhuGeneral(){}
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(DiFfMoGeneral);
+DEFINE_FWK_MODULE(jhuGeneral);

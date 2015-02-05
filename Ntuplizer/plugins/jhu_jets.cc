@@ -1,27 +1,24 @@
-// hadronic actions
-
 #include <memory>
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDFilter.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "Analysis/Ntuplizer/plugins/diffmo_hadHelper.h"
+#include "Analysis/Ntuplizer/plugins/jhu_hadHelper.h"
 
 #include <iostream>
 
 using namespace HADDF;
 
 // Class Def:
-class DiFfMoHadronic : public edm::EDFilter
+class jhuHadronic : public edm::EDFilter
 {
 	// open primary class def
 public:
-	explicit DiFfMoHadronic(const edm::ParameterSet &);
-	~DiFfMoHadronic();
+	explicit jhuHadronic(const edm::ParameterSet &);
+	~jhuHadronic();
 private:
 	virtual void beginJob() ;
 	virtual bool filter(edm::Event &, const edm::EventSetup &); // this is essentially the Ntuplizer code
@@ -52,7 +49,7 @@ private:
 }; // close primary class def
 
 
-DiFfMoHadronic::DiFfMoHadronic(const edm::ParameterSet &iConfig) :
+jhuHadronic::jhuHadronic(const edm::ParameterSet &iConfig) :
 	jetSrc_      (iConfig.getParameter<edm::InputTag>("jetSrc")),
 	genSrc_      (iConfig.getParameter<edm::InputTag>("genSrc")),
 	npvSrc_      (iConfig.getParameter<edm::InputTag>("npvSrc")),
@@ -142,16 +139,16 @@ DiFfMoHadronic::DiFfMoHadronic(const edm::ParameterSet &iConfig) :
 
 }
 
-void DiFfMoHadronic::beginJob()
+void jhuHadronic::beginJob()
 {
-	std::cout << "adding jets... " << jetName_ << "\n";
+	std::cout << "adding jets..... " << jetName_ << "\n";
 }
 
-void DiFfMoHadronic::endJob()
+void jhuHadronic::endJob()
 {
 }
 
-bool DiFfMoHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
+bool jhuHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
 	edm::Handle<std::vector<pat::Jet> > h_Jets;
 	iEvent.getByLabel( jetSrc_, h_Jets);
@@ -291,7 +288,7 @@ bool DiFfMoHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
 	return true;
 }
 
-DiFfMoHadronic::~DiFfMoHadronic() {}
+jhuHadronic::~jhuHadronic() {}
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(DiFfMoHadronic);
+DEFINE_FWK_MODULE(jhuHadronic);
