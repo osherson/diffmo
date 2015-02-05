@@ -8,11 +8,11 @@ config.General.requestName = 'Data_Run_A_v3'
 config.section_('JobType')
 config.JobType.psetName = 'hadronic.py'
 config.JobType.pluginName = 'Analysis'
-config.JobType.inputFiles = ['START53_V27_L1FastJet_AK7PFchs.txt', 'START53_V27_L2Relative_AK7PFchs.txt', 'START53_V27_L3Absolute_AK7PFchs.txt', 'START53_V27_Uncertainty_AK7PFchs.txt',
-								'Winter14_V5_DATA_L1FastJet_AK7PFchs.txt', 'Winter14_V5_DATA_L2Relative_AK7PFchs.txt', 'Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
-								'Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt', 'Winter14_V5_DATA_Uncertainty_AK7PFchs.txt',
-								'Winter14_V5_DATA_L1FastJet_AK5PFchs.txt', 'Winter14_V5_DATA_L2Relative_AK5PFchs.txt', 'Winter14_V5_DATA_L3Absolute_AK5PFchs.txt',
-								'Winter14_V5_DATA_L2L3Residual_AK5PFchs.txt', 'Winter14_V5_DATA_Uncertainty_AK5PFchs.txt']
+config.JobType.inputFiles = ['JEC/START53_V27_L1FastJet_AK7PFchs.txt', 'JEC/START53_V27_L2Relative_AK7PFchs.txt', 'JEC/START53_V27_L3Absolute_AK7PFchs.txt', 'JEC/START53_V27_Uncertainty_AK7PFchs.txt',
+								'JEC/Winter14_V5_DATA_L1FastJet_AK7PFchs.txt', 'JEC/Winter14_V5_DATA_L2Relative_AK7PFchs.txt', 'JEC/Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
+								'JEC/Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt', 'JEC/Winter14_V5_DATA_Uncertainty_AK7PFchs.txt',
+								'JEC/Winter14_V5_DATA_L1FastJet_AK5PFchs.txt', 'JEC/Winter14_V5_DATA_L2Relative_AK5PFchs.txt', 'JEC/Winter14_V5_DATA_L3Absolute_AK5PFchs.txt',
+								'JEC/Winter14_V5_DATA_L2L3Residual_AK5PFchs.txt', 'JEC/Winter14_V5_DATA_Uncertainty_AK5PFchs.txt']
 config.JobType.pyCfgParams = ['runOnData=1', 'JES=nominal', 'JER=nominal']
 
 config.section_('Data')
