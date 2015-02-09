@@ -6,6 +6,7 @@ options.register('runOnData', 0, VarParsing.multiplicity.singleton, VarParsing.v
 options.register('JES', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Scale. Options are nominal (off), up, and down - forced to nominal for data")
 options.register('JER', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Resolution Smearing. Options are nominal, up, and down - forced to nominal for data")
 options.register('includePDF', 0, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag for if to include PDF Weights")
+options.register('runOnCrab', 0, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag to process JEC files properly on the grid")
 options.setDefault('maxEvents', 1000)
 options.setDefault('outputFile', 'jhutester.root')
 options.parseArguments()
@@ -40,34 +41,38 @@ else:
 		jerFactor = cms.double(0.00)
 	filenames = cms.untracked.vstring("file:root://xrootd.unl.edu//store/results/B2G/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/02621A0E-40C2-E211-9F42-002590593902.root")
 
+if options.runOnCrab:
+	jec_prepend = ''
+else:
+	jec_prepend = 'JEC/'
 
 if options.runOnData:
 	theJecPayloads_AK7 = cms.vstring([
-		'JEC/Winter14_V5_DATA_L1FastJet_AK7PFchs.txt',
-		'JEC/Winter14_V5_DATA_L2Relative_AK7PFchs.txt',
-		'JEC/Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
-		'JEC/Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt',
-		'JEC/Winter14_V5_DATA_Uncertainty_AK7PFchs.txt'
+		jec_prepend+'Winter14_V5_DATA_L1FastJet_AK7PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L2Relative_AK7PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L3Absolute_AK7PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L2L3Residual_AK7PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_Uncertainty_AK7PFchs.txt'
 	])
 	theJecPayloads_AK5 = cms.vstring([
-		'JEC/Winter14_V5_DATA_L1FastJet_AK5PFchs.txt',
-		'JEC/Winter14_V5_DATA_L2Relative_AK5PFchs.txt',
-		'JEC/Winter14_V5_DATA_L3Absolute_AK5PFchs.txt',
-		'JEC/Winter14_V5_DATA_L2L3Residual_AK5PFchs.txt',
-		'JEC/Winter14_V5_DATA_Uncertainty_AK5PFchs.txt'
+		jec_prepend+'Winter14_V5_DATA_L1FastJet_AK5PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L2Relative_AK5PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L3Absolute_AK5PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_L2L3Residual_AK5PFchs.txt',
+		jec_prepend+'Winter14_V5_DATA_Uncertainty_AK5PFchs.txt'
 	])
 else:
 	theJecPayloads_AK7 = cms.vstring([
-		'JEC/START53_V27_L1FastJet_AK7PFchs.txt',
-		'JEC/START53_V27_L2Relative_AK7PFchs.txt',
-		'JEC/START53_V27_L3Absolute_AK7PFchs.txt',
-		'JEC/START53_V27_Uncertainty_AK7PFchs.txt'
+		jec_prepend+'START53_V27_L1FastJet_AK7PFchs.txt',
+		jec_prepend+'START53_V27_L2Relative_AK7PFchs.txt',
+		jec_prepend+'START53_V27_L3Absolute_AK7PFchs.txt',
+		jec_prepend+'START53_V27_Uncertainty_AK7PFchs.txt'
 	])
 	theJecPayloads_AK5 = cms.vstring([
-		'JEC/START53_V27_L1FastJet_AK5PFchs.txt',
-		'JEC/START53_V27_L2Relative_AK5PFchs.txt',
-		'JEC/START53_V27_L3Absolute_AK5PFchs.txt',
-		'JEC/START53_V27_Uncertainty_AK5PFchs.txt'
+		jec_prepend+'START53_V27_L1FastJet_AK5PFchs.txt',
+		jec_prepend+'START53_V27_L2Relative_AK5PFchs.txt',
+		jec_prepend+'START53_V27_L3Absolute_AK5PFchs.txt',
+		jec_prepend+'START53_V27_Uncertainty_AK5PFchs.txt'
 	])
 
 # Run:
