@@ -305,7 +305,7 @@ namespace HADDF
 		}
 	}
 
-	void  ApplyJec(std::vector<pat::Jet>::const_iterator jet, boost::shared_ptr<FactorizedJetCorrector> jec, boost::shared_ptr<JetCorrectionUncertainty> jecUnc, bool isData, edm::Handle<std::vector<reco::GenJet> > genJ, std::auto_ptr<p4_vector> &jetC, std::auto_ptr<p4_vector> &sub0C, std::auto_ptr<p4_vector> &sub1C, std::auto_ptr<p4_vector> &sub2C, std::auto_ptr<p4_vector> &sub3C, unsigned int nsub, unsigned int npv, double rhoVal, double scale, double smear, double angularSmear, bool dosub, double &JEC)
+	void  ApplyJec(std::vector<pat::Jet>::const_iterator jet, boost::shared_ptr<FactorizedJetCorrector> jec, boost::shared_ptr<JetCorrectionUncertainty> jecUnc, bool isData, edm::Handle<std::vector<reco::GenJet> > genJ, std::auto_ptr<p4_vector> &jetC, std::auto_ptr<p4_vector> &sub0C, std::auto_ptr<p4_vector> &sub1C, std::auto_ptr<p4_vector> &sub2C, std::auto_ptr<p4_vector> &sub3C, unsigned int nsub, unsigned int npv, double rhoVal, double scale, double smear, double angularSmear, bool dosub, double &JEC, double &JECUncPos, double &JECUncNeg, double &JECcorr, double &JECptSmear, double &JECetaScale, double &JECphiScale, double &JECmatchedJetEta)
 	{
 		reco::Candidate::LorentzVector uncorrJet = jet->correctedP4(0);
 		jec->setJetEta( uncorrJet.eta() );
@@ -330,13 +330,18 @@ namespace HADDF
 				deltaR  = reco::deltaR(eta1, phi1, eta2, phi2);
 				if (deltaR < 0.1) theMatchingGenJet = (*igenjet);
 			}
-		}		// scale_UP/DOWN
+		}
+		jecUnc->setJetEta( uncorrJet.eta() );
+		jecUnc->setJetPt( uncorrJet.pt() * corr );
+		JECUncPos = fabs(jecUnc->getUncertainty( bool(1 > 0) ));
+		jecUnc->setJetEta( uncorrJet.eta() );
+		jecUnc->setJetPt( uncorrJet.pt() * corr );
+		JECUncNeg = fabs(jecUnc->getUncertainty( bool(-1 > 0) ));
+
+		// scale_UP/DOWN
 		if ( fabs(scale) > 0.0001 ) 
 		{
-			jecUnc->setJetEta( uncorrJet.eta() );
-			jecUnc->setJetPt( uncorrJet.pt() * corr );
 			double unc = fabs(jecUnc->getUncertainty( bool(scale > 0) ));
-
 			// Add the "flat" flavor dependent corrections in quadrature
 			unc = sqrt( unc*unc + scale*scale);
 			double sign = 1.0;
@@ -381,6 +386,11 @@ namespace HADDF
 	
 		jetC->push_back( corrJet );
 		JEC = corr * ptSmear;
+		JECcorr = corr;
+		JECptSmear = ptSmear;
+		JECetaScale = etaScale;
+		JECphiScale = phiScale;
+		JECmatchedJetEta = theMatchingGenJet.eta();
 		if (dosub)
 		{
 			int startnull = 0;

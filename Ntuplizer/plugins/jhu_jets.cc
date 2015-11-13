@@ -46,6 +46,13 @@ private:
 	boost::shared_ptr<JetCorrectionUncertainty> jecUnc_;
 	bool 			addTopTag_;
 	double 			jecValue_;
+	double			jecUncPos_;
+	double			jecUncNeg_;
+	double 			corr_;
+	double 			ptSmear_;
+	double 			etaScale_;
+	double 			phiScale_;
+	double 			matchedJetEta_;
 }; // close primary class def
 
 
@@ -66,9 +73,16 @@ jhuHadronic::jhuHadronic(const edm::ParameterSet &iConfig) :
 	isData_      (iConfig.getParameter<bool>("isData")),
 	mkSubSize_   (iConfig.getParameter<double>( "mkSubSize" )),
 	addTopTag_   (iConfig.getParameter<bool>( "addTopTagInfo")),
-	jecValue_(-1.0)
+	jecValue_(-1.0),
+	jecUncPos_(-1.0),
+	jecUncNeg_(-1.0),
+	corr_(-1.0),
+	ptSmear_(-1.0),
+	etaScale_(-1.0),
+	phiScale_(-1.0),
+	matchedJetEta_(-1.0)
 {
-	doB_ = (btagType_ != "");
+	doB_ = (btagType_ != "" and jetName_ != "AK5");
 	doT_ = (useNsub_ == "yes" or useNsub_ == "y");
 	doSubcorr_ = (subcorr_ == "yes" or subcorr_ == "y");
 
@@ -131,6 +145,13 @@ jhuHadronic::jhuHadronic(const edm::ParameterSet &iConfig) :
 
 	produces<std::vector<unsigned int>> (jetName_ + "nsub");
 	produces<std::vector<double>> (jetName_ + "JEC");
+	produces<std::vector<double>> (jetName_ + "JECUncPos");
+	produces<std::vector<double>> (jetName_ + "JECUncNeg");
+	produces<std::vector<double>> (jetName_ + "JECcorr");
+	produces<std::vector<double>> (jetName_ + "JECptSmear");
+	produces<std::vector<double>> (jetName_ + "JECetaScale");
+	produces<std::vector<double>> (jetName_ + "JECphiScale");
+	produces<std::vector<double>> (jetName_ + "JECmatchedJetEta");
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > (jetName_ + "CORR");
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > (jetName_ + "sub0CORR");
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > (jetName_ + "sub1CORR");
@@ -175,6 +196,13 @@ bool jhuHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
 	std::auto_ptr<std::vector<double>> jetstau4( new std::vector<double> );
 	std::auto_ptr<std::vector<unsigned int>> nsub( new std::vector<unsigned int> );
 	std::auto_ptr<std::vector<double>> jecvalue( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> jecuncpos( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> jecuncneg( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> corr( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> ptSmear( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> etaScale( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> phiScale( new std::vector<double> );
+	std::auto_ptr<std::vector<double>> matchedJetEta( new std::vector<double> );
 	std::auto_ptr<p4_vector> sub0(new p4_vector());
 	std::auto_ptr<p4_vector> sub1(new p4_vector());
 	std::auto_ptr<p4_vector> sub2(new p4_vector());
@@ -222,9 +250,16 @@ bool jhuHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
 		// Fills n-subjettiness for custom subjets
 		if (doT_ and mkSubSize_ >= 0.1) CalculateTaus(ijet, jetstau1, jetstau2, jetstau3, jetstau4, mkSubSize_, sub0_CUSTkt, sub1_CUSTkt, sub2_CUSTkt, sub3_CUSTkt, sub0_CUSTak, sub1_CUSTak, sub2_CUSTak, sub3_CUSTak, sub0_exkt, sub1_exkt, sub2_exkt, sub3_exkt);
 		// Applies JEC to all jets and subjets
-		ApplyJec(ijet, jec_, jecUnc_, isData_, h_genJets, jets_CORR, sub0_CORR, sub1_CORR, sub2_CORR, sub3_CORR, nsub_jet, npv, rhoVal, scale_, smear_, angularSmear_, doSubcorr_, jecValue_);
-		// Save the JEC value from above to apply to the other CMS Top Tagging Variables
+		ApplyJec(ijet, jec_, jecUnc_, isData_, h_genJets, jets_CORR, sub0_CORR, sub1_CORR, sub2_CORR, sub3_CORR, nsub_jet, npv, rhoVal, scale_, smear_, angularSmear_, doSubcorr_, jecValue_, jecUncPos_, jecUncNeg_, corr_, ptSmear_, etaScale_, phiScale_, matchedJetEta_);
+		// Save the JEC values from above to apply to the other CMS Top Tagging Variables
 		jecvalue->push_back(jecValue_);
+		jecuncpos->push_back(jecUncPos_);
+		jecuncneg->push_back(jecUncNeg_);
+		corr->push_back(corr_);
+		ptSmear->push_back(ptSmear_);
+		etaScale->push_back(etaScale_);
+		phiScale->push_back(phiScale_);
+		matchedJetEta->push_back(matchedJetEta_);
 		// Fill the Parton Flavor in MC
 		if (!isData_) PartFlav->push_back(ijet->partonFlavour());
 		// Fill the Top Tagging Variables, with appropriate JEC
@@ -234,6 +269,13 @@ bool jhuHadronic::filter(edm::Event &iEvent, const edm::EventSetup &iSetup)
 	iEvent.put(jets, jetName_);
 	iEvent.put(jetsCSV, jetName_ + "csv");
 	iEvent.put(jecvalue, jetName_ + "JEC");
+	iEvent.put(jecuncpos, jetName_ + "JECUncPos");
+	iEvent.put(jecuncneg, jetName_ + "JECUncNeg");
+	iEvent.put(corr, jetName_ + "JECcorr");
+	iEvent.put(ptSmear, jetName_ + "JECptSmear");
+	iEvent.put(etaScale, jetName_ + "JECetaScale");
+	iEvent.put(phiScale, jetName_ + "JECphiScale");
+	iEvent.put(matchedJetEta, jetName_ + "JECmatchedJetEta");
 	if (doT_)
 	{
 		iEvent.put(jetstau1, jetName_ + "tau1");

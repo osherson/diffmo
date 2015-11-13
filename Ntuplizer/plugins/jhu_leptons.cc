@@ -44,9 +44,17 @@ jhuLepton::jhuLepton(const edm::ParameterSet& iConfig) :
 	produces<std::vector<reco::Candidate::PolarLorentzVector> > (lepName_);
 	produces<std::vector<unsigned int>>(lepName_+"istight");
 	produces<std::vector<unsigned int>>(lepName_+"isloose");
+	produces<std::vector<unsigned int>>(lepName_+"ispseudotight");
+	produces<std::vector<unsigned int>>(lepName_+"ispseudoloose");
 	produces<std::vector<unsigned int>>(lepName_+"modtight");
 	produces<std::vector<double>>(lepName_+"iso");
 	produces<std::vector<signed int>>(lepName_+"charge");
+	//For Electron MVA
+	produces<std::vector<unsigned int>>(lepName_+"_ele_isEBEEGap");
+	produces<std::vector<double>>(lepName_+"_ele_TransverseIP");
+	produces<std::vector<unsigned int>>(lepName_+"_ele_passConversionVeto");
+	produces<std::vector<double>>(lepName_+"_ele_MVA");
+	produces<std::vector<double>>(lepName_+"_ele_numberOfHits");
 }
 
 void jhuLepton::beginJob()
@@ -63,9 +71,18 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	std::auto_ptr<p4_vector> leps( new p4_vector() );
 	std::auto_ptr<std::vector<unsigned int> > lepsistight ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<unsigned int> > lepsisloose ( new std::vector<unsigned int>() );
+	std::auto_ptr<std::vector<unsigned int> > lepsispseudotight ( new std::vector<unsigned int>() );
+	std::auto_ptr<std::vector<unsigned int> > lepsispseudoloose ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<unsigned int> > lepmodtight ( new std::vector<unsigned int>() );
 	std::auto_ptr<std::vector<signed int> > lepscharge ( new std::vector<signed int>() );
 	std::auto_ptr<std::vector<double>> lepsiso(new std::vector<double>());
+	// for MVA based electron ID
+	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopEGMRun1#Signal
+	std::auto_ptr<std::vector<unsigned int>> ele_isEBEEGap(new std::vector<unsigned int>());	
+	std::auto_ptr<std::vector<double>> ele_TransverseIP(new std::vector<double>());
+	std::auto_ptr<std::vector<unsigned int>> ele_passConversionVeto(new std::vector<unsigned int>());
+	std::auto_ptr<std::vector<double>> ele_MVA(new std::vector<double>());
+	std::auto_ptr<std::vector<double>> ele_numberOfHits(new std::vector<double>());
 
 	bool is_el = (lepType_ == "el" or lepType_ == "ele" or lepType_ == "elec" or lepType_ == "electron" or lepType_ == "electrons");
 	bool is_mu = (lepType_ == "mu" or lepType_ == "muon" or lepType_ == "muons");
@@ -86,6 +103,8 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			lepsistight->push_back(LEPDF::lepTight(imuon, hPV));
 			lepsisloose->push_back(LEPDF::lepLoose(imuon));
 			//not currently useful for muons
+			lepsispseudotight->push_back(LEPDF::lepTight(imuon, hPV));
+			lepsispseudoloose->push_back(LEPDF::lepLoose(imuon));
 			lepmodtight->push_back(LEPDF::lepTight(imuon, hPV));
 		}
 	}
@@ -108,13 +127,40 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			leps->push_back(lep_nocuts);
 			lepsistight->push_back(LEPDF::lepTight(ielec, hPV, hConversions, hBeamSpot));
 			lepsisloose->push_back(LEPDF::lepLoose(ielec, hPV, hConversions, hBeamSpot));
+			lepsispseudotight->push_back(LEPDF::lepPseudoTight(ielec, hPV, hConversions, hBeamSpot));
+			lepsispseudoloose->push_back(LEPDF::lepPseudoLoose(ielec, hPV, hConversions, hBeamSpot));
 			//modified selection for electrons
 			lepmodtight->push_back(LEPDF::lepModTight(ielec));
+
+			////////////////////////////////////////////////  
+			//       	electron MVA cuts				  //
+			////////////////////////////////////////////////
+			pat::Electron electron = *(ielec);
+			// EB-EE transition region 1.4442 < fabs(superCluster.eta) < 1.5660
+			unsigned int is_EBEEGap = 0;
+			if (electron->isEBEEGap()){is_EBEEGap = 1;};
+			ele_isEBEEGap->push_back(is_EBEEGap);
+			// Transverse IP of the elecrtron (GSF track)
+			reco::Vertex vertex_= *(hPV[0]);	
+			ele_TransverseIP->push_back(fabs(electron->gsfTrack()->dxy(vertex_->position())));
+			// Conversion rejection 
+			ele_passConversionVeto->push_back(electron->passConversionVeto());
+			// MVA
+			ele_MVA->push_back(electron->electronID("mvaTrigV0"));
+			// mHits
+			ele_numberOfHits->push_back(electron->gsfTrack()->trackerExpectedHitsInner().numberOfHits());
 		}
 	}
+	iEvent.put( ele_isEBEEGap, lepName_+"_ele_isEBEEGap");
+	iEvent.put( ele_TransverseIP, lepName_+"_ele_TransverseIP");
+	iEvent.put( ele_passConversionVeto, lepName_+"_ele_passConversionVeto");
+	iEvent.put( ele_MVA, lepName_+"_ele_MVA");
+	iEvent.put( ele_numberOfHits, lepName_+"_ele_numberOfHits");
 	iEvent.put( leps, lepName_);
 	iEvent.put( lepsistight, lepName_+"istight");
 	iEvent.put( lepsisloose, lepName_+"isloose");
+	iEvent.put( lepsispseudotight, lepName_+"ispseudotight");
+	iEvent.put( lepsispseudoloose, lepName_+"ispseudoloose");
 	iEvent.put( lepmodtight, lepName_+"modtight");
 	iEvent.put( lepscharge, lepName_+"charge");
 	iEvent.put( lepsiso, lepName_+"iso");
