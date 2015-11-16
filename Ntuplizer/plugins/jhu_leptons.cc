@@ -49,12 +49,16 @@ jhuLepton::jhuLepton(const edm::ParameterSet& iConfig) :
 	produces<std::vector<unsigned int>>(lepName_+"modtight");
 	produces<std::vector<double>>(lepName_+"iso");
 	produces<std::vector<signed int>>(lepName_+"charge");
-	//For Electron MVA
-	produces<std::vector<unsigned int>>(lepName_+"_ele_isEBEEGap");
-	produces<std::vector<double>>(lepName_+"_ele_TransverseIP");
-	produces<std::vector<unsigned int>>(lepName_+"_ele_passConversionVeto");
-	produces<std::vector<double>>(lepName_+"_ele_MVA");
-	produces<std::vector<double>>(lepName_+"_ele_numberOfHits");
+	//electron only
+	bool is_el = (lepType_ == "el" or lepType_ == "ele" or lepType_ == "elec" or lepType_ == "electron" or lepType_ == "electrons");
+	if (is_el)
+	{
+		produces<std::vector<unsigned int>>(lepName_+"isEBEEGap");
+		produces<std::vector<unsigned int>>(lepName_+"passConversionVeto");
+		produces<std::vector<double>>(lepName_+"TransverseIP");
+		produces<std::vector<unsigned int>>(lepName_+"numberOfHits");
+		produces<std::vector<double>>(lepName_+"MVA");
+	}
 }
 
 void jhuLepton::beginJob()
@@ -82,7 +86,7 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	std::auto_ptr<std::vector<double>> ele_TransverseIP(new std::vector<double>());
 	std::auto_ptr<std::vector<unsigned int>> ele_passConversionVeto(new std::vector<unsigned int>());
 	std::auto_ptr<std::vector<double>> ele_MVA(new std::vector<double>());
-	std::auto_ptr<std::vector<double>> ele_numberOfHits(new std::vector<double>());
+	std::auto_ptr<std::vector<unsigned int>> ele_numberOfHits(new std::vector<unsigned int>());
 
 	bool is_el = (lepType_ == "el" or lepType_ == "ele" or lepType_ == "elec" or lepType_ == "electron" or lepType_ == "electrons");
 	bool is_mu = (lepType_ == "mu" or lepType_ == "muon" or lepType_ == "muons");
@@ -135,14 +139,16 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			////////////////////////////////////////////////  
 			//       	electron MVA cuts				  //
 			////////////////////////////////////////////////
-			pat::Electron electron = *(ielec);
+			std::vector<pat::Electron>::const_iterator electron = ielec;
 			// EB-EE transition region 1.4442 < fabs(superCluster.eta) < 1.5660
 			unsigned int is_EBEEGap = 0;
-			if (electron->isEBEEGap()){is_EBEEGap = 1;};
-			ele_isEBEEGap->push_back(is_EBEEGap);
+			double abseta = std::abs(electron->superCluster()->eta());
+			if (abseta <= 1.4442 || abseta >= 1.5660) {is_EBEEGap = 0;}
+			else {is_EBEEGap = 1;}
+                        ele_isEBEEGap->push_back(is_EBEEGap);
 			// Transverse IP of the elecrtron (GSF track)
-			reco::Vertex vertex_= *(hPV[0]);	
-			ele_TransverseIP->push_back(fabs(electron->gsfTrack()->dxy(vertex_->position())));
+			reco::Vertex vertex_=  *(hPV->begin());	
+			ele_TransverseIP->push_back(fabs(electron->gsfTrack()->dxy(vertex_.position())));
 			// Conversion rejection 
 			ele_passConversionVeto->push_back(electron->passConversionVeto());
 			// MVA
@@ -150,12 +156,12 @@ bool jhuLepton::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 			// mHits
 			ele_numberOfHits->push_back(electron->gsfTrack()->trackerExpectedHitsInner().numberOfHits());
 		}
+		iEvent.put( ele_isEBEEGap,lepName_+ "isEBEEGap");
+		iEvent.put( ele_TransverseIP,lepName_+ "TransverseIP");
+		iEvent.put( ele_passConversionVeto,lepName_+ "passConversionVeto");
+		iEvent.put( ele_MVA, lepName_+ "MVA");
+		iEvent.put( ele_numberOfHits,lepName_+ "numberOfHits");
 	}
-	iEvent.put( ele_isEBEEGap, lepName_+"_ele_isEBEEGap");
-	iEvent.put( ele_TransverseIP, lepName_+"_ele_TransverseIP");
-	iEvent.put( ele_passConversionVeto, lepName_+"_ele_passConversionVeto");
-	iEvent.put( ele_MVA, lepName_+"_ele_MVA");
-	iEvent.put( ele_numberOfHits, lepName_+"_ele_numberOfHits");
 	iEvent.put( leps, lepName_);
 	iEvent.put( lepsistight, lepName_+"istight");
 	iEvent.put( lepsisloose, lepName_+"isloose");
