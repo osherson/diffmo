@@ -3,7 +3,7 @@ config = Configuration()
 
 config.section_('General')
 config.General.transferOutputs = True
-config.General.requestName = 'TTBar_Powheg10_v1'
+config.General.requestName = 'T_t_v1'
 
 config.section_('JobType')
 config.JobType.psetName = 'semileptonic.py'
@@ -17,10 +17,10 @@ config.JobType.inputFiles = ['../JEC/START53_V27_L1FastJet_AK7PFchs.txt', '../JE
 config.JobType.pyCfgParams = ['runOnData=0', 'JES=nominal', 'JER=nominal', 'includePDF=1', 'runOnCrab=1']
 
 config.section_('Data')
-config.Data.inputDataset = '/TT_Mtt-1000toInf_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/USER'
+config.Data.inputDataset = '/T_t-channel_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/USER'
 config.Data.unitsPerJob = 5
 config.Data.splitting = 'FileBased'
-config.Data.publishDataName = 'TTBar_Powheg10_v1'
+config.Data.outputDatasetTag = 'T_t_v1'
 
 config.section_('User')
 

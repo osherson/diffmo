@@ -7,7 +7,7 @@ options.register('JES', 'nominal', VarParsing.multiplicity.singleton, VarParsing
 options.register('JER', 'nominal', VarParsing.multiplicity.singleton, VarParsing.varType.string, "Flag for Jet Energy Resolution Smearing. Options are nominal, up, and down - forced to nominal for data")
 options.register('includePDF', 1, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag for if to include PDF Weights")
 options.register('runOnCrab', 0, VarParsing.multiplicity.singleton, VarParsing.varType.bool, "Flag to process JEC files properly on the grid")
-options.setDefault('maxEvents', 10000)
+options.setDefault('maxEvents', -1)
 options.setDefault('outputFile', 'jhutester.root')
 options.parseArguments()
 print options
@@ -24,7 +24,7 @@ if options.runOnData:
 	runOnData = cms.bool(True)
 	jesFactor = cms.double(0.00)
 	jerFactor = cms.double(0.10)
-	filenames = cms.untracked.vstring("file:root://xrootd.unl.edu//store/results/b2g/StoreResults/JetHT/USER/Run2012B_22Jan2013_TLBSM_53x_0161496fccaa0bf55fbb525b618345b5-v1/00000/00F149B6-E46B-E411-841F-0025905A610C.root")
+	filenames = cms.untracked.vstring("/store/user/lpctlbsm/knash/SingleElectron/Run2012C-22Jan2013-MissingLumi_take2-v1_TLBSM_53x_v3/b11da83ff7a298b6297fefd09b0b7f27/tlbsm_53x_v3_data_10_1_bTg.root")
 else:
 	runOnData = cms.bool(False)
 	if options.JES == 'nominal':
@@ -39,7 +39,7 @@ else:
 		jerFactor = cms.double(0.20)
 	if options.JER == 'down':
 		jerFactor = cms.double(0.00)
-	filenames = cms.untracked.vstring("file:root://xrootd.unl.edu//store/results/B2G/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/TT_Mtt-700to1000_CT10_TuneZ2star_8TeV-powheg-tauola/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/02621A0E-40C2-E211-9F42-002590593902.root")
+	filenames = cms.untracked.vstring("/store/results/B2G/DY1JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/DY1JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/USER/StoreResults-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v3-99bd99199697666ff01397dad5652e9e/0000/76662898-3BD9-E211-8290-003048678FFA.root")
 
 if options.runOnCrab:
 	jec_prepend = ''
@@ -145,7 +145,6 @@ process.jhuAk5 = process.jhuCa8.clone(
 				genSrc = cms.InputTag('ak5GenJetsNoNu'),
 				# rhoSrc = cms.InputTag('ak5GenJetsNoNu', 'rho'), #kt6 is the only one filled in our pat-tuples
 				useNsub = cms.string('no'),
-				btagType = cms.string('combinedSecondaryVertexBJetTags'),
 				jecPayloads = theJecPayloads_AK5,
 				jetName = cms.string('AK5'))
 #PDF Weights
